@@ -2,28 +2,28 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
 var BillSchema = new Schema({
-    Date:{
+    date:{
         type:Date,
         required: true
     },
-    Status:{
+    status:{
         type:Boolean,
         required: true
     },
-    Voucher:{
+    voucher:{
         type:Schema.Types.ObjectId,
         ref:'Voucher'
     },
-    Customer:{
+    account:{
         type:String,
         required:true
     },
-    List:[{
-        Book:{
+    list:[{
+        book:{
             type:Schema.Types.ObjectId,
             require:true
         },
-        Count:{
+        count:{
             type:Number,
             require: true,
             validate:{
@@ -34,7 +34,7 @@ var BillSchema = new Schema({
             }
         }
     }],
-    TotalPrice:{
+    totalPrice:{
         type:Number,
         validate:{
             validator: (v) => {

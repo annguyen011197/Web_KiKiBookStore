@@ -7,10 +7,11 @@ var BookTypeSchema = new Schema({
         unique:true,
         validate:{
             validator: (v)=>{
-                return v.lenght < 20
+                return v.length < 20
             },
             message: 'Failed'
-        }
+        },
+        required:true
     }
 })
 

@@ -1,10 +1,18 @@
-var express = require('express');
-var app = express();
-var bp = require('body-parser')
+// var express = require('express');
+// var app = express();
+// var bp = require('body-parser')
 
-app.use(bp())
-app.get('/', function(req, res){
-   res.send("Hello world!");
-});
+// app.use(bp())
+// app.get('/', function(req, res){
+//    res.send("Hello world!");
+// });
 
-app.listen(3000);
+// app.listen(3000);
+
+var async = require('async')
+
+async.series([
+    ()=>{
+        
+    }
+])
