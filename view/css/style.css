@@ -1,0 +1,72 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #F0F0F0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.top-banner-block {
+    height: 70px;
+    background: #fff;
+    text-align: center;
+}
+.top-banner-block img {
+    width:100%;
+    height: auto;
+}
+.nav-link  {
+    margin-top: 10px;
+}
+.nav-link > li {
+    display: inline-block;
+    margin-right: 10px;
+    padding-right: 12px;
+    border-right: 2px solid #e6e6e6;
+    vertical-align: bottom;
+    font-size: 12px;
+}
+.nav-link li:last-child {
+    border-right: 0px solid #e6e6e6;
+}
+.float-right {
+    float: right;
+}
+.nav-link li a{
+    text-decoration: none;
+    color: #000;
+}
+.mt-20 {
+    margin-top: 20px;
+}
+.mr-5 {
+    margin-right: 5px;
+}
+
+input[type=text] {
+    height: 40px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
+}
+button[type=button] {
+    width: 60px;
+    font-size: 18px;
+    height: 40px;
+}
+
+span.shopping-cart {
+    font-size: 30px;
+}
+div.shopping-cart p {
+   display: inline;
+}
+div.shopping-cart {
+    color: #ed1c24;
+    margin-left: 30px;
+    cursor: pointer;
+ }
+ 
+
+
+ 
