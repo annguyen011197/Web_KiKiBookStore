@@ -70,7 +70,7 @@ div.shopping-cart {
     cursor: pointer;
  }
  .wrapper {
-     margin: 10px 50px;
+     margin: 10px 50px 0px 50px;
  }
 
 .main-menu ul span{
@@ -92,4 +92,28 @@ div.shopping-cart {
 
 .main-menu a:hover {
     background-color: #ccc;
+}
+
+footer {
+    border: 1px solid lightgray;
+    padding-top: 30px;
+    background: #fff;
+    padding-bottom: 20px;
+}
+footer h5 {
+    padding-left: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+footer a {
+    text-align: left;
+    padding: 5px;
+    padding-left: 45px;
+    font-size: 12px;
+    display: block;
+    text-decoration: none;
+    color: #000;
+}
+.footer-contact {
+    font-size: 12px;
 }
