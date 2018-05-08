@@ -41,6 +41,9 @@ body {
 .mr-5 {
     margin-right: 5px;
 }
+.ml-10 {
+    margin-left: 10px;
+}
 
 input[type=text] {
     height: 40px;
@@ -66,7 +69,27 @@ div.shopping-cart {
     margin-left: 30px;
     cursor: pointer;
  }
- 
+ .wrapper {
+     margin: 10px 50px;
+ }
 
+.main-menu ul span{
+    background: darkslategrey; 
+    display: block;
+    padding: 15px;
+    color: #fff;
+}
+.main-menu li {
+    list-style: none;
+}
+.main-menu a {  
+    background-color: #fff;
+    color: black;
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+}
 
- 
+.main-menu a:hover {
+    background-color: #ccc;
+}
