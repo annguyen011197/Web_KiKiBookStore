@@ -73,15 +73,23 @@ div.shopping-cart {
      margin: 10px 50px 0px 50px;
  }
 
-.main-menu ul span{
+.main-menu button{
     background: darkslategrey; 
     display: block;
     padding: 15px;
     color: #fff;
+    width: 100%;
 }
 .main-menu li {
     list-style: none;
+    width: 100%;
 }
+
+.main-menu ul {
+    width: 100%;
+    padding: 0px;
+}
+
 .main-menu a {  
     background-color: #fff;
     color: black;
@@ -93,6 +101,7 @@ div.shopping-cart {
 .main-menu a:hover {
     background-color: #ccc;
 }
+
 
 footer {
     border: 1px solid lightgray;
@@ -116,4 +125,45 @@ footer a {
 }
 .footer-contact {
     font-size: 12px;
+}
+
+.img-logo {
+    width: 100%;
+}
+
+.dropbtn {
+    cursor: context-menu;
+}
+
+.dropbtn:active { border-style: outset;}
+
+@media only screen and (max-width: 475px) {
+    .float-right {
+        float: left;
+    }
+
+    .dropdown-content {
+        display: none;
+    }
+
+    .dropbtn {
+        cursor: pointer;
+    }
+
+    #mySlider {
+        margin-top: 10px;
+    }
+    
+}
+
+.show {
+    display:block;
+}
+
+.contact {
+    padding-left: 45px;
+}
+
+.container-footer {
+    width: 100%;
 }
