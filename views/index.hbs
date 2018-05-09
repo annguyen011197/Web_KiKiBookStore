@@ -8,30 +8,22 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/fontawesome-all.css">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Nhà sách KiKi</title>
+    <title>{{title}}</title>
 </head>
 
 <body>
     <div class="wrapper">
         <header>
-            <!-- <div class="top-banner-block img-responsive">
-                <p>
-                    <a href="#">
-                        <img src="https://www.fahasa.com/media/wysiwyg/Thang-5-2018/Summer-1263x80.jpg" alt="logo">
-                    </a>
-                </p>
-                <p>TOP BANNER BLOCK</p>
-            </div> -->
             <div class="header-link">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 col-12">
                             <ul class="nav-link">
                                 <li>
-                                    info@kikibook.com
+                                    {{info_email}}
                                 </li>
                                 <li>
-                                    1900000000
+                                    {{info_number}}
                                 </li>
                             </ul>
                         </div>
@@ -201,17 +193,8 @@
                         </div>
                         <div class="panel-body">
                             <ul class="row" style="list-style: none;">
-                                <li class="card col-4 col-lg-3">
-                                    <img class="card-img-top" src="./images/book_image_1.jpg" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Gửi Thanh Xuân Ấm Áp Của Chúng Ta (Tập 1 Và 2)</h5>
-                                        <p class="card-text">Triệu Kiền Kiền</p>
-                                        <p class="card-text">
-                                            <span>119.000 ₫</span>
-                                        </p>
-                                    </div>
-                                </li>
-                                </li>
+                                {{#each item}} {{>Item image=this.image name=this.name author=this.author finalPrice=this.finalPrice regularPrice=this.regularPrice
+                                saleTag=this.saleTag}} {{/each}}
                             </ul>
                         </div>
                     </div>

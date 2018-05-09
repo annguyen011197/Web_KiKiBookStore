@@ -2,9 +2,11 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
 var BookSchema = new Schema({
+    //Ten sach  
     name:{
         type:String
     },
+    //Gia goc
     price:{
         type:Number,
         validate:{
@@ -14,25 +16,39 @@ var BookSchema = new Schema({
             message:"Price > 0"
         }
     },
+    deal:{
+        type:Number
+    },
     author:{
         type: Schema.Types.ObjectId,
         ref:'Author',
         required: true
     },
+    //Nha xuat ban
     publisher:{
         type:Schema.Types.ObjectId,
         ref:'Publisher'
     },
+    //Ngay xuat ban,
+    date:{
+        type: Date
+    },
+    pages:{
+        type:Number
+    },
+    //Duong dan hinh anh
     image:
     {
-        type:String,
+        type:[String],
         default:""
     },
+    //Loai sach 
     type: {
         type:Schema.Types.ObjectId,
         ref: 'BookType',
         required: true
     },
+    //Gioi thieu sach
     description: {
         type: String
     }

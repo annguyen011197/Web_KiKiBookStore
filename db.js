@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 
-var mongoDB = 'mongodb+srv://annguyen:minhan@demo-9aubp.mongodb.net/test'
+var mongoDB = 'mongodb+srv://annguyen:minhan@demo-9aubp.mongodb.net/KikiBook'
 
 let BookType = require('./models/BookTypeModel')
 let Book = require('./models/BookModel')
@@ -16,7 +16,6 @@ var async = require('async')
 mongoose.connect(mongoDB).then(
     () => {
         console.log("Connect DB successfully");
-
         async.series([
             createBooktypesList,
             createAuthorList,
@@ -67,22 +66,22 @@ function createAuthor(name, cb) {
 function createAuthorList(cb) {
     async.parallel([
         (cb) => {
-            createAuthor('Mot', cb)
+            createAuthor('Lý Lẻ Bình Thường', cb)
         },
         (cb) => {
-            createAuthor('Hai', cb)
+            createAuthor('Hơi Hơi Bất Thường', cb)
         },
         (cb) => {
-            createAuthor('Ba', cb)
+            createAuthor('Một hai ba bốn', cb)
         },
         (cb) => {
-            createAuthor('Bon', cb)
+            createAuthor('Cây Khế Có Quả', cb)
         },
         (cb) => {
-            createAuthor('Nam', cb)
+            createAuthor('Lâm Ly Bi Đát', cb)
         },
         (cb) => {
-            createAuthor('Sau', cb)
+            createAuthor('Điện Thoại Thông Minh', cb)
         }
     ], cb)
 }
@@ -103,32 +102,7 @@ function createBooktypes(name, cb) {
     booktypes.push(booktype)
 }
 
-function createBooktypesList(cb) {
-    async.parallel([
-        (cb) => {
-            createBooktypes('Kinh dị', cb)
-        },
-        (cb) => {
-            createBooktypes('Hài hước', cb)
-        },
-        (cb) => {
-            createBooktypes('Tình cảm', cb)
-        },
 
-        (cb) => {
-            createBooktypes('Lãng mạng', cb)
-        },
-        (cb) => {
-            createBooktypes('Trinh thám', cb)
-        },
-        (cb) => {
-            createBooktypes('Đam mỹ', cb)
-        },
-        (cb) => {
-            createBooktypes('Bách hợp', cb)
-        }
-    ], cb)
-}
 
 function createAccInfo(firstName, secondName, address, birthday, email, contactNumber, cb) {
     detailAccountInfoModel = { firstName: firstName, secondName: secondName }
@@ -253,7 +227,7 @@ function createVoucherList(cb) {
         cb);
 }
 
-function createBook(name, price, author, publisher, image, type, description, cb) {
+function createBook(name, price, author, publisher, image, type, description, date, pages, deal, cb) {
     detailBookModel = {
         name: name,
         price: price,
@@ -263,6 +237,11 @@ function createBook(name, price, author, publisher, image, type, description, cb
     if (publisher != false) detailBookModel.publisher = publisher
     if (description != false) detailBookModel.description = description
     if (image != false) detailBookModel.image = image
+    if (deal != false) detailBookModel.deal = deal
+    if (pages != false) detailBookModel.pages = pages
+    if (date != false) detailBookModel.date = new Date()
+
+
 
     var bookModel = new Book(detailBookModel);
     bookModel.save(function (err) {
@@ -278,11 +257,44 @@ function createBook(name, price, author, publisher, image, type, description, cb
 }
 
 function createBookList(cb) {
+    //createBook(name, price, author, publisher, image, type, description, date, pages, deal, cb)
     async.parallel([
-        callback=>createBook('Sách A',3000,authors[0],publishers[0],false,booktypes[0],'',callback),
-        callback=>createBook('Sách B',4000,authors[0],publishers[1],false,booktypes[2],'',callback),
-        callback=>createBook('Sách C',7000,authors[1],publishers[0],false,booktypes[0],'',callback),        
-        ],
+        callback => createBook('Sách A', 3000, authors[0], publishers[0], false, booktypes[0], '',false,100,0.3, callback),
+        callback => createBook('Sách B', 4000, authors[1], publishers[1], false, booktypes[2], '',false,200,0.4, callback),
+        callback => createBook('Sách C', 7000, authors[2], publishers[2], false, booktypes[3], '',false,1150,0.8, callback),
+        callback => createBook('Sách D', 100000, authors[0], publishers[0], false, booktypes[1], '',false,250,0.5, callback),
+        callback => createBook('Sách E', 300000, authors[3], publishers[3], false, booktypes[3], '',false,350,0.2, callback),
+        callback => createBook('Sách F', 7000, authors[1], publishers[5], false, booktypes[2], '',false,540,0.2, callback),
+        callback => createBook('Sách G', 7000, authors[2], publishers[0], false, booktypes[5], '',false,510,0, callback),
+
+    ],
         // Optional callback
         cb);
+}
+
+function createBooktypesList(cb) {
+    async.parallel([
+        (cb) => {
+            createBooktypes('Kinh dị', cb)
+        },
+        (cb) => {
+            createBooktypes('Hài hước', cb)
+        },
+        (cb) => {
+            createBooktypes('Tình cảm', cb)
+        },
+
+        (cb) => {
+            createBooktypes('Lãng mạng', cb)
+        },
+        (cb) => {
+            createBooktypes('Trinh thám', cb)
+        },
+        (cb) => {
+            createBooktypes('Đam mỹ', cb)
+        },
+        (cb) => {
+            createBooktypes('Bách hợp', cb)
+        }
+    ], cb)
 }

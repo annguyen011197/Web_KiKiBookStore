@@ -167,3 +167,78 @@ footer a {
 .container-footer {
     width: 100%;
 }
+
+.item {
+    height: 400px;
+    margin-top: 20px;
+}
+
+.item-img-container {
+    height: 300px;
+}
+
+.item-img {
+    height: 90%;
+    width: auto;
+    margin:auto;
+}
+
+.item:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.name {
+    font-weight: bold;
+}
+
+.author {
+    font-weight: 300;
+    font-size: 0.8em;
+}
+
+.finalPrice {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.regularPrice {
+    text-decoration: line-through;
+    font-weight: lighter;
+    font-size: 0.8em;
+}
+
+.sale {
+	position: relative;
+	display: inline-block;
+	background: orange;
+	color: white;
+	height: 3em;
+    width: 3em;
+    line-height: 3em;
+	text-align: center;
+	vertical-align: middle;
+	margin-left: 20px; 
+	transform: rotate(-20deg);
+    animation: beat 1s ease infinite alternate;
+    font-size: 0.8em;
+}
+.sale::before,
+.sale::after {
+    content:"";
+    position: absolute;
+    background: inherit;
+    height: inherit;
+    width: inherit;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transform: rotate(30deg);
+}
+.sale::after {
+    transform: rotate(60deg);
+}
+
+@keyframes beat {
+	from {	transform: rotate(-20deg) scale(1); }
+	to {	transform: rotate(-20deg) scale(1.1); }
+}
