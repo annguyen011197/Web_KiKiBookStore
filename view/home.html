@@ -21,10 +21,9 @@
                 <p>TOP BANNER BLOCK</p>
             </div> -->
             <div class="header-link">
-                <div class="container-fluid">
                     <div class="row">
-                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                            <ul class="nav-link">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <ul class="nav-link remove-content">
                                 <li>
                                     info@kikibook.com
                                 </li>
@@ -33,28 +32,28 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                            <ul class="nav-link float-right" style="margin-right:5%">
+                        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                            <ul class="nav-link float-right">
                                 <li>
-                                    <a href="#">Đăng nhập</a>
+                                    <a href="#dangnhap">Đăng nhập</a>
                                 </li>
                                 <li>
-                                    <a href="#">Đăng ký</a>
+                                    <a href="#dangky">Đăng ký</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
+        
             <div class="header-main mt-20">
-                <div class="container-fluid">               
+                     
                     <div class="row">
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                             <a href="#">
-                                <img src="./images/logo.png" alt="brand-logo">
+                                <img src="./images/logo.png" alt="brand-logo" class="img-logo">
                             </a>
                         </div>                   
-                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
                             <form>
                                 <div class="input-group">
                                     <input 
@@ -72,22 +71,21 @@
                                 </div> 
                             </form>      
                         </div>                   
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                             <div class="shopping-cart">
-                                <span class="shopping-cart fa fa-shopping-cart"></span>
+                                <span class="fa fa-shopping-cart"></span>
                                 <p>GIỎ HÀNG</p>
                             </div>
                         </div>                
                     </div>
                 </div>
-            </div>
         </header>
         <div class="menu-and-slide mt-20">
             <div class="row">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <nav class="main-menu">
-                        <ul>
-                            <span>DANH MỤC</span>
+                        <span onclick="togglemenu()">DANH MỤC</span>
+                        <ul id="toggle" class="off">
                             <li>
                                 <a href="">SÁCH BÁN CHẠY</a> 
                             </li>
@@ -113,7 +111,7 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                     <div id="mySlider" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <li data-target="#mySlider" data-slide-to="0" class=""></li>
@@ -161,17 +159,25 @@
         <div class="content">
             <div class="kiki-banner mt-20">
                 <div class="row">
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <img src="./images/pexels-photo-192136.jpeg" alt="kiki-banner-1" class="img-responsive">
+                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                        <a href="#">                        
+                            <img src="./images/pexels-photo-192136.jpeg" alt="kiki-banner-1" class="img-responsive">
+                        </a>
                     </div>    
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <img src="./images/pexels-photo-674268.jpeg" alt="kiki-banner-2" class="img-responsive">
+                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                        <a href="#">                       
+                            <img src="./images/pexels-photo-674268.jpeg" alt="kiki-banner-2" class="img-responsive">
+                        </a>
                     </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <img src="./images/pexels-photo-911758.jpeg" alt="kiki-banner-3" class="img-responsive">
+                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                        <a href="#">                        
+                            <img src="./images/pexels-photo-911758.jpeg" alt="kiki-banner-3" class="img-responsive remove-content">
+                        </a>
                     </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <img src="./images/pexels-photo-192136.jpeg" alt="kiki-banner-4" class="img-responsive">
+                    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                        <a href="#">                        
+                            <img src="./images/pexels-photo-192136.jpeg" alt="kiki-banner-4" class="img-responsive remove-content">
+                        </a>
                     </div>
                 </div>
                 
@@ -183,7 +189,7 @@
                             <h3 class="panel-title">SÁCH BÁN CHẠY</h3>
                         </div>
                         <div class="panel-body">
-                            Panel content
+                           
                         </div>
                     </div>      
                 </div>
@@ -221,36 +227,38 @@
         </div>
         <footer>
             
-            <div class="row">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="row container-footer">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <h5>Về công ty</h5>
                     <a href="#">Giới thiệu công ty</a>
                     <a href="#">Hệ thống trung tâm-nhà sách</a>
                     <a href="#">Điều khoản sử dụng</a>
                     <a href="#">Chính sách bảo mật</a>     
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <h5>Hỗ trợ khách hàng</h5>
                     <a href="#">Phương thức vận chuyển</a>
                     <a href="#">Phương thức đổi trả</a>
                     <a href="#">Bao sách plastic miễn phí</a>
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <h5>Sản phẩm</h5>
                     <a href="#">Sách mới phát hành</a>
                     <a href="#">Sách nổi bật</a>
                     <a href="#">Sách khuyến mãi</a>
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <h5>Liên hệ</h5>
-                    <span class="fa fa-map-marker-alt"></span>
-                    <span class="footer-contact">Nguyễn Văn Cừ, Quận 5, TP.HCM</span>
-                    <br><br>
-                    <span class="fa fa-envelope"></span>
-                    <span class="footer-contact">info@kikibook.com</span>
-                    <br><br>
-                    <span class="fa fa-phone"></span>
-                    <span class="footer-contact">1900000000</span>
+                    <div class="footer-contact">                           
+                        <span class="fa fa-map-marker-alt"></span>
+                        <span class="footer-contact-info">Nguyễn Văn Cừ, Quận 5, TP.HCM</span>
+                        <br><br>
+                        <span class="fa fa-envelope"></span>
+                        <span class="footer-contact-info">info@kikibook.com</span>
+                        <br><br>
+                        <span class="fa fa-phone"></span>
+                        <span class="footer-contact-info">1900000000</span>
+                    </div>
                 </div>
             </div>   
         </footer>
@@ -260,5 +268,10 @@
     
     <script src="./js/jquery-3.3.1.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
+    <script>
+       function togglemenu() {
+          $("#toggle").toggleClass('off');
+       }
+    </script>
 </body>
 </html>
