@@ -193,8 +193,7 @@
                         </div>
                         <div class="panel-body">
                             <ul class="row" style="list-style: none;">
-                                {{#each item}} {{>Item image=this.image name=this.name author=this.author finalPrice=this.finalPrice regularPrice=this.regularPrice
-                                saleTag=this.saleTag}} {{/each}}
+                                {{#each item}} {{>Item Data=this}} {{/each}}
                             </ul>
                         </div>
                     </div>

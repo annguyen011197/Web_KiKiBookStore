@@ -32,6 +32,38 @@ router.get('/', function(req, res, next) {
         regularPrice:'100.000 đ',
         saleTag:'50%'
       },
+      {
+        image:'https://vcdn.tikicdn.com/cache/200x200/ts/product/65/b2/ce/00ae95e7b629733054aa661caa7be486.jpg',
+        name:'Truyện Tranh Ehon - Hạt Dưa Hấu',
+        author:'Sato Wakiko',
+        finalPrice:'200.000 đ',
+        regularPrice:'100.000 đ',
+        saleTag:'50%'
+      },
+      {
+        image:'https://vcdn.tikicdn.com/cache/200x200/ts/product/65/b2/ce/00ae95e7b629733054aa661caa7be486.jpg',
+        name:'Truyện Tranh Ehon - Hạt Dưa Hấu',
+        author:'Sato Wakiko',
+        finalPrice:'200.000 đ',
+        regularPrice:'100.000 đ',
+        saleTag:'50%'
+      },
+      {
+        image:'https://vcdn.tikicdn.com/cache/200x200/ts/product/65/b2/ce/00ae95e7b629733054aa661caa7be486.jpg',
+        name:'Truyện Tranh Ehon - Hạt Dưa Hấu',
+        author:'Sato Wakiko',
+        finalPrice:'200.000 đ',
+        regularPrice:'100.000 đ',
+        saleTag:'50%'
+      },
+      {
+        image:'https://vcdn.tikicdn.com/cache/200x200/ts/product/65/b2/ce/00ae95e7b629733054aa661caa7be486.jpg',
+        name:'Truyện Tranh Ehon - Hạt Dưa Hấu',
+        author:'Sato Wakiko',
+        finalPrice:'200.000 đ',
+        regularPrice:'100.000 đ',
+        saleTag:'50%'
+      },
     ]
   });
 });
