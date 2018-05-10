@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var db = require('../database/db')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -34,6 +35,18 @@ router.get('/', function(req, res, next) {
       },
     ]
   });
+});
+
+router.get('/book',(req,res)=>{
+  db.LoadBooks(books=>{
+    res.send(JSON.stringify(books))
+  })
+})
+
+process.on('SIGINT', function() {
+  console.log("Caught interrupt signal");
+  db.CloseDb()
+  process.exit()
 });
 //TODO:Query Data và add vào index
 module.exports = router;
