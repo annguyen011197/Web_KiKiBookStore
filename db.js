@@ -13,29 +13,7 @@ let Voucher = require('./models/VoucherModel')
 
 var async = require('async')
 
-mongoose.connect(mongoDB).then(
-    () => {
-        console.log("Connect DB successfully");
-        async.series([
-            createBooktypesList,
-            createAuthorList,
-            createAccountInfoList,
-            createAccountList,
-            createPublisherList,
-            createVoucherList,
-            createBookList
-        ], (err, res) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log(res);
-            }
-        })
-    },
-    err => {
-        console.log("Connection failed");
-    }
-)
+
 
 mongoose.Promise = global.Promise
 
@@ -46,6 +24,49 @@ let accountInfos = []
 let publishers = []
 let vouchers = []
 let books = []
+
+mongoose.connect(mongoDB).then(
+    ()=>{
+        // Book.find({}).skip(1).limit(2).exec((err,books)=>{
+            
+        // })
+        //.populate('publisher','name','Publisher')          .populate('author','name','Author')
+        mongoose.disconnect()
+        // Book.find({})
+        // .populate({path:'type',select:'name',model:'BookType'})
+        // .skip(1)
+        // .limit(2)
+        // .exec((err,books)=>{
+        //     callback(books)
+        // })
+    }
+)
+
+function createData(){
+    mongoose.connect(mongoDB).then(
+        () => {
+            console.log("Connect DB successfully");
+            async.series([
+                createBooktypesList,
+                createAuthorList,
+                createAccountInfoList,
+                createAccountList,
+                createPublisherList,
+                createVoucherList,
+                createBookList
+            ], (err, res) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(res);
+                }
+            })
+        },
+        err => {
+            console.log("Connection failed");
+        }
+    )
+}
 
 
 function createAuthor(name, cb) {
