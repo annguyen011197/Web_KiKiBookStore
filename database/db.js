@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 mongoose.Promise = global.Promise
-var mongoDB = 'mongodb+srv://annguyen:minhan@demo-9aubp.mongodb.net/KikiBook'
+var mongoDB = 'mongodb+srv://annguyen:minhan@kikibookstore-9aubp.mongodb.net/KikiBookStore'
 
 let BookType = require('../models/BookTypeModel')
 let Book = require('../models/BookModel')

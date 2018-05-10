@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 
-var mongoDB = 'mongodb+srv://annguyen:minhan@demo-9aubp.mongodb.net/KikiBook'
+var mongoDB = 'mongodb+srv://annguyen:minhan@kikibookstore-9aubp.mongodb.net/KikiBookStore'
 
 let BookType = require('./models/BookTypeModel')
 let Book = require('./models/BookModel')
@@ -25,22 +25,22 @@ let publishers = []
 let vouchers = []
 let books = []
 
-mongoose.connect(mongoDB).then(
-    ()=>{
-        // Book.find({}).skip(1).limit(2).exec((err,books)=>{
+// mongoose.connect(mongoDB).then(
+//     ()=>{
+//         // Book.find({}).skip(1).limit(2).exec((err,books)=>{
             
-        // })
-        //.populate('publisher','name','Publisher')          .populate('author','name','Author')
-        mongoose.disconnect()
-        // Book.find({})
-        // .populate({path:'type',select:'name',model:'BookType'})
-        // .skip(1)
-        // .limit(2)
-        // .exec((err,books)=>{
-        //     callback(books)
-        // })
-    }
-)
+//         // })
+//         //.populate('publisher','name','Publisher')          .populate('author','name','Author')
+//         mongoose.disconnect()
+//         // Book.find({})
+//         // .populate({path:'type',select:'name',model:'BookType'})
+//         // .skip(1)
+//         // .limit(2)
+//         // .exec((err,books)=>{
+//         //     callback(books)
+//         // })
+//     }
+// )
 
 function createData(){
     mongoose.connect(mongoDB).then(
@@ -319,3 +319,5 @@ function createBooktypesList(cb) {
         }
     ], cb)
 }
+
+createData()
