@@ -23,18 +23,19 @@ class Database {
         this.db = mongoose.connection
     }
 
-    LoadBooks(callback) {
-        this.db.on('open',()=>{
-            Book.find({})
-            .populate({path:'type',select:'name',model:'BookType'})
-            .skip(1)
-            .limit(2)
-            .exec((err,books)=>{
-                this.books = books
-                console.log('Loaded Book');
-                callback(books)
-            })
+    LoadBooks(offset, limit, callback) {
+        console.log('Call LoadBooks');
+        Book.find({})
+        .populate({path:'type',select:'name',model:'BookType'})
+        .populate({path:'author',select:'name',model:'Author'})
+        .skip(offset*limit)
+        .limit(limit)
+        .exec((err,books)=>{
+            this.books = books
+            console.log('Loaded Book');
+            callback(books)
         })
+    
     }
 
     CloseDb(){

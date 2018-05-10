@@ -6,11 +6,11 @@
 
         <div class="card-body">
             <h5 class="card-title name">{{Book.name}}</h5>
-            <p class="card-text author">{{Book.author}}</p>
+            <p class="card-text author">{{Book.author.name}}</p>
             <p class="card-text">
-                <span class="finalPrice">{{Book.finalPrice}}</span>
-                <span class="regularPrice">{{Book.regularPrice}}</span>
-                <span class="sale">{{Book.saleTag}}</span>
+                <span class="finalPrice">{{Book.priceSale}}</span>
+                <span class="regularPrice">{{Book.price}}</span>
+                <span class="sale">{{Book.deal}}</span>
             </p>
         </div>
     </div>

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../database/db')
-
+var controller = require('../controller/Controller')
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { 
@@ -33,47 +33,15 @@ router.get('/', function(req, res, next) {
         regularPrice:'100.000 đ',
         saleTag:'50%'
       },
-      {
-        image:'https://vcdn.tikicdn.com/cache/200x200/ts/product/65/b2/ce/00ae95e7b629733054aa661caa7be486.jpg',
-        name:'Truyện Tranh Ehon - Hạt Dưa Hấu',
-        author:'Sato Wakiko',
-        finalPrice:'200.000 đ',
-        regularPrice:'100.000 đ',
-        saleTag:'50%'
-      },
-      {
-        image:'https://vcdn.tikicdn.com/cache/200x200/ts/product/65/b2/ce/00ae95e7b629733054aa661caa7be486.jpg',
-        name:'Truyện Tranh Ehon - Hạt Dưa Hấu',
-        author:'Sato Wakiko',
-        finalPrice:'200.000 đ',
-        regularPrice:'100.000 đ',
-        saleTag:'50%'
-      },
-      {
-        image:'https://vcdn.tikicdn.com/cache/200x200/ts/product/65/b2/ce/00ae95e7b629733054aa661caa7be486.jpg',
-        name:'Truyện Tranh Ehon - Hạt Dưa Hấu',
-        author:'Sato Wakiko',
-        finalPrice:'200.000 đ',
-        regularPrice:'100.000 đ',
-        saleTag:'50%'
-      },
-      {
-        image:'https://vcdn.tikicdn.com/cache/200x200/ts/product/65/b2/ce/00ae95e7b629733054aa661caa7be486.jpg',
-        name:'Truyện Tranh Ehon - Hạt Dưa Hấu',
-        author:'Sato Wakiko',
-        finalPrice:'200.000 đ',
-        regularPrice:'100.000 đ',
-        saleTag:'50%'
-      },
+
     ]
   });
 });
 
 router.get('/book',(req,res)=>{
-  db.LoadBooks(books=>{
-    res.send(JSON.stringify(books))
-  })
+  controller.renderHome(req, res);
 })
+
 
 process.on('SIGINT', function() {
   console.log("Caught interrupt signal");
