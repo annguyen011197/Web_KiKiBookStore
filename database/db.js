@@ -19,25 +19,34 @@ class Database {
         this.publishers = []
         this.vouchers = []
         this.books = []
-        mongoose.connect(mongoDB).then(console.log('Connected'))
+        mongoose.connect(mongoDB).then(console.log("Connected"))
         this.db = mongoose.connection
     }
 
     LoadBooks(callback) {
-        this.db.on('open',()=>{
-            Book.find({})
-            .populate({path:'type',select:'name',model:'BookType'})
+        // mongoose.connect(mongoDB).then(()=>{
+        //     Book.find({})
+        //     .populate({path:'type',select:'name',model:'BookType'})
+        //     .skip(1)
+        //     .limit(2)
+        //     .exec((err,books)=>{
+        //         this.books = books
+        //         console.log('Loaded Book');
+        //         callback(books)
+        //     })
+        // })
+        Book.find({})
+            .populate({ path: 'type', select: 'name', model: 'BookType' })
             .skip(1)
             .limit(2)
-            .exec((err,books)=>{
+            .exec((err, books) => {
                 this.books = books
                 console.log('Loaded Book');
                 callback(books)
             })
-        })
     }
 
-    CloseDb(){
+    CloseDb() {
         this.db.close()
     }
 }

@@ -38,6 +38,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/book',(req,res)=>{
+  console.log("books");
   db.LoadBooks(books=>{
     res.send(JSON.stringify(books))
   })
