@@ -16,6 +16,16 @@ var BookSchema = new Schema({
             message:"Price > 0"
         }
     },
+    //Gia sale
+    priceSale:{
+        type:Number,
+        validate:{
+            validator: (v) => {
+                return v > 0
+            },
+            message:"Price > 0"
+        }
+    },
     deal:{
         type:Number
     },

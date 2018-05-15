@@ -1,6 +1,7 @@
 var mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 var mongoDB = 'mongodb+srv://annguyen:minhan@kikibookstore-9aubp.mongodb.net/KikiBookStore'
+const validate = require('../controller/Validate')
 
 let BookType = require('../models/BookTypeModel')
 let Book = require('../models/BookModel')
@@ -23,31 +24,77 @@ class Database {
         this.db = mongoose.connection
     }
 
-    LoadBooks(callback) {
-        // mongoose.connect(mongoDB).then(()=>{
-        //     Book.find({})
-        //     .populate({path:'type',select:'name',model:'BookType'})
-        //     .skip(1)
-        //     .limit(2)
-        //     .exec((err,books)=>{
-        //         this.books = books
-        //         console.log('Loaded Book');
-        //         callback(books)
-        //     })
-        // })
+    LoadBook(id, callback) {
+        console.log(id)
+        Book.findById(id)
+            .populate({ path: 'type', select: 'name', model: 'BookType' })
+            .populate({ path: 'author', select: 'name', model: 'Author' })
+            .populate({ path: 'publisher', select: 'name', model: 'Publisher' })
+            .exec((err, book) => {
+                callback(book)
+            })
+    }
+
+    LoadBooks(offset, limit, callback) {
+        console.log('Call LoadBooks');
         Book.find({})
             .populate({ path: 'type', select: 'name', model: 'BookType' })
-            .skip(1)
-            .limit(2)
+            .populate({ path: 'author', select: 'name', model: 'Author' })
+            .skip(offset * limit)
+            .limit(limit)
             .exec((err, books) => {
-                this.books = books
-                console.log('Loaded Book');
+                books.forEach((e, i, a) => {
+                    a[i].image.forEach((img, i, a) => {
+                        a[i] = validate.checkURL(img) ? img : `api/media/${img}`
+                    })
+                })
+                this.books=books
                 callback(books)
             })
+        // .exec((err, books) => {
+        //     this.books = books
+        //     console.log('Loaded Book');
+        //     callback(books)
+        // })
+
+    }
+
+    LoadBookTypes(offset, limit, callback) {
+        if (this.booktypes.length > 0 && offset != 0) {
+            callback(this.booktypes)
+        } else {
+            BookType.find({})
+                .skip(offset * limit)
+                .limit(limit)
+                .exec((err, data) => {
+                    this.booktypes = data
+                    callback(data)
+                })
+        }
     }
 
     CloseDb() {
         this.db.close()
+    }
+
+    Test(offset, limit, callback) {
+        var cursor = Book.find({})
+            .populate({ path: 'type', select: 'name', model: 'BookType' })
+            .populate({ path: 'author', select: 'name', model: 'Author' })
+            .skip(offset * limit)
+            .limit(limit)
+            .exec((err, books) => {
+                books.forEach((e, i, a) => {
+                    a[i].image.forEach((img, i, a) => {
+                        console.log(img)
+                        console.log(validate.checkURL(img))
+                        a[i] = validate.checkURL(img) ? img : `api/media/${img}`
+
+                    })
+                })
+
+                callback(books)
+            })
     }
 }
 

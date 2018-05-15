@@ -87,13 +87,13 @@ function createAuthor(name, cb) {
 function createAuthorList(cb) {
     async.parallel([
         (cb) => {
-            createAuthor('Lý Lẻ Bình Thường', cb)
+            createAuthor('Triệu Kiền Kiền', cb)
         },
         (cb) => {
-            createAuthor('Hơi Hơi Bất Thường', cb)
+            createAuthor('Etsuko Ohara', cb)
         },
         (cb) => {
-            createAuthor('Một hai ba bốn', cb)
+            createAuthor('Sato Wakiko', cb)
         },
         (cb) => {
             createAuthor('Cây Khế Có Quả', cb)
@@ -248,12 +248,12 @@ function createVoucherList(cb) {
         cb);
 }
 
-function createBook(name, price, author, publisher, image, type, description, date, pages, deal, cb) {
+function createBook(name, price,priceSale, author, publisher, image, type, description, date, pages, deal, cb) {
     detailBookModel = {
         name: name,
         price: price,
         author: author,
-        type: type
+        type: type,
     }
     if (publisher != false) detailBookModel.publisher = publisher
     if (description != false) detailBookModel.description = description
@@ -261,8 +261,7 @@ function createBook(name, price, author, publisher, image, type, description, da
     if (deal != false) detailBookModel.deal = deal
     if (pages != false) detailBookModel.pages = pages
     if (date != false) detailBookModel.date = new Date()
-
-
+    if (priceSale != false) detailBookModel.priceSale = priceSale
 
     var bookModel = new Book(detailBookModel);
     bookModel.save(function (err) {
@@ -280,13 +279,13 @@ function createBook(name, price, author, publisher, image, type, description, da
 function createBookList(cb) {
     //createBook(name, price, author, publisher, image, type, description, date, pages, deal, cb)
     async.parallel([
-        callback => createBook('Sách A', 3000, authors[0], publishers[0], false, booktypes[0], '',false,100,0.3, callback),
-        callback => createBook('Sách B', 4000, authors[1], publishers[1], false, booktypes[2], '',false,200,0.4, callback),
-        callback => createBook('Sách C', 7000, authors[2], publishers[2], false, booktypes[3], '',false,1150,0.8, callback),
-        callback => createBook('Sách D', 100000, authors[0], publishers[0], false, booktypes[1], '',false,250,0.5, callback),
-        callback => createBook('Sách E', 300000, authors[3], publishers[3], false, booktypes[3], '',false,350,0.2, callback),
-        callback => createBook('Sách F', 7000, authors[1], publishers[5], false, booktypes[2], '',false,540,0.2, callback),
-        callback => createBook('Sách G', 7000, authors[2], publishers[0], false, booktypes[5], '',false,510,0, callback),
+        callback => createBook('Gửi Thanh Xuân Ấm Áp Của Chúng Ta (Tập 1 Và 2)', 3000,1500, authors[0], publishers[0], 'https://vcdn.tikicdn.com/cache/280x280/ts/product/9c/10/12/1efc0ff76e2d73a537d058f720234d18.jpg', booktypes[0], '',false,100,50, callback),
+        callback => createBook('Truyện Tranh Ehon - Kerolympic', 4000, 2000, authors[1], publishers[1], 'https://vcdn.tikicdn.com/cache/200x200/ts/product/fb/2b/b3/1a4d1ae88a03f6c03d24999aa2055d35.jpg', booktypes[2], '',false,200,50, callback),
+        callback => createBook('Truyện Tranh Ehon - Hạt Dưa Hấu', 7000, 3500, authors[2], publishers[2], 'https://vcdn.tikicdn.com/cache/200x200/ts/product/65/b2/ce/00ae95e7b629733054aa661caa7be486.jpg', booktypes[3], '',false,1150,50, callback),
+        callback => createBook('Sách D', 100000, false, authors[0], publishers[0], false, booktypes[1], '',false,250,0.5, callback),
+        callback => createBook('Sách E', 300000, false, authors[3], publishers[3], false, booktypes[3], '',false,350,0.2, callback),
+        callback => createBook('Sách F', 7000, false, authors[1], publishers[5], false, booktypes[2], '',false,540,0.2, callback),
+        callback => createBook('Sách G', 7000, false, authors[2], publishers[0], false, booktypes[5], '',false,510,0, callback),
 
     ],
         // Optional callback

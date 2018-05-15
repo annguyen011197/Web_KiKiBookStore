@@ -8,100 +8,23 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/fontawesome-all.css">
     <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
     <title>{{title}}</title>
 </head>
 
 <body>
     <div class="wrapper">
         <header>
-            <div class="header-link">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 col-12">
-                            <ul class="nav-link">
-                                <li>
-                                    {{info_email}}
-                                </li>
-                                <li>
-                                    {{info_number}}
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 col-12">
-                            <ul class="nav-link float-right" style="margin-right:5%">
-                                <li>
-                                    <a href="#">Đăng nhập</a>
-                                </li>
-                                <li>
-                                    <a href="#">Đăng ký</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="header-main mt-20">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                            <a href="#">
-                                <img src="./images/logo.png" alt="brand-logo" class="img-logo">
-                            </a>
-                        </div>
-                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                            <form>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="keyword" placeholder="Tìm kiếm sản phẩm mong muốn ... " />
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-danger">
-                                            <span class="search-button fa fa-search"></span>
-
-                                        </button>
-                                    </span>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            <div class="shopping-cart">
-                                <span class="shopping-cart fa fa-shopping-cart"></span>
-                                <p>GIỎ HÀNG</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{>Header info=this.info}}
         </header>
         <div class="menu-and-slide mt-20">
             <div class="row">
                 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                    <nav class="main-menu">
+                    <nav class="main-menu" id="menu">
                         <button onclick="showMenu()" class="dropbtn">
                             <span>DANH MỤC</span>
                         </button>
-                        <ul id="menuBook" class="dropdown-content">
-                            <li>
-                                <a href="">SÁCH BÁN CHẠY</a>
-                            </li>
-                            <li>
-                                <a href="">SÁCH MỚI PHÁT HÀNH</a>
-                            </li>
-                            <li>
-                                <a href="">SÁCH TIẾNG VIỆT</a>
-                            </li>
-                            <li>
-                                <a href=""> SÁCH TIẾNG ANH</a>
-                            </li>
-                            <li>
-                                <a href="">SÁCH NỔI BẬT</a>
-                            </li>
-                            <li>
-                                <a href="">SÁCH SẮP PHÁT HÀNH</a>
-                            </li>
-                            <li>
-                                <a href="">VĂN PHÒNG PHẨM</a>
-                            </li>
-
-                        </ul>
+                        {{>Menu}}
                     </nav>
                 </div>
                 <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
@@ -191,11 +114,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">SÁCH BÁN CHẠY</h3>
                         </div>
-                        <div class="panel-body">
-                            <ul class="row" style="list-style: none;">
-                                {{#each item}} {{>Item image=this.image name=this.name author=this.author finalPrice=this.finalPrice regularPrice=this.regularPrice
-                                saleTag=this.saleTag}} {{/each}}
-                            </ul>
+                        <div class="panel-body" id="books">
                         </div>
                     </div>
                 </div>
@@ -232,57 +151,61 @@
             </div>
         </div>
         <footer>
-
-            <div class="row container-footer">
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                    <h5>Về công ty</h5>
-                    <a href="#">Giới thiệu công ty</a>
-                    <a href="#">Hệ thống trung tâm-nhà sách</a>
-                    <a href="#">Điều khoản sử dụng</a>
-                    <a href="#">Chính sách bảo mật</a>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                    <h5>Hỗ trợ khách hàng</h5>
-                    <a href="#">Phương thức vận chuyển</a>
-                    <a href="#">Phương thức đổi trả</a>
-                    <a href="#">Bao sách plastic miễn phí</a>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                    <h5>Sản phẩm</h5>
-                    <a href="#">Sách mới phát hành</a>
-                    <a href="#">Sách nổi bật</a>
-                    <a href="#">Sách khuyến mãi</a>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                    <h5>Liên hệ</h5>
-                    <div class="contact">
-                        <span class="fa fa-map-marker-alt"></span>
-                        <span class="footer-contact">Nguyễn Văn Cừ, Quận 5, TP.HCM</span>
-                        <br>
-                        <br>
-                        <span class="fa fa-envelope"></span>
-                        <span class="footer-contact">info@kikibook.com</span>
-                        <br>
-                        <br>
-                        <span class="fa fa-phone"></span>
-                        <span class="footer-contact">1900000000</span>
-                    </div>
-                </div>
-            </div>
+            {{>Footer info=this.info}}
         </footer>
     </div>
 
 
+    <script id="book_store" type='text/x-handlebars-template'>
+        <ul class="row" style="list-style: none;">
+            {{!-- \{{#each items }} \{{> Item Book=this}} \{{/ each}} --}}
+            \{{#each items}}
+            {{>Item}}
+            \{{/each}}
+        </ul>
+    </script>
 
+    <script id="book_types" type='text/x-handlebars-template'>
+            {{>MenuList booktypes}}
+    </script>
     <script src="./js/jquery-3.3.1.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/script.js"></script>
     <script>
-        function showMenu() {
-            if ($("#menuBook").hasClass('show')) {
-                $("#menuBook").removeClass('show')
-            } else {
-                $("#menuBook").addClass('show')
-            }
+
+        $(document).ready(() => {
+            $.ajax({
+                type: 'GET',
+                url: '/api/book',
+                data: 'offset=0&limit=3',
+                success: (data) => {
+                    addBook(data)
+                }
+            })
+
+            $.ajax({
+                type: 'GET',
+                url: '/api/booktype',
+                data: 'offset=0&limit=3',
+                success: data => {
+                    addMenu(data)
+                }
+            })
+        })
+
+        function addBook(data) {
+            var scriptHTML = $('#book_store')[0].innerHTML
+            var template = Handlebars.compile(scriptHTML)
+            var html = template({ items: data });
+            console.log(data)
+            $("#books").html(html)
+        }
+
+        function addMenu(data) {
+            var scriptHTML = $('#book_types')[0].innerHTML
+            var template = Handlebars.compile(scriptHTML)
+            var html = template({ booktypes: data });
+            $("#types").append(html)
         }
     </script>
 </body>
