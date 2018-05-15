@@ -38,6 +38,27 @@ class Database {
     
     }
 
+    LoadBooksCategory(offset, limit, type, callback) {
+        console.log('Call LoadBooksCategory');
+        Book.find({})
+        .populate({path:'type',select:'name',model:'BookType'})
+        .populate({path:'author',select:'name',model:'Author'})
+        .skip(offset*limit)
+        .limit(limit)
+        .exec((err,books)=>{
+            let filterBooks = Array();
+            books.forEach(item => {
+                   if(item.type.name == type){
+                    filterBooks.push(item);
+                   }
+            })
+            //this.books = filterBooks
+            console.log('Loaded Book');
+            callback(filterBooks)
+        })
+    
+    }
+
     CloseDb(){
         this.db.close()
     }

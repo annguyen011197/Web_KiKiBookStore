@@ -23,6 +23,27 @@ class Controller {
         })
     }
 
+    renderCategory(req, res) {
+        let offset = 0;
+        let limit = 10;
+        let type = "Kinh dị";
+        if(req.query.offset != undefined) offset = parseInt(req.query.offset);
+        if(req.query.limit != undefined) limit = parseInt(req.query.limit);
+        if(req.query.type != undefined) type = req.query.type;
+
+
+        let Books = Array();
+        db.LoadBooksCategory(offset,limit,type , books=>{
+            let data = { 
+                title: 'KiKi Bookstore',
+                info_email: 'info@kikibook.com',
+                info_number: '1900000000',
+                item: books
+            };
+            res.render('category',data);
+        })
+    }
+
 }
 
 module.exports = new Controller();
