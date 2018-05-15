@@ -38,6 +38,7 @@ class Controller {
                 title: 'KiKi Bookstore',
                 info_email: 'info@kikibook.com',
                 info_number: '1900000000',
+                category: type.toUpperCase(),
                 item: books
             };
             res.render('category',data);
