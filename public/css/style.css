@@ -280,3 +280,20 @@ footer a {
 .detail-menu:hover {
     display: flex;
 }
+
+#types {
+    background-color: #fff;
+    border-style: solid;
+    border-color: #5b94ef;
+    border-width: 0px;
+    transition: border 1s ease;
+    -webkit-transition:   border 1s ease;
+    -moz-transition:   border 1s ease;
+    -o-transition:   border 1s ease;
+    -ms-transition: border 1s ease;
+    transition:  border 1s ease;
+}
+
+#types:hover {
+    border-width: 5px;
+}

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require('../database/db')
 var controller = require('../controller/Controller')
+var sse = require('server-sent-events')
 /* GET home page. */
 router.get('/', function (req, res, next) {
   console.log(req.query)
@@ -24,6 +25,10 @@ router.get('/bookstore', (req, res) => {
   res.render('index', data);
 })
 
+router.get('/category',(req,res)=>{
+  controller.renderCategory(req, res);
+})
+
 
 /*api */
 router.get('/api/book', (req, res) => {
@@ -36,18 +41,40 @@ router.get('/api/booktype', (req,res)=>{
   controller.getBookType(req,res)
 })
 
+router.get('/api/category',(req,res)=>{
+  res.setHeader('Content-Type', 'application/json');
+  control
+})
+
 router.get('/api/media',(req,res)=>{
   controller.getImage(req,res)
 })
 
-router.get('/api/test',(req,res)=>{
+router.get('/api/test',sse,(req,res)=>{
   controller.test(req,res)
 })
+
+/*html*/
+router.get('/html/book',(req,res)=>{
+  controller.getBookContent(req,res)
+})
+
+router.get('/html/booktype',(req,res)=>{
+  controller.getBookTypeContent(req,res)
+})
+
+router.get('/html/bookcategory',sse,(req,res)=>{
+  controller.getAllBookCategory(req,res)
+})
+
 
 process.on('SIGINT', function () {
   console.log("Caught interrupt signal");
   db.CloseDb()
   process.exit()
 });
-//TODO:Query Data và add vào index
+
+process.on('uncaughtException', function(err) {
+  console.log('Caught exception: ' + err);
+});
 module.exports = router;
