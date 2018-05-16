@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/fontawesome-all.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="header-link">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 col-12">
+                            <ul class="nav-link">
+                                <li>
+                                    {{info_email}}
+                                </li>
+                                <li>
+                                    {{info_number}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 col-12">
+                            <ul class="nav-link float-right" style="margin-right:5%">
+                                <li>
+                                    <a href="#">Đăng nhập</a>
+                                </li>
+                                <li>
+                                    <a href="#">Đăng ký</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-main mt-20">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                            <a href="#">
+                                <img src="./images/logo.png" alt="brand-logo" class="img-logo">
+                            </a>
+                        </div>
+                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="keyword" placeholder="Tìm kiếm sản phẩm mong muốn ... " />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-danger">
+                                            <span class="search-button fa fa-search"></span>
+
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                            <div class="shopping-cart">
+                                <span class="shopping-cart fa fa-shopping-cart"></span>
+                                <p>GIỎ HÀNG</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="menu-and-slide mt-20">
+            <div class="row">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    <nav class="main-menu">
+                        <button onclick="showMenu()" class="dropbtn">
+                            <span>DANH MỤC</span>
+                        </button>
+                        <ul id="menuBook" class="dropdown-content">
+                            <li>
+                                <a href="">SÁCH BÁN CHẠY</a>
+                            </li>
+                            <li>
+                                <a href="">SÁCH MỚI PHÁT HÀNH</a>
+                            </li>
+                            <li>
+                                <a href="">SÁCH TIẾNG VIỆT</a>
+                            </li>
+                            <li>
+                                <a href=""> SÁCH TIẾNG ANH</a>
+                            </li>
+                            <li>
+                                <a href="">SÁCH NỔI BẬT</a>
+                            </li>
+                            <li>
+                                <a href="">SÁCH SẮP PHÁT HÀNH</a>
+                            </li>
+                            <li>
+                                <a href="">VĂN PHÒNG PHẨM</a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                    <div id="mySlider" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#mySlider" data-slide-to="0" class=""></li>
+                            <li data-target="#mySlider" data-slide-to="1" class=""></li>
+                            <li data-target="#mySlider" data-slide-to="2" class="active"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="item">
+                                <img data-src="holder.js/900x500/auto/#777:#7a7a7a/text:First slide" alt="First slide" src="./images/logo.png">
+                                <div class="container">
+                                    <div class="carousel-caption">
+                                        <h1>Example headline.</h1>
+                                        <p>Note: If you're viewing this page via a
+                                            <code>file://</code> URL, the "next" and "previous" Glyphicon buttons on the left and right might
+                                            not load/display properly due to web browser security rules.</p>
+                                        <p>
+                                            <a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img data-src="holder.js/900x500/auto/#666:#6a6a6a/text:Second slide" alt="Second slide" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzY2NiI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjQ1MCIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNmE2YTZhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjU2cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+U2Vjb25kIHNsaWRlPC90ZXh0Pjwvc3ZnPg==">
+                                <div class="container">
+                                    <div class="carousel-caption">
+                                        <h1>Another example headline.</h1>
+                                        <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi
+                                            porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id
+                                            elit.
+                                        </p>
+                                        <p>
+                                            <a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item active">
+                                <img data-src="holder.js/900x500/auto/#555:#5a5a5a/text:Third slide" alt="Third slide" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzU1NSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjQ1MCIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNWE1YTVhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjU2cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+VGhpcmQgc2xpZGU8L3RleHQ+PC9zdmc+">
+                                <div class="container">
+                                    <div class="carousel-caption">
+                                        <h1>One more for good measure.</h1>
+                                        <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi
+                                            porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id
+                                            elit.
+                                        </p>
+                                        <p>
+                                            <a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="left carousel-control" href="#mySlider" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a>
+                        <a class="right carousel-control" href="#mySlider" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="kiki-banner mt-20">
+                <div class="row">
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <img src="./images/pexels-photo-192136.jpeg" alt="kiki-banner-1" class="img-responsive">
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <img src="./images/pexels-photo-674268.jpeg" alt="kiki-banner-2" class="img-responsive">
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <img src="./images/pexels-photo-911758.jpeg" alt="kiki-banner-3" class="img-responsive">
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                        <img src="./images/pexels-photo-192136.jpeg" alt="kiki-banner-4" class="img-responsive">
+                    </div>
+                </div>
+
+            </div>
+            <div class="category-slider mt-20">
+                <div class="best-seller-book-panel">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{category}}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="row" style="list-style: none;">
+                                {{#each item}} {{>Item Book=this}} {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="best-book-panel">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">SÁCH NỔI BẬT</h3>
+                        </div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
+                    </div>
+                </div>
+                <div class="new-book-panel">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">SÁCH MỚI PHÁT HÀNH</h3>
+                        </div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
+                    </div>
+                </div>
+                <div class="van-phong-pham-panel">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">VĂN PHÒNG PHẨM</h3>
+                        </div>
+                        <div class="panel-body">
+                            Panel content
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+
+            <div class="row container-footer">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    <h5>Về công ty</h5>
+                    <a href="#">Giới thiệu công ty</a>
+                    <a href="#">Hệ thống trung tâm-nhà sách</a>
+                    <a href="#">Điều khoản sử dụng</a>
+                    <a href="#">Chính sách bảo mật</a>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    <h5>Hỗ trợ khách hàng</h5>
+                    <a href="#">Phương thức vận chuyển</a>
+                    <a href="#">Phương thức đổi trả</a>
+                    <a href="#">Bao sách plastic miễn phí</a>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    <h5>Sản phẩm</h5>
+                    <a href="#">Sách mới phát hành</a>
+                    <a href="#">Sách nổi bật</a>
+                    <a href="#">Sách khuyến mãi</a>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    <h5>Liên hệ</h5>
+                    <div class="contact">
+                        <span class="fa fa-map-marker-alt"></span>
+                        <span class="footer-contact">Nguyễn Văn Cừ, Quận 5, TP.HCM</span>
+                        <br>
+                        <br>
+                        <span class="fa fa-envelope"></span>
+                        <span class="footer-contact">info@kikibook.com</span>
+                        <br>
+                        <br>
+                        <span class="fa fa-phone"></span>
+                        <span class="footer-contact">1900000000</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script>
+        function showMenu() {
+            if ($("#menuBook").hasClass('show')) {
+                $("#menuBook").removeClass('show')
+            } else {
+                $("#menuBook").addClass('show')
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -43,6 +43,11 @@ router.get('/book',(req,res)=>{
   controller.renderHome(req, res);
 })
 
+router.get('/category',(req,res)=>{
+  controller.renderCategory(req, res);
+})
+
+
 
 process.on('SIGINT', function() {
   console.log("Caught interrupt signal");
