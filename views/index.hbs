@@ -271,10 +271,17 @@
         </footer>
     </div>
 
+    <script id="handlebars-demo" type="text/x-handlebars-template">
+        <div>
+            My name is \{{name}}. I am a \{{occupation}}.
+        </div>
+    </script>
+
 
 
     <script src="./js/jquery-3.3.1.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
     <script>
         function showMenu() {
             if ($("#menuBook").hasClass('show')) {
@@ -283,6 +290,19 @@
                 $("#menuBook").addClass('show')
             }
         }
+
+        // Retrieve the template data from the HTML (jQuery is used here).
+        var template = $('#handlebars-demo').html();
+        // Compile the template data into a function
+        var templateScript = Handlebars.compile(template);
+       
+        var context = { "name" : "Ritesh Kumar", "occupation" : "developer" };
+
+        // html = 'My name is Ritesh Kumar. I am a developer.'
+        var html = templateScript(context);
+        console.log(templateScript);
+        // Insert the HTML code into the page
+        $(document.body).append(html);
     </script>
 </body>
 
