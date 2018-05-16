@@ -285,7 +285,7 @@ footer a {
     background-color: #fff;
     border-style: solid;
     border-color: #5b94ef;
-    border-width: 0px;
+    border-width: 0px;  
     transition: border 1s ease;
     -webkit-transition:   border 1s ease;
     -moz-transition:   border 1s ease;
@@ -297,3 +297,4 @@ footer a {
 #types:hover {
     border-width: 5px;
 }
+

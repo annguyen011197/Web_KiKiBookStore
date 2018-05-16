@@ -40,8 +40,10 @@
             {{>Footer info=this.info}}
         </footer>
     </div>
-    </script> {{>Script script=this.script}} {{#each scripts}}
-    <script src="./js/{{this}}"></script> {{/each}}
+     {{>Script script=this.script}} 
+     {{#each scripts}}
+    <script src="./js/{{this}}"></script>
+     {{/each}}
 </body>
 
 </html>
