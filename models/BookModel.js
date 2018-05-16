@@ -16,19 +16,11 @@ var BookSchema = new Schema({
             message:"Price > 0"
         }
     },
-    //Gia sale
-    priceSale:{
-        type:Number,
-        validate:{
-            validator: (v) => {
-                return v > 0
-            },
-            message:"Price > 0"
-        }
-    },
+    //deal
     deal:{
         type:Number
     },
+    //tac gia
     author:{
         type: Schema.Types.ObjectId,
         ref:'Author',
@@ -41,8 +33,9 @@ var BookSchema = new Schema({
     },
     //Ngay xuat ban,
     date:{
-        type: Date
+        type: String
     },
+    //So trang
     pages:{
         type:Number
     },
@@ -61,7 +54,16 @@ var BookSchema = new Schema({
     //Gioi thieu sach
     description: {
         type: String
-    }
+    },
+    //Kich thuoc
+    size:{
+        width:Number,
+        height:Number,
+        weight:Number
+    },
+    //Loai bia
+    typebook:String,
+    language:String
 })
 
 module.exports = mongoose.model('Book',BookSchema)
