@@ -2,45 +2,27 @@ var express = require('express');
 var router = express.Router();
 var db = require('../database/db')
 var controller = require('../controller/Controller')
+var sse = require('server-sent-events')
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
+  console.log(req.query)
   controller.renderHome(req, res);
-  // res.render('index', { 
-  //   title: 'KiKi Bookstore',
-  //   info_email: 'info@kikibook.com',
-  //   info_number: '1900000000',
-  //   item: [
-  //     {
-  //       image:'https://vcdn.tikicdn.com/cache/280x280/ts/product/9c/10/12/1efc0ff76e2d73a537d058f720234d18.jpg',
-  //       name:'Gửi Thanh Xuân Ấm Áp Của Chúng Ta (Tập 1 Và 2)',
-  //       author:'Triệu Kiền Kiền',
-  //       finalPrice:'200.000 đ',
-  //       regularPrice:'100.000 đ',
-  //       saleTag:'50%'
-  //     },
-  //     {
-  //       image:'https://vcdn.tikicdn.com/cache/200x200/ts/product/fb/2b/b3/1a4d1ae88a03f6c03d24999aa2055d35.jpg',
-  //       name:'Truyện Tranh Ehon - Kerolympic',
-  //       author:'Etsuko Ohara',
-  //       finalPrice:'200.000 đ',
-  //       regularPrice:'100.000 đ',
-  //       saleTag:'50%'
-  //     },
-  //     {
-  //       image:'https://vcdn.tikicdn.com/cache/200x200/ts/product/65/b2/ce/00ae95e7b629733054aa661caa7be486.jpg',
-  //       name:'Truyện Tranh Ehon - Hạt Dưa Hấu',
-  //       author:'Sato Wakiko',
-  //       finalPrice:'200.000 đ',
-  //       regularPrice:'100.000 đ',
-  //       saleTag:'50%'
-  //     },
-
-  //   ]
-  // });
 });
 
-router.get('/book',(req,res)=>{
-  controller.renderHome(req, res);
+router.get('/details',(req,res,next)=>{
+  controller.renderDetail(req,res)
+})
+
+router.get('/bookstore', (req, res) => {
+  //controller.renderHome(req, res);
+  let data = {
+    title: 'KiKi Bookstore',
+    info: {
+      email: 'info@kikibook.com',
+      number: '1900000000'
+    }
+  };
+  res.render('index', data);
 })
 
 router.get('/category',(req,res)=>{
@@ -48,11 +30,51 @@ router.get('/category',(req,res)=>{
 })
 
 
+/*api */
+router.get('/api/book', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  controller.getBook(req, res)
+})
 
-process.on('SIGINT', function() {
+router.get('/api/booktype', (req,res)=>{
+  res.setHeader('Content-Type', 'application/json');
+  controller.getBookType(req,res)
+})
+
+router.get('/api/category',(req,res)=>{
+  res.setHeader('Content-Type', 'application/json');
+  control
+})
+
+router.get('/api/media',(req,res)=>{
+  controller.getImage(req,res)
+})
+
+router.get('/api/test',sse,(req,res)=>{
+  controller.test(req,res)
+})
+
+/*html*/
+router.get('/html/book',(req,res)=>{
+  controller.getBookContent(req,res)
+})
+
+router.get('/html/booktype',(req,res)=>{
+  controller.getBookTypeContent(req,res)
+})
+
+router.get('/html/bookcategory',sse,(req,res)=>{
+  controller.getAllBookCategory(req,res)
+})
+
+
+process.on('SIGINT', function () {
   console.log("Caught interrupt signal");
   db.CloseDb()
   process.exit()
 });
-//TODO:Query Data và add vào index
+
+process.on('uncaughtException', function(err) {
+  console.log('Caught exception: ' + err);
+});
 module.exports = router;
