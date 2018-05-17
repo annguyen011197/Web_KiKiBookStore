@@ -49,46 +49,14 @@
             </div>
         </div>
         <footer>
-
-            <div class="row container-footer">
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                    <h5>Về công ty</h5>
-                    <a href="#">Giới thiệu công ty</a>
-                    <a href="#">Hệ thống trung tâm-nhà sách</a>
-                    <a href="#">Điều khoản sử dụng</a>
-                    <a href="#">Chính sách bảo mật</a>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                    <h5>Hỗ trợ khách hàng</h5>
-                    <a href="#">Phương thức vận chuyển</a>
-                    <a href="#">Phương thức đổi trả</a>
-                    <a href="#">Bao sách plastic miễn phí</a>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                    <h5>Sản phẩm</h5>
-                    <a href="#">Sách mới phát hành</a>
-                    <a href="#">Sách nổi bật</a>
-                    <a href="#">Sách khuyến mãi</a>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-                    <h5>Liên hệ</h5>
-                    <div class="contact">
-                        <span class="fa fa-map-marker-alt"></span>
-                        <span class="footer-contact">Nguyễn Văn Cừ, Quận 5, TP.HCM</span>
-                        <br>
-                        <br>
-                        <span class="fa fa-envelope"></span>
-                        <span class="footer-contact">info@kikibook.com</span>
-                        <br>
-                        <br>
-                        <span class="fa fa-phone"></span>
-                        <span class="footer-contact">1900000000</span>
-                    </div>
-                </div>
-            </div>
+                {{>Footer info=this.info}}
         </footer>
     </div>
-    <script id="book_types" type='text/x-handlebars-template'>
+    {{>Script script=this.script}} 
+     {{#each scripts}}
+    <script src="./js/{{this}}"></script>
+     {{/each}}
+    {{!-- <script id="book_types" type='text/x-handlebars-template'>
             {{>MenuList booktypes}}
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
@@ -117,7 +85,7 @@
             var html = template({ booktypes: data });
             $("#types").append(html)
         }
-    </script>
+    </script> --}}
 </body>
 
 </html>

@@ -185,7 +185,8 @@ class Controller {
           title: name.toUpperCase(),
           info: info,
           category: name.toUpperCase(),
-          items: books
+          items: books,
+          scripts: ["category.js"]
         };
         res.render("category", data);
       });
