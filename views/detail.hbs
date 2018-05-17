@@ -36,7 +36,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                         <div class="book-image">
-                            <img class="img-responsive" src={{item.image.[0]}}>
+                            <img class="img-responsive" src={{item.image.[0]}} >
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -50,14 +50,16 @@
                             <p class="author">Tác giả:</p>
                             <a href="#">{{item.author.name}}</a>
                             <hr/>
-                            <p class="price">{{item.priceSale}}
-                                <sup> đ</sup>
+                            <p class="price">
+                                <b>{{finalPrice}} đ </b>
+                                
+                                {{!-- <sup></sup> --}}
                             </p>
-                            <p class="save">Tiết kiệm: 30% (25.501 đ)</p>
+                            <p class="save">Tiết kiệm: {{item.deal}}%</p>
                             <p class="save">Giá thị trường: {{item.price}} đ</p>
                             <hr/>
                         </div>
-                        <div class="order">
+                        {{!-- <div class="order">
                             <div class="row">
                                 <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
                                     <p>Số lượng: </p>
@@ -75,7 +77,7 @@
                                         </span>Thêm vào giỏ hàng</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -131,32 +133,10 @@
                 <h4>GIỚI THIỆU SÁCH</h4>
                 <div class="book-introduce">
                     <h5>
-                        Những Cuộc Phiêu Lưu Của Huckleberry Finn
+                        {{item.name}}
                     </h5>
                     <p>
-                        Ernest Hemingway từng nói: “Toàn bộ văn học Mỹ hiện đại đều thoát thai từ một cuốn sách của Mark Twain, đó là Những cuộc
-                        phiêu lưu của Huckleberry Finn”.
-                        <br>
-                        <br> Sau những cuộc phiêu lưu cùng Tom Sawyer, Huck Finn được bà quả phụ Douglas đón về nuôi. Nhưng với
-                        bản tính ưa tự do, Huck không chịu nổi việc phải ăn vận sạch sẽ, học hành theo khuôn phép trưởng
-                        giả dù được sống giàu sang. Cộng thêm với việc người cha tưởng đã chết đột ngột trở về tiếp tục hành
-                        hạ, gây rắc rối cho cậu, Huck quyết định cùng Jim – một nô lệ da đen bỏ trốn – cùng xuôi dòng Mississippi,
-                        bắt đầu những cuộc phiêu lưu mới.
-                        <br>
-                        <br> Nhiều chuyện dở khóc dở cười đã xảy ra trong chuyến phiêu lưu. Không chỉ thế, Huck còn lâm vào những
-                        tình huống nguy hiểm khi bị cuốn vào cuộc tranh chấp giữa hai dòng họ với những cuộc đọ súng chết
-                        chóc... Nhưng cũng chính trong hoàn cảnh ngặt nghèo nhất, Huck đã nhận ra giá trị của cuộc sống để
-                        hướng về sự tự do và hết lòng giúp đỡ người nô lệ da đen tội nghiệp. Từ một cậu bé chỉ biết phá phách,
-                        Huck đã xác định rõ ràng mục đích sống, biết phân biệt đúng sai bằng trái tim thuần hậu và thoát
-                        khỏi những định kiến méo mó được nhồi nhét qua cách giáo dục sai trái.
-                        <br>
-                        <br> Các nhà phê bình văn học đã đánh giá Những cuộc phiêu lưu của Huckleberry Finn là tiểu thuyết ưu
-                        tú nhất của Mark Twain, bởi tác giả đã vận dụng một cách nhuần nhuyễn phương ngữ của nhiều vùng,
-                        nhiều tầng lớp người để diễn tả những trạng huống tâm lý phức tạp, cũng như mô tả xuất sắc cảnh vật
-                        thiên nhiên. Tác phẩm này đã lọt vào danh sách những tiểu thuyết hay nhất mọi thời đại của văn học
-                        Mỹ, và rất nhiều lần được đưa lên màn ảnh.
-                        <br>
-                        <br>
+                        {{item.description}}
                     </p>
                 </div>
             </div>
@@ -165,36 +145,8 @@
             {{> Footer info=this.info}}
         </footer>
     </div>
-
-
-    <script id="book_types" type='text/x-handlebars-template'>
-            {{>MenuList booktypes}}
-    </script>
-    <script src="./js/jquery-3.3.1.min.js"></script>
-    <script src="./js/bootstrap.min.js"></script>
-    <script src="./js/script.js"></script>
-    <script>
-        function togglemenu() {
-            $("#toggle").toggleClass('off');
-        }
-
-        $.ajax({
-            type: 'GET',
-            url: '/api/booktype',
-            data: 'offset=0&limit=3',
-            success: data => {
-                console.log(data)
-                addMenu(data)
-            }
-        })
-
-        function addMenu(data) {
-            var scriptHTML = $('#book_types')[0].innerHTML
-            var template = Handlebars.compile(scriptHTML)
-            var html = template({ booktypes: data });
-            $("#types").append(html)
-        }
-    </script>
+    </script> {{>Script script=this.script}} {{#each scripts}}
+    <script src="./js/{{this}}"></script> {{/each}}
 </body>
 
 </html>
