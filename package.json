@@ -1,23 +1,21 @@
 {
-  "name": "web_kikibookstore",
-  "version": "1.0.0",
-  "description": "Final Project",
-  "main": "index.js",
+  "name": "web-kikibookstore",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/annguyen011197/Web_KiKiBookStore.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/annguyen011197/Web_KiKiBookStore/issues"
-  },
-  "homepage": "https://github.com/annguyen011197/Web_KiKiBookStore#readme",
   "dependencies": {
-    "express": "^4.16.3",
-    "mongoose": "^5.0.16"
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "handlebars": "^4.0.11",
+    "hbs": "~4.0.1",
+    "http-errors": "~1.6.2",
+    "image-downloader": "^3.3.0",
+    "mongoose": "^5.0.17",
+    "morgan": "~1.9.0",
+    "server-sent-events": "^1.0.1",
+    "sharp": "^0.20.2"
   }
 }

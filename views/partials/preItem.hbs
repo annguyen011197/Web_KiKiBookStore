@@ -1,0 +1,17 @@
+<li class="col-xs-12 col-sm-6 col-md-3 col-lg-3 item">
+    <a class="card" href="./details?id={{Book._id}}">
+        <div class="item-img-container">
+            <img class="card-img-top img-responsive item-img" src={{Book.image}} alt='./api/media?name=null.jpg'>
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title name">{{Book.name}}</h5>
+            <p class="card-text author">{{Book.author.name}}</p>
+            <p class="card-text">
+                <span class="finalPrice">{{Book.priceSale}}</span>
+                <span class="regularPrice">{{Book.price}}</span>
+                <span class="sale">{{Book.deal}}</span>
+            </p>
+        </div>
+    </a>
+</li>

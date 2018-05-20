@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/fontawesome-all.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            {{>Header info=this.info}}
+        </header>
+        <div class="menu-and-slide mt-20">
+            <div class="row">
+                <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                    <nav class="main-menu" id="menu">
+                        <button onclick="showMenu()" class="dropbtn">
+                            <span>DANH MỤC</span>
+                        </button>
+                        <div class="detail-menu">
+                            {{>Menu}}
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="book-detail">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                        <div class="book-image">
+                            <img class="img-responsive" src={{item.image.[0]}} >
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                        <div class="book-main">
+                            <h3>{{item.name}}</h3>
+                            {{!--
+                            <img src={{item.image.[0]}} alt="star-rating"> --}} {{!--
+                            <a href="#" class="rating">Xem 32 đánh giá</a> --}}
+                            <br>
+                            <br>
+                            <p class="author">Tác giả:</p>
+                            <a href="#">{{item.author.name}}</a>
+                            <hr/>
+                            <p class="price">
+                                <b>{{finalPrice}} đ </b>
+                                
+                                {{!-- <sup></sup> --}}
+                            </p>
+                            <p class="save">Tiết kiệm: {{item.deal}}%</p>
+                            <p class="save">Giá thị trường: {{item.price}} đ</p>
+                            <hr/>
+                        </div>
+                        {{!-- <div class="order">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                                    <p>Số lượng: </p>
+                                    <input type="number" name="quantity" min="1" max="100" placeholder="1">
+                                </div>
+                                <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="like-button">
+                                        <span class="far fa-heart heart-icon"></span>
+                                        <span class="like-text">Yêu thích</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 order-cart">
+                                    <button type="button" class="btn btn-danger" name="order-cart">
+                                        <span class="fa fa-shopping-cart order-cart">
+                                        </span>Thêm vào giỏ hàng</button>
+                                </div>
+                            </div>
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
+            <div class="mt-20">
+                <h4>THÔNG TIN CHI TIẾT</h4>
+                <div class="info-detail">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    {{!--
+                                    <tr>
+                                        <th>Công ty phát hành</th>
+                                        <td>{{item.publisher}}</td>
+                                    </tr> --}}
+                                    <tr>
+                                        <th>Nhà xuất bản</th>
+                                        <td>{{item.publisher.name}}</td>
+                                    </tr>
+                                    {{!--
+                                    <tr>
+                                        <th>Kích thước</th>
+                                        <td>14.5 x 20.5 cm</td>
+                                    </tr> --}}
+                                    <tr>
+                                        <th>Tác giả</th>
+                                        <td>{{item.author.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Loại bìa</th>
+                                        <td>Bìa mềm</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Số trang</th>
+                                        <td>{{item.pages}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày xuất bản</th>
+                                        <td>06-2015</td>
+                                    </tr>
+                                    {{!--
+                                    <tr>
+                                        <th>SKU</th>
+                                        <td>2511376617665</td>
+                                    </tr> --}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-20">
+                <h4>GIỚI THIỆU SÁCH</h4>
+                <div class="book-introduce">
+                    <h5>
+                        {{item.name}}
+                    </h5>
+                    <p>
+                        {{item.description}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <footer>
+            {{> Footer info=this.info}}
+        </footer>
+    </div>
+     {{>Script script=this.script}} 
+     {{#each scripts}}
+    <script src="./js/{{this}}"></script>
+     {{/each}}
+</body>
+
+</html>
