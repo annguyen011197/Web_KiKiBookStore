@@ -1,4 +1,4 @@
-var typeOffset = 0
+var typeOffset = 1
 var typeLimit = 3
 $("img").lazyload();
 console.log($("img"))

@@ -1,4 +1,4 @@
-var bookOffset = 0
+var bookOffset = 1
 var bookLimit = 2 
 
 $(document).ready(()=>{

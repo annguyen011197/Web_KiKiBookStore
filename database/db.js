@@ -49,7 +49,7 @@ class Database {
         Book.find({})
             .populate({ path: 'type', select: 'name', model: 'BookType' })
             .populate({ path: 'author', select: 'name', model: 'Author' })
-            .skip(offset * limit)
+            .skip((offset - 1)* limit)
             .limit(limit)
             .exec((err, books) => {
                 if(err) throw err
@@ -64,7 +64,7 @@ class Database {
         //     callback(this.booktypes)
         // } else {
             BookType.find({})
-                .skip(offset * limit)
+                .skip((offset - 1) * limit)
                 .limit(limit)
                 .exec((err, data) => {
                     this.booktypes = data
@@ -90,7 +90,7 @@ class Database {
             Book.find({ 'type': type })
             .populate({ path: 'type', select: 'name', model: 'BookType' })
             .populate({ path: 'author', select: 'name', model: 'Author' })
-            .skip(offset * limit)
+            .skip((offset - 1) * limit)
             .limit(limit)
             .exec((err, books) => {
                 if(err) throw (err)
@@ -105,8 +105,13 @@ class Database {
             console.log(err)
             callback([],'')
         }
+    }
 
-
+    LoadCountByCategory(type, callback){
+        Book.find({ 'type': type }).populate({ path: 'type', select: 'name', model: 'BookType' }).count(function(err, result) {
+            callback(result);
+       });
+       //return Book.find({ 'type': type }).populate({ path: 'type', select: 'name', model: 'BookType' }).count();
     }
 
     CloseDb() {
@@ -118,7 +123,7 @@ class Database {
         Book.find({ 'type': type })
             .populate({ path: 'type', select: 'name', model: 'BookType' })
             .populate({ path: 'author', select: 'name', model: 'Author' })
-            .skip(offset * limit)
+            .skip((offset - 1) * limit)
             .limit(limit)
             .exec((err, books) => {
                 callback(books)

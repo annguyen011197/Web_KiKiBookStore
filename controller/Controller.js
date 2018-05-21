@@ -52,7 +52,7 @@ class Controller {
   }
 
   getBookContent(req, res) {
-    let offset = 0;
+    let offset = 1;
     let limit = 10;
     if (req.query.offset != undefined) offset = parseInt(req.query.offset);
     if (req.query.limit != undefined) limit = parseInt(req.query.limit);
@@ -75,7 +75,7 @@ class Controller {
   }
 
   getBookTypeContent(req, res) {
-    let offset = 0;
+    let offset = 1;
     let limit = 6;
     if (req.query.offset != undefined) offset = parseInt(req.query.offset);
     if (req.query.limit != undefined) limit = parseInt(req.query.limit);
@@ -87,7 +87,7 @@ class Controller {
   }
 
   getAllBookCategory(req, res) {
-    let offset = 0;
+    let offset = 1;
     let limit = 6;
     if (req.query.offset != undefined) offset = parseInt(req.query.offset);
     if (req.query.limit != undefined) limit = parseInt(req.query.limit);
@@ -108,7 +108,7 @@ class Controller {
   }
 
   getBook(req, res) {
-    let offset = 0;
+    let offset = 1;
     let limit = 10;
     if (req.query.offset != undefined) offset = parseInt(req.query.offset);
     if (req.query.limit != undefined) limit = parseInt(req.query.limit);
@@ -131,7 +131,7 @@ class Controller {
   }
 
   getBookType(req, res) {
-    let offset = 0;
+    let offset = 1;
     let limit = 6;
     if (req.query.offset != undefined) offset = parseInt(req.query.offset);
     if (req.query.limit != undefined) limit = parseInt(req.query.limit);
@@ -166,7 +166,7 @@ class Controller {
   }
 
   renderCategory(req, res) {
-    let offset = 0;
+    let offset = 1;
     let limit = 10;
     let type = undefined;
     if (req.query.offset != undefined) offset = parseInt(req.query.offset);
@@ -181,14 +181,27 @@ class Controller {
       res.render("index", data);
     } else {
       db.LoadBooksCategory(offset, limit, type, (books, name) => {
-        let data = {
-          title: name.toUpperCase(),
-          info: info,
-          category: name.toUpperCase(),
-          items: books,
-          scripts: ["category.js"]
-        };
-        res.render("category", data);
+        db.LoadCountByCategory(type, (result) => {
+          let start = Math.floor(offset / 7) * 7 == 0 ? 1 : Math.floor(offset / 7) * 7;
+          let end = start == 1 ? start + 6 : start + 7;
+          let max = Math.floor(result / limit) == 0 ? 1 : Math.floor(result / limit);
+          end = end > max ? max : start + 6;
+          let page = [];
+          for(var i = start; i <= end;++i){
+            let disabled = "";
+            if(i == offset) disabled = "disabled";
+            page.push({text: i,url: `category?offset=${i}&limit=${limit}&type=${type}`,disabled: disabled});
+          }
+          let data = {
+            title: name.toUpperCase(),
+            info: info,
+            category: name.toUpperCase(),
+            items: books,
+            //scripts: ["category.js"],
+            itemsPage: page
+          };
+          res.render("category", data);
+        });
       });
     }
   }
