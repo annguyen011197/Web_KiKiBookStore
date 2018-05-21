@@ -29,6 +29,9 @@ router.get('/category',(req,res)=>{
   controller.renderCategory(req, res);
 })
 
+router.get('/admin',(req,res)=>{
+  controller.renderAdmin(req,res);
+})
 
 /*api */
 router.get('/api/book', (req, res) => {

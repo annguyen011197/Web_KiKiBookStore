@@ -1,0 +1,128 @@
+body {
+    margin: 0;
+    padding:0;
+    font-family: 'Poppins', 'san-serif';
+    background-color: #eff0f1;
+}
+ul {
+    margin: 0;
+    padding: 0;
+}
+.navbar-fixed-left {
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    position: fixed;
+}
+.navbar-fixed-left li {
+    width: 100%;
+    display: block;
+    list-style-type: none;
+    text-align: center;
+}
+.navbar-fixed-left li.menu a{
+    text-decoration: none;
+    padding: 15px 0;
+    display: list-item;
+}
+
+.navbar-fixed-left li.menu:hover {
+   background-color: #eff0f1;
+}
+.navbar-fixed-left img {
+    max-width: 200px;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.avatar-info {
+    margin-top: 10px;
+}
+.avatar-info p {
+    margin:2px 0 0 0;
+    font-size: 11px;
+}
+.avatar img {
+    max-width: 80px;
+    height: auto;
+}
+.avatar-info p.online-status {
+   color: white;
+   padding: 5px;
+   background-color: #58d8a3;
+   border-radius: 5px;
+   display: table;
+   margin: 3px auto 20px auto;
+}
+.header-top {
+    background: linear-gradient(to right, #2895e8 , #04bdfd);
+    width: 100%;
+    height: 50px;
+}
+.avatar-mini img{
+    margin: 5px 20px 5px 0px;
+    max-width: 40px;
+    height: auto;
+    float: right;
+}
+.notification {
+    margin: 10px 20px 10px 20px;
+    float: right;
+    font-size: 20px;
+    color: #fff;
+}
+.notification i {
+    margin-right: 30px;
+}
+.overview .card {
+    background: #fff;
+    width: 250px;
+    height: 160px;  
+    margin-right: 15px;
+    float: left;
+}
+.overview .card i{
+    font-size: 50px;
+    margin: 50px 0px 50px 30px ;
+}
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+h3.card-title {
+    font-weight: bold;
+}
+
+div.order-table {
+    padding: 20px;
+    background: #fff;
+}
+.btn-outline-success {
+    border: 1px #08D419 solid;
+    color: #08D419;
+}
+.btn-outline-success:hover {
+    color:white;
+    background-color: #08D419;
+}
+.btn-outline-danger {
+    border: 1px #FF0017 solid;
+    color: #FF0017;
+}
+.btn-outline-danger:hover {
+    color:white;
+    background-color: #FF0017;
+}
+.test {
+    visibility: hidden;
+}
