@@ -9,6 +9,11 @@
                 {{>preItem Book=this}}
                 {{/each}}
             </ul>
+            <ul class="pagination"  style="display: flex;justify-content: center;">
+                {{#each itemsPage}}
+                {{>pageItem Page=this}}
+                {{/each}}
+            </ul> 
         </div>
     </div>
 </div>
