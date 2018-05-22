@@ -33,7 +33,7 @@ class Controller {
     };
     res.render("index", data);
   }
-
+  
   renderDetail(req, res) {
     let id = "";
     if (req.query.id != undefined) id = req.query.id;
@@ -51,27 +51,26 @@ class Controller {
     );
   }
 
+  getBookCount(){
+    return new Promise((resolve, reject) => {
+      resolve()
+    }).then(db.LoadCountBook)
+  }
+
   getBookContent(req, res) {
     let offset = 1;
     let limit = 10;
     if (req.query.offset != undefined) offset = parseInt(req.query.offset);
     if (req.query.limit != undefined) limit = parseInt(req.query.limit);
-
+    let code = hbs.compile(`{{>Content }}`);
     res.setHeader("Content-Type", "text/html");
-    fs.readFile(
-      path.join(__dirname, "../views/partials", "Content.hbs"),
-      "utf8",
-      (err, data) => {
-        let code = hbs.compile(data);
-        db.LoadBooks(offset, limit, books => {
-          let setData = {
-            name: "Danh sách",
-            items: books
-          };
-          res.send(code(setData));
-        });
-      }
-    );
+    db.LoadBooks(1, 2, books => {
+      let setData = {
+        name: "Danh sách",
+        items: books
+      };
+      res.send(code(setData));
+    });
   }
 
   getBookTypeContent(req, res) {
@@ -205,6 +204,8 @@ class Controller {
       });
     }
   }
+
+
 }
 
 module.exports = new Controller();
