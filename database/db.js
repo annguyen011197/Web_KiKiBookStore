@@ -114,6 +114,14 @@ class Database {
        //return Book.find({ 'type': type }).populate({ path: 'type', select: 'name', model: 'BookType' }).count();
     }
 
+    LoadCountBook(){
+        return new Promise((resolve, reject) => {
+            Book.count().exec((err,res)=>{
+                resolve(res)
+            })
+        });
+    }
+
     CloseDb() {
         this.db.close()
     }

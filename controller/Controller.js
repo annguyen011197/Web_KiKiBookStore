@@ -33,9 +33,13 @@ class Controller {
     };
     res.render("index", data);
   }
-  renderAdmin(req,res) {
-    res.render("admin");
+  
+  renderAdmin() {
+    return new Promise((resolve, reject) => {
+      resolve()
+    }).then(db.LoadCountBook)
   }
+
   renderDetail(req, res) {
     let id = "";
     if (req.query.id != undefined) id = req.query.id;
@@ -51,6 +55,10 @@ class Controller {
         scripts:['detail.js']
       })}
     );
+  }
+
+  getBookCount(){
+
   }
 
   getBookContent(req, res) {
@@ -207,6 +215,8 @@ class Controller {
       });
     }
   }
+
+
 }
 
 module.exports = new Controller();
