@@ -63,7 +63,7 @@ class Controller {
       "utf8",
       (err, data) => {
         let code = hbs.compile(data);
-        db.LoadBooks(0, 2, books => {
+        db.LoadBooks(offset, limit, books => {
           let setData = {
             name: "Danh sách",
             items: books
@@ -152,7 +152,7 @@ class Controller {
     db.LoadAllTypes(cursor => {
       let num = 0;
       cursor.on("data", doc => {
-        db.LoadBooksCategory(0, 3, doc._id, (books, undefined) => {
+        db.LoadBooksCategory(1, 3, doc._id, (books, undefined) => {
           var code = hbs.compile(`{{>Content }}`);
           let html = code({
             name: doc.name,
