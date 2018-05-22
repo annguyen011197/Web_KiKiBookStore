@@ -33,7 +33,9 @@ class Controller {
     };
     res.render("index", data);
   }
-
+  renderAdmin(req,res) {
+    res.render("admin");
+  }
   renderDetail(req, res) {
     let id = "";
     if (req.query.id != undefined) id = req.query.id;
