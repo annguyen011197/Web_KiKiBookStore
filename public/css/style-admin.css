@@ -77,10 +77,14 @@ ul {
 .notification i {
     margin-right: 30px;
 }
+.overview{
+    background-color: #fff;
+    height: 160pt;
+}
 .overview .card {
     background: #fff;
-    width: 250px;
-    height: 160px;  
+    width: 23%;
+    height: auto;  
     margin-right: 15px;
     float: left;
 }
@@ -92,7 +96,7 @@ ul {
     float: left;
 }
 .float-right {
-    float: right;
+    /* float: right; */
 }
 .clearfix::after {
     content: "";
@@ -106,6 +110,8 @@ h3.card-title {
 div.order-table {
     padding: 20px;
     background: #fff;
+    clear: both;
+    margin-top: 30px;
 }
 .btn-outline-success {
     border: 1px #08D419 solid;
@@ -123,6 +129,4 @@ div.order-table {
     color:white;
     background-color: #FF0017;
 }
-.test {
-    visibility: hidden;
-}
+
