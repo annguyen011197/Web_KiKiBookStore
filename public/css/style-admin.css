@@ -1,0 +1,206 @@
+body {
+    margin: 0;
+    padding:0;
+    font-family: 'Poppins', 'san-serif';
+    background-color: #eff0f1;
+}
+ul {
+    margin: 0;
+    padding: 0;
+}
+.navbar-fixed-left {
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    position: fixed;
+}
+.navbar-fixed-left li {
+    width: 100%;
+    display: block;
+    list-style-type: none;
+    text-align: center;
+}
+.navbar-fixed-left li.menu a{
+    text-decoration: none;
+    padding: 15px 0;
+    display: list-item;
+}
+
+.navbar-fixed-left li.menu:hover {
+   background-color: #eff0f1;
+}
+.navbar-fixed-left img {
+    max-width: 200px;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.avatar-info {
+    margin-top: 10px;
+}
+.avatar-info p {
+    margin:2px 0 0 0;
+    font-size: 11px;
+}
+.avatar img {
+    max-width: 80px;
+    height: auto;
+}
+.avatar-info p.online-status {
+   color: white;
+   padding: 5px;
+   background-color: #58d8a3;
+   border-radius: 5px;
+   display: table;
+   margin: 3px auto 20px auto;
+}
+.header-top {
+    background: linear-gradient(to right, #2895e8 , #04bdfd);
+    width: 100%;
+    height: 50px;
+}
+.avatar-mini img{
+    margin: 5px 20px 5px 0px;
+    max-width: 40px;
+    height: auto;
+    float: right;
+}
+.notification {
+    margin: 10px 20px 10px 20px;
+    float: right;
+    font-size: 20px;
+    color: #fff;
+}
+.notification i {
+    margin-right: 30px;
+}
+.overview{
+    background-color: #fff;
+    height: 160pt;
+}
+.overview .card {
+    background: #fff;
+    width: 23%;
+    height: auto;  
+    margin-right: 15px;
+    float: left;
+}
+.overview .card i{
+    font-size: 50px;
+    margin: 50px 0px 50px 30px ;
+}
+.float-left {
+    float: left;
+}
+.float-right {
+    /* float: right; */
+}
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+h3.card-title {
+    font-weight: bold;
+}
+
+div.order-table {
+    padding: 20px;
+    background: #fff;
+    clear: both;
+    margin-top: 30px;
+}
+.btn-outline-success {
+    border: 1px #08D419 solid;
+    color: #08D419;
+}
+.btn-outline-success:hover {
+    color:white;
+    background-color: #08D419;
+}
+.btn-outline-danger {
+    border: 1px #FF0017 solid;
+    color: #FF0017;
+}
+.btn-outline-danger:hover {
+    color:white;
+    background-color: #FF0017;
+}
+
+
+/* 
+Book form */
+
+.form-style-9{
+    max-width: 450px;
+    background: #FAFAFA;
+    padding: 30px;
+    margin: 50px auto;
+    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+    border-radius: 10px;
+    border: 6px solid #305A72;
+}
+.form-style-9 ul{
+    padding:0;
+    margin:0;
+    list-style:none;
+}
+.form-style-9 ul li{
+    display: block;
+    margin-bottom: 10px;
+    min-height: 35px;
+}
+.form-style-9 ul li  .field-style{
+    box-sizing: border-box; 
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box; 
+    padding: 8px;
+    outline: none;
+    border: 1px solid #B0CFE0;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+
+}.form-style-9 ul li  .field-style:focus{
+    box-shadow: 0 0 5px #B0CFE0;
+    border:1px solid #B0CFE0;
+}
+.form-style-9 ul li .field-split{
+    width: 49%;
+}
+.form-style-9 ul li .field-full{
+    width: 100%;
+}
+.form-style-9 ul li input.align-left{
+    float:left;
+}
+.form-style-9 ul li input.align-right{
+    float:right;
+}
+.form-style-9 ul li textarea{
+    width: 100%;
+    height: 100px;
+}
+.form-style-9 ul li input[type="button"], 
+.form-style-9 ul li input[type="submit"] {
+    -moz-box-shadow: inset 0px 1px 0px 0px #3985B1;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #3985B1;
+    box-shadow: inset 0px 1px 0px 0px #3985B1;
+    background-color: #216288;
+    border: 1px solid #17445E;
+    display: inline-block;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding: 8px 18px;
+    text-decoration: none;
+    font: 12px Arial, Helvetica, sans-serif;
+}
+.form-style-9 ul li input[type="button"]:hover, 
+.form-style-9 ul li input[type="submit"]:hover {
+    background: linear-gradient(to bottom, #2D77A2 5%, #337DA8 100%);
+    background-color: #28739E;
+}

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 
 var mongoDB = 'mongodb+srv://annguyen:minhan@kikibookstore-9aubp.mongodb.net/KikiBookStore'
-
+//var mongoDB = 'mongodb+srv://annguyen:minhan@kikibookstore-9aubp.mongodb.net/DemonNewDB'
 let BookType = require('./models/BookTypeModel')
 let Book = require('./models/BookModel')
 let Author = require('./models/AuthorModel')

@@ -160,7 +160,13 @@ class Database {
        
     }
 
-
+    LoadCountBook(){
+        return new Promise((resolve, reject) => {
+            Book.count().exec((err,res)=>{
+                resolve(res)
+            })
+        });
+    }
 
     CloseDb() {
         this.db.close()
