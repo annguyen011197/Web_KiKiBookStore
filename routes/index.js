@@ -50,6 +50,14 @@ router.get('/api/media',(req,res)=>{
   controller.getImage(req,res)
 })
 
+router.get('/api/account',(req,res)=>{
+  controller.getLogin(req,res)
+})
+
+router.get('/api/register',(req,res)=>{
+  controller.saveAccount(req,res)
+})
+
 router.get('/api/test',sse,(req,res)=>{
   controller.test(req,res)
 })

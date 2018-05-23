@@ -10,7 +10,8 @@ var AccountSchema = new Schema({
             },
             message: "first name not empty"
         },
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,

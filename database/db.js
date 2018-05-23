@@ -114,6 +114,54 @@ class Database {
        //return Book.find({ 'type': type }).populate({ path: 'type', select: 'name', model: 'BookType' }).count();
     }
 
+    CheckAccount(username,password, callback){
+        try{
+            Account.find({ 'username': username })
+            .exec((err, accounts) => {
+                if(accounts == null || accounts.length == 0) {
+                    callback({login: false, msg: "-1"});
+                    return;
+                }
+                if(accounts[0].password == password){
+                    callback({login: true});
+                }else{
+                    callback({login: false,msg: "0"});
+                }
+            })
+        }catch(err){
+            console.log(err)
+            callback([],'')
+        }
+    }
+
+    createAccount(username, password, accountType, accountInfo, callback) {
+        let detailAccountModel = { username: username, password: password, accountType: accountType}
+        if (accountInfo != false) detailAccountModel.accountInfo = accountInfo
+        if(username == null || username == ""){
+            callback({err:"Username is empty"},null);
+        }
+        if(password == null || password == ""){
+            callback({err:"Password is empty"},null);
+        }
+        var accountModel = new Account(detailAccountModel);
+        try{
+            accountModel.save(function (err) {
+                if (err) {
+                    callback(err, null)
+                    return
+                }
+                console.log('New accountModel: ' + accountModel);
+                callback(null, accountModel)
+            });
+        }catch(err){
+            callback(err, null)
+            return;
+        }
+       
+    }
+
+
+
     CloseDb() {
         this.db.close()
     }

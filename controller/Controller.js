@@ -205,6 +205,33 @@ class Controller {
       });
     }
   }
+
+  getLogin(req, res) {
+    let username = "";
+    let password = "";
+    if (req.query.username != undefined) username = req.query.username;
+    if (req.query.password != undefined) password = req.query.password;
+    db.CheckAccount(username,password,(isLogin) =>{
+      res.send(JSON.stringify(isLogin));
+    })
+  }
+
+  saveAccount(req, res){
+    let username = "";
+    let password = "";
+    if (req.query.username != undefined) username = req.query.username;
+    if (req.query.password != undefined) password = req.query.password;
+    db.createAccount(username,password,false,false,(err,model) =>{
+      if(err == null){
+        res.send(JSON.stringify({err: false}));
+      }else{
+        res.send(JSON.stringify({err: true}));
+      }
+      
+    })
+  }
 }
+
+
 
 module.exports = new Controller();

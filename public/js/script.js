@@ -112,7 +112,23 @@ jQuery(document).ready(function($){
     //REMOVE THIS - it's just to show error messages 
     $form_login.find('input[type="submit"]').on('click', function(event){
       event.preventDefault();
-      $form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+      $form_login.find('input[type="email"]').toggleClass('has-error').next('span').removeClass('is-visible');
+      $form_login.find('input[type="password"]').toggleClass('has-error').next('a').next('span').removeClass('is-visible');
+      let account = $form_login.find('input[type="email"]').val();
+      let password = $form_login.find('input[type="password"]').val();
+      $.get( `api/account?username=${account}&password=${password}`, function( data ) {
+        let obj = jQuery.parseJSON(data);
+        if(!obj.login){
+          if(obj.msg == "-1"){
+            $form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+          }else{
+            $form_login.find('input[type="password"]').toggleClass('has-error').next('a').next('span').toggleClass('is-visible');
+          }
+        }else{
+          alert("Đăng nhập thành công!");
+          $form_modal.removeClass('is-visible'); 
+        }
+      });
     });
     $form_signup.find('input[type="submit"]').on('click', function(event){
       event.preventDefault();
