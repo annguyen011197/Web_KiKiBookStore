@@ -59,21 +59,25 @@ class Database {
             })
     }
 
-    LoadBookTypes(offset, limit, callback) {
+    LoadBookTypes(offset, limit) {
         // if (this.booktypes.length > 0 && offset != 0) {
         //     callback(this.booktypes)
         // } else {
-            BookType.find({})
-                .skip((offset - 1) * limit)
-                .limit(limit)
-                .exec((err, data) => {
-                    this.booktypes = data
-                    callback(data)
-                })
+            return new Promise(
+                (resolve, reject) =>{
+                    BookType.find({})
+                    .skip((offset - 1) * limit)
+                    .limit(limit)
+                    .exec((err, data) => {
+                        this.booktypes = data
+                        resolve(data)
+                    })
+                });
+            
         //}
     }
 
-    LoadAllTypes(callback){
+    LoadAllTypes(){
         // BookType.find({})
         // .skip(offset * limit)
         // .limit(limit)
@@ -81,36 +85,51 @@ class Database {
         //     this.booktypes = data
         //     callback(data)
         // })
-        let cursor = BookType.find({}).cursor()
-        callback(cursor)
+        return new Promise((resolve, reject) => {
+            let cursor = BookType.find({}).cursor()
+            resolve(cursor);
+        });
+       
+       //callback(cursor)
     }
 
     LoadBooksCategory(offset, limit, type, callback) {
-        try{
-            Book.find({ 'type': type })
-            .populate({ path: 'type', select: 'name', model: 'BookType' })
-            .populate({ path: 'author', select: 'name', model: 'Author' })
-            .skip((offset - 1) * limit)
-            .limit(limit)
-            .exec((err, books) => {
-                if(err) throw (err)
-                books = this.execImagePath(books)
-                let name 
-                if(books.length>0){
-                   name = books[0].type.name
+        return new Promise(
+            (resolve, reject) =>{
+                try{
+                    Book.find({ 'type': type })
+                    .populate({ path: 'type', select: 'name', model: 'BookType' })
+                    .populate({ path: 'author', select: 'name', model: 'Author' })
+                    .skip((offset - 1) * limit)
+                    .limit(limit)
+                    .exec((err, books) => {
+                        if(err) throw (err)
+                        books = this.execImagePath(books)
+                        let name 
+                        if(books.length>0){
+                           name = books[0].type.name
+                        }
+                        resolve({Books: books,Name: name});
+                    })
+                }catch(err){
+                    console.log(err)
+                   // callback([],'')
+                   reject(err)
                 }
-                callback(books,name)
-            })
-        }catch(err){
-            console.log(err)
-            callback([],'')
-        }
+            }
+        );
+        
     }
 
-    LoadCountByCategory(type, callback){
-        Book.find({ 'type': type }).populate({ path: 'type', select: 'name', model: 'BookType' }).count(function(err, result) {
-            callback(result);
-       });
+    LoadCountByCategory(type){
+        return new Promise((resolve, reject) =>
+            {
+                Book.find({ 'type': type }).populate({ path: 'type', select: 'name', model: 'BookType' }).count(
+                    function(err, result) {
+                        resolve(result);
+                    }
+                );
+            }); 
        //return Book.find({ 'type': type }).populate({ path: 'type', select: 'name', model: 'BookType' }).count();
     }
 

@@ -34,36 +34,17 @@ router.get('/category',(req,res)=>{
 // })
 
 /*api */
-router.get('/api/book', (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
-  controller.getBook(req, res)
-})
 
-router.get('/api/booktype', (req,res)=>{
-  res.setHeader('Content-Type', 'application/json');
-  controller.getBookType(req,res)
-})
 
-router.get('/api/category',(req,res)=>{
-  res.setHeader('Content-Type', 'application/json');
-  control
-})
+// router.get('/api/account',(req,res)=>{
+//   controller.getLogin(req,res)
+// })
 
-router.get('/api/media',(req,res)=>{
-  controller.getImage(req,res)
-})
+// router.get('/api/register',(req,res)=>{
+//   controller.saveAccount(req,res)
+// })
 
-router.get('/api/account',(req,res)=>{
-  controller.getLogin(req,res)
-})
 
-router.get('/api/register',(req,res)=>{
-  controller.saveAccount(req,res)
-})
-
-router.get('/api/test',sse,(req,res)=>{
-  controller.test(req,res)
-})
 
 /*html*/
 router.get('/html/book',(req,res)=>{

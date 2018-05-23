@@ -80,7 +80,7 @@ class Controller {
     if (req.query.limit != undefined) limit = parseInt(req.query.limit);
     res.setHeader("Content-Type", "text/html");
     let code = hbs.compile(`{{>MenuList }}`);
-    db.LoadBookTypes(offset, limit, type => {
+    db.LoadBookTypes(offset, limit).then( type => {
       res.send(code({ booktypes: type }));
     });
   }
@@ -90,20 +90,21 @@ class Controller {
     let limit = 6;
     if (req.query.offset != undefined) offset = parseInt(req.query.offset);
     if (req.query.limit != undefined) limit = parseInt(req.query.limit);
-    db.LoadAllTypes(cursor => {
+    db.LoadAllTypes().then(cursor => {
       let num = 0;
       cursor.on("data", doc => {
-        db.LoadBooksCategory(offset, limit, doc._id, (books, undefined) => {
+        db.LoadBooksCategory(offset, limit, doc._id)
+        .then((result) => {
           var code = hbs.compile(`{{>Content }}`);
           let html = code({
             name: doc.name,
-            items: books
+            items: result.Books
           });
           html = html.replace(/[\t\r\n]/g, "");
           res.sse(`data: <div>${html}</div>\n\n`);
-        });
+        })
       });
-    });
+    })
   }
 
   getBook(req, res) {
@@ -135,9 +136,9 @@ class Controller {
     if (req.query.offset != undefined) offset = parseInt(req.query.offset);
     if (req.query.limit != undefined) limit = parseInt(req.query.limit);
 
-    db.LoadBookTypes(offset, limit, booktypes => {
+    db.LoadBookTypes(offset, limit).then(booktypes => {
       res.send(JSON.stringify(booktypes));
-    });
+    })
   }
 
   getImage(req, res) {
@@ -179,29 +180,35 @@ class Controller {
       };
       res.render("index", data);
     } else {
-      db.LoadBooksCategory(offset, limit, type, (books, name) => {
-        db.LoadCountByCategory(type, (result) => {
-          let start = Math.floor(offset / 7) * 7 == 0 ? 1 : Math.floor(offset / 7) * 7;
-          let end = start == 1 ? start + 6 : start + 7;
-          let max = Math.floor(result / limit) == 0 ? 1 : Math.floor(result / limit);
-          end = end > max ? max : start + 6;
-          let page = [];
-          for(var i = start; i <= end;++i){
-            let disabled = "";
-            if(i == offset) disabled = "disabled";
-            page.push({text: i,url: `category?offset=${i}&limit=${limit}&type=${type}`,disabled: disabled});
-          }
-          let data = {
-            title: name.toUpperCase(),
-            info: info,
-            category: name.toUpperCase(),
-            items: books,
-            //scripts: ["category.js"],
-            itemsPage: page
-          };
-          res.render("category", data);
-        });
-      });
+      let count;
+      db.LoadCountByCategory(type).then((result) => {
+        count = result;
+      })
+      .then(() =>{
+        return db.LoadBooksCategory(offset, limit, type,null);
+      })
+      .then((result) => {
+        let start = Math.floor(offset / 7) * 7 == 0 ? 1 : Math.floor(offset / 7) * 7;
+        let end = start == 1 ? start + 6 : start + 7;
+        let max = Math.floor(count / limit) == 0 ? 1 : Math.floor(count / limit);
+        end = end > max ? max : start + 6;
+        let page = [];
+        for(var i = start; i <= end;++i){
+          let disabled = "";
+          if(i == offset) disabled = "disabled";
+          page.push({text: i,url: `category?offset=${i}&limit=${limit}&type=${type}`,disabled: disabled});
+        }
+        let data = {
+          title: result.Name.toUpperCase(),
+          info: info,
+          category: result.Name.toUpperCase(),
+          items: result.Books,
+          //scripts: ["category.js"],
+          itemsPage: page
+        };
+        res.render("category", data);
+      }
+    )
     }
   }
 
@@ -218,15 +225,16 @@ class Controller {
   saveAccount(req, res){
     let username = "";
     let password = "";
+    let email = "";
     if (req.query.username != undefined) username = req.query.username;
     if (req.query.password != undefined) password = req.query.password;
+    if (req.query.email != undefined) email = req.query.email;
     db.createAccount(username,password,false,false,(err,model) =>{
       if(err == null){
         res.send(JSON.stringify({err: false}));
       }else{
         res.send(JSON.stringify({err: true}));
       }
-      
     })
   }
 }

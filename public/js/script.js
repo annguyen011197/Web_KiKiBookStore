@@ -116,7 +116,7 @@ jQuery(document).ready(function($){
       $form_login.find('input[type="password"]').toggleClass('has-error').next('a').next('span').removeClass('is-visible');
       let account = $form_login.find('input[type="email"]').val();
       let password = $form_login.find('input[type="password"]').val();
-      $.get( `api/account?username=${account}&password=${password}`, function( data ) {
+      $.get( `api/account/login?username=${account}&password=${password}`, function( data ) {
         let obj = jQuery.parseJSON(data);
         if(!obj.login){
           if(obj.msg == "-1"){
@@ -132,7 +132,25 @@ jQuery(document).ready(function($){
     });
     $form_signup.find('input[type="submit"]').on('click', function(event){
       event.preventDefault();
-      $form_signup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+      let username = $form_signup.find('input[id="signup-username"]').val();
+      let email = $form_signup.find('input[id="signup-email"]').val();
+      let password = $form_signup.find('input[id="signup-password"]').val();
+      $.get( `api/account/register?username=${username}&password=${password}&email=${email}`, function( data ) {
+        let obj = jQuery.parseJSON(data);
+        if(obj.err){
+          $form_signup.find('input[id="signup-username"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+           // $form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+          //}else{
+            //$form_login.find('input[type="password"]').toggleClass('has-error').next('a').next('span').toggleClass('is-visible');
+          //}
+        }else{
+          alert("Đăng kí thành công!");
+          $form_modal.removeClass('is-visible'); 
+        }
+      });
+
+     
+    
     });
   
   
