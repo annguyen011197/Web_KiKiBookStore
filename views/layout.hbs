@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    {{{body}}}
-  </body>
+
+<head>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/fontawesome-all.css">
+  {{#if css}} 
+    {{#each css}} 
+      <link rel="stylesheet" href="{{this}}" />
+    {{/each}} 
+  {{else}}
+    <link rel="stylesheet" href="/css/style.css"> 
+  {{/if}}
+  <title>{{title}}</title>
+</head>
+
+<body>
+  {{{body}}}
+</body>
+
 </html>

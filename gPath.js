@@ -1,0 +1,1 @@
+module.exports.connectString = "mongodb://localhost:27017/KiKiBookStore"

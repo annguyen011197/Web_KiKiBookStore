@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('web-kikibookstore:server');
+var debug = require('debug')('doan:server');
 var http = require('http');
 
 /**

@@ -1,8 +1,8 @@
 <div class="header-link">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 col-12">
-                <ul class="nav-link">
+            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                <ul class="nav-link remove-content">
                     <li>
                         {{info.email}}
                     </li>
@@ -11,14 +11,9 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 col-12">
-                <ul class="nav-link float-right" style="margin-right:5%">
-                    <li>
-                        <a href="#">Đăng nhập</a>
-                    </li>
-                    <li>
-                        <a href="#">Đăng ký</a>
-                    </li>
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                <ul class="nav-link float-right">
+                    {{>Reg user=this.user}}
                 </ul>
             </div>
         </div>
@@ -27,12 +22,12 @@
 <div class="header-main mt-20">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <a href="./">
                     <img src="./images/logo.png" alt="brand-logo" class="img-logo">
                 </a>
             </div>
-            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
                 <form>
                     <div class="input-group">
                         <input type="text" class="form-control" name="keyword" placeholder="Tìm kiếm sản phẩm mong muốn ... " />
@@ -45,12 +40,13 @@
                     </div>
                 </form>
             </div>
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                 <div class="shopping-cart">
-                    <span class="shopping-cart fa fa-shopping-cart"></span>
+                    <span class="fa fa-shopping-cart"></span>
                     <p>GIỎ HÀNG</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{{>Login}}
