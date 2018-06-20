@@ -10,7 +10,6 @@ let info = {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  console.log(req.session.passport)
   let data = {
     title: "KiKi Bookstore",
     info: info,

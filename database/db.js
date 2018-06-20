@@ -119,7 +119,6 @@ class Database {
               resolve(res)
           })
         })
-        
     }
 
     ReadBookList(offset, limit) {
@@ -133,6 +132,18 @@ class Database {
                     resolve(res)
                 })
         });
+    }
+
+    ReadBookCommentList(id,offset,limit) {
+        return new Promise((resolve, reject) => {
+            Book.find({_id:id}, {comments:{$slice:[(offset - 1)*limit, limit]}})
+            .lean()
+            .exec((err,res)=>{
+                console.log(res[0].comments)
+                if(err) reject(err)
+                resolve(res[0].comments)
+            })
+          })
     }
 
     ReadBookListIndex(offset,limit) {
@@ -273,6 +284,22 @@ class Database {
                         )
                     })
                 }
+            })
+        })
+    }
+    //Comment.id = id sách, Comment.data = data sách
+    UpdateComments(comment) {
+        return  new Promise((resolve, reject) => {
+            Book.update(
+                { _id: comment.id },
+                {
+                    $push: {
+                        comments: comment.data
+                    }
+                }
+            ).exec((err, res) => {
+                if (err) reject(err)
+                resolve({"message": "Update comment complete!"})
             })
         })
     }
