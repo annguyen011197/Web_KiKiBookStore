@@ -46,6 +46,7 @@ router.get('/details', (req, res) => {
   bookController.GetBookDetail(id)
     .then(val => {
       let data = {
+        id: id,
         title: "KiKi Bookstore",
         info: info,
         scripts: [""],

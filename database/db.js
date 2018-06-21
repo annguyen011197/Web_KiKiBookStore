@@ -139,7 +139,7 @@ class Database {
             Book.find({_id:id}, {comments:{$slice:[(offset - 1)*limit, limit]}})
             .lean()
             .exec((err,res)=>{
-                console.log(res[0].comments)
+                //console.log(res[0].comments)
                 if(err) reject(err)
                 resolve(res[0].comments)
             })

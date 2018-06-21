@@ -4,8 +4,6 @@ var menu = $("#types")
 
 loadCategory()
 
-
-
 function loadCategory() {
   $.ajax({
     type: "get",
@@ -21,6 +19,28 @@ function loadCategory() {
         booktypes: response
       }
       menu.html(menuContent(data))
+    }
+  });
+}
+function loadComment(id) {
+  var commentContentSource = $("#list-comment").html()
+  var commentContent = Handlebars.compile(commentContentSource)
+  var comment = $("#comments");
+  $.ajax({
+    type: "get",
+    url: "./api/comments",
+    data: {
+      id: id,
+      offset: 1,
+      limit: 10,
+    },
+    dataType: "json",
+    success: function (response) {
+      let data = {
+        listComment: response
+      }
+      console.log(data);
+      comment.html(commentContent(data))
     }
   });
 }
