@@ -1,7 +1,13 @@
 <div class="wrapper">
     <header>
+<<<<<<< HEAD
         {{>Header info=this.info}}
     </header>
+=======
+        {{> Header info=this.info user=this.user}}
+    </header>
+    <p>{{message}}</p>
+>>>>>>> origin/ltanh2
     <div class="menu-and-slide mt-20">
         <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
@@ -9,12 +15,20 @@
                     <button onclick="showMenu()" class="dropbtn">
                         <span>DANH MỤC</span>
                     </button>
+<<<<<<< HEAD
                     {{>Menu}}
                 </nav>
             </div>
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                     {{>Slider}}
           </div>
+=======
+                    {{> Menu}}
+                </nav>
+            </div>
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                + {{> Slider}} + </div>
+>>>>>>> origin/ltanh2
         </div>
     </div>
     <div class="content">
@@ -24,6 +38,7 @@
         </div>
     </div>
     <footer>
+<<<<<<< HEAD
         {{>Footer info=this.info}}
     </footer>
 </div>
@@ -31,3 +46,49 @@
     {{#each scripts}}
 <script src="./js/{{this}}"></script>
     {{/each}}
+=======
+        {{> Footer info=this.info}}
+    </footer>
+</div>
+{{!Template }}
+<script id="content-template" type="text/x-handlebars-template">
+    <div class="new-book-panel">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">\{{ name }}</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="row" style="list-style: none;">
+                    \{{#each items}}
+                <li class="col-xs-12 col-sm-6 col-md-3 col-lg-3 item">
+                        <a class="card" href="./details?id=\{{_id}}">
+                            <div class="item-img-container">
+                                <img class="card-img-top img-responsive item-img" src={{ image }} alt='./api/media?name=null.jpg'>
+                            </div>
+
+                                <div class="card-body">
+                                    <h5 class="card-title name">\{{ name }}</h5>
+                                    <p class="card-text author">\{{ author.name }}</p>
+                                    <p class="card-text">
+                                        <span class="finalPrice">\{{ price }}</span>
+                                        <span class="regularPrice">\{{ price }}</span>
+                                        <span class="sale">0</span>
+                                    </p>
+                                </div>
+                        </a>
+                    </li>
+                        \{{/ each}}
+            </ul>
+        </div>
+            </div>
+        </div>
+</script>
+
+<script id="menu-template" type="text/x-handlebars-template">
+    \{{#each booktypes}}
+        <li><a href="/category?id=\{{this._id}}">\{{ this.name }}</a></li>
+    \{{/each}}
+    <a href="/category" style="color:blue;">Xem thêm</a>
+</script> 
+{{> Script scripts=this.scripts}} 
+>>>>>>> origin/ltanh2

@@ -78,6 +78,10 @@ ul {
     margin-right: 30px;
 }
 .overview{
+<<<<<<< HEAD
+=======
+    background-color: #fff;
+>>>>>>> origin/ltanh2
     height: 160pt;
 }
 .overview .card {
@@ -95,7 +99,11 @@ ul {
     float: left;
 }
 .float-right {
+<<<<<<< HEAD
     float: right;
+=======
+    /* float: right; */
+>>>>>>> origin/ltanh2
 }
 .clearfix::after {
     content: "";
@@ -110,7 +118,11 @@ div.order-table {
     padding: 20px;
     background: #fff;
     clear: both;
+<<<<<<< HEAD
     margin-top: -30px;
+=======
+    margin-top: 30px;
+>>>>>>> origin/ltanh2
 }
 .btn-outline-success {
     border: 1px #08D419 solid;
@@ -129,3 +141,131 @@ div.order-table {
     background-color: #FF0017;
 }
 
+<<<<<<< HEAD
+=======
+
+/* 
+Book form */
+
+.form-style-9{
+    max-width: 100%;
+    background: #FAFAFA;
+    padding: 30px;
+    margin: 50px auto;
+    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+    border-radius: 10px;
+    border: 6px solid #305A72;
+}
+.form-style-9 ul{
+    padding:0;
+    margin:0;
+    list-style:none;
+}
+.form-style-9 ul li{
+    display: block;
+    margin-bottom: 10px;
+    min-height: 35px;
+}
+.form-style-9 ul li  .field-style{
+    box-sizing: border-box; 
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box; 
+    padding: 8px;
+    outline: none;
+    border: 1px solid #B0CFE0;
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+
+}.form-style-9 ul li  .field-style:focus{
+    box-shadow: 0 0 5px #B0CFE0;
+    border:1px solid #B0CFE0;
+}
+.form-style-9 ul li .field-split{
+    width: 49%;
+}
+
+.form-style-9 ul li .field-three{
+    width: 29%;
+}
+.form-style-9 ul li .field-full{
+    width: 100%;
+}
+.form-style-9 ul li input.align-left{
+    float:left;
+}
+.form-style-9 ul li input.align-right{
+    float:right;
+}
+
+.form-style-9 ul li input.align-none{
+    display: inline-block;
+    margin:0 auto;
+}
+
+.form-style-9 ul li textarea{
+    width: 100%;
+    height: 100px;
+}
+.form-style-9 ul li input[type="button"], 
+.form-style-9 ul li input[type="submit"] {
+    -moz-box-shadow: inset 0px 1px 0px 0px #3985B1;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #3985B1;
+    box-shadow: inset 0px 1px 0px 0px #3985B1;
+    background-color: #216288;
+    border: 1px solid #17445E;
+    display: inline-block;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding: 8px 18px;
+    text-decoration: none;
+    font: 12px Arial, Helvetica, sans-serif;
+}
+.form-style-9 ul li input[type="button"]:hover, 
+.form-style-9 ul li input[type="submit"]:hover {
+    background: linear-gradient(to bottom, #2D77A2 5%, #337DA8 100%);
+    background-color: #28739E;
+}
+
+.input-container{
+    width:100%;
+    text-align:center;
+}
+
+.ui-datepicker {
+    display: none;
+    padding: .2em .2em 0;
+    width: 17em;
+    background-color: #fff;
+    border-style: solid;
+    border-color: cyan;
+}
+
+/* .ui-datepicker .ui-datepicker-header {
+    padding: .2em 0;
+    position: relative;
+} */
+
+.ui-datepicker .ui-datepicker-prev {
+    float: left;
+}
+
+.ui-datepicker .ui-datepicker-next {
+    float: right;
+}
+
+.ui-datepicker-calendar {
+    width: 100%;
+}
+
+.ui-datepicker-header{
+    width:100%;
+    text-align:center;
+}
+
+.ui-datepicker-title{
+    display: inline-block;
+    margin:0 auto;
+}
+>>>>>>> origin/ltanh2

@@ -1,0 +1,91 @@
+<div class="overview">
+    {{!--
+    <div class="card">
+        <div class="clearfix">
+            <div class="float-left">
+                <i class="fas fa-cubes" style="color:red"></i>
+            </div>
+            <div class="float-right" style="margin-top: 40px; margin-right:30px">
+                <p class="card-text text-right">Total Revenue</p>
+                <h3 class="card-title text-right">$65,650</h3>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="clearfix">
+            <div class="float-left">
+                <i class="fas fa-shopping-cart" style="color: #ffc105"></i>
+            </div>
+            <div class="float-right" style="margin-top: 40px; margin-right:30px">
+                <p class="card-text text-right">Orders</p>
+                <h3 class="card-title text-right">3455</h3>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="clearfix">
+            <div class="float-left">
+                <i class="fas fa-dollar-sign" style="color:#58d8a3;"></i>
+            </div>
+            <div class="float-right" style="margin-top: 40px; margin-right:30px">
+                <p class="card-text text-right">Sales</p>
+                <h3 class="card-title text-right">5693</h3>
+            </div>
+        </div>
+    </div> --}}
+    <div class="card">
+        <div class="clearfix">
+            <div class="float-left">
+                <i class="fas fa-book" style="color:#745af2"></i>
+            </div>
+            <div class="float-right" style="margin-top: 40px; margin-right:30px">
+                <p class="card-text text-right">Books</p>
+                <h3 class="card-title text-right" id="book-size">{{books}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+{{!--
+<div class="test">
+    <h1>Test 1</h1>
+</div> --}}
+<div class="order-table">
+    <h3>Orders</h3>
+    <div class="table-responsive">
+        <table class="table center-aligned-table s-table">
+            <thead>
+                <tr>
+                    {{!-- <th class="border-bottom-0">Order No</th> --}}
+                    <th class="border-bottom-0">Tên sách</th>
+                    <th class="border-bottom-0">Thể loại</th>
+                    <th class="border-bottom-0">Tác giả</th>
+                    {{!-- <th class="border-bottom-0">Payment Method</th>
+                    <th class="border-bottom-0">Payment Status</th> --}}
+                    <th class="border-bottom-0"></th>
+                    <th class="border-bottom-0"></th>
+                    <th class="border-bottom-0"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each booklist}}
+                <tr>
+                    {{!-- <td>034</td> --}}
+                    <td>{{this.name}}</td>
+                    <td>{{this.type.name}}</td>
+                    <td>{{this.author.name}}</td>
+                    {{!-- <td>Credit card</td> --}}
+                    {{!-- <td>
+                        <span class="label label-success">Approved</span>
+                    </td> --}}
+                    {{!-- <td>
+                        <a href="#" class="btn btn-outline-success btn-sm">View Order</a>
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-outline-danger btn-sm">Cancel</a>
+                    </td> --}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

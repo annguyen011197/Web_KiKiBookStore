@@ -1,30 +1,47 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../database/db')
-var controller = require('../controller/Controller')
-var sse = require('server-sent-events')
+var bookController = require('../controller/book')
+var accountController =require('../controller/account') 
+
+let info = {
+  email: "info@kikibook.com",
+  number: "1900000000"
+};
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  console.log(req.query)
-  controller.renderHome(req, res);
+  let data = {
+    title: "KiKi Bookstore",
+    info: info,
+    scripts: ["index/script.js"]
+  };
+ if(req.session.passport){
+    accountController.ReadAccount(req.session.passport.user)
+    .then((value)=>{
+      data.user = {
+        name: value.local.username
+      }
+      console.log(data)
+      res.render('index', data);
+    })
+    .catch(err=>{
+      res.render('index', data);
+    })
+ }else{
+  res.render('index', data);
+ }
 });
 
-router.get('/details',(req,res,next)=>{
-  controller.renderDetail(req,res)
-})
-
-router.get('/bookstore', (req, res) => {
-  //controller.renderHome(req, res);
+router.get('/category', (req, res) => {
   let data = {
-    title: 'KiKi Bookstore',
-    info: {
-      email: 'info@kikibook.com',
-      number: '1900000000'
-    }
+    title: "KiKi Bookstore",
+    info: info,
+    scripts: ["category/script.js"]
   };
   res.render('index', data);
 })
 
+<<<<<<< HEAD
 router.get('/category',(req,res)=>{
   controller.renderCategory(req, res);
 })
@@ -80,4 +97,55 @@ process.on('SIGINT', function () {
 process.on('uncaughtException', function(err) {
   console.log('Caught exception: ' + err);
 });
+=======
+router.get('/details', (req, res) => {
+  let id = req.query.id
+  if(req.session.passport){
+    accountController.ReadAccount(req.session.passport.user)
+    .then((value)=>{
+      bookController.GetBookDetail(id)
+      .then(val => {
+        let data = {
+          id: id,
+          title: "KiKi Bookstore",
+          info: info,
+          scripts: ["index/script.js"],
+          item: val
+        }
+        data.user = {
+          name: value.local.username
+        }
+        res.render('detail', data)
+      })
+    })
+    .catch(err=>{
+      bookController.GetBookDetail(id)
+      .then(val => {
+        let data = {
+          id: id,
+          title: "KiKi Bookstore",
+          info: info,
+          scripts: ["index/script.js"],
+          item: val
+        }
+        data.user = {
+          name: value.local.username
+        }
+        res.render('detail', data)
+      })
+    })
+ }else{
+  bookController.GetBookDetail(id)
+  .then(val => {
+    let data = {
+      id: id,
+      title: "KiKi Bookstore",
+      info: info,
+      scripts: ["index/script.js"],
+      item: val
+    }
+    res.render('detail', data)
+  })
+ }})
+>>>>>>> origin/ltanh2
 module.exports = router;

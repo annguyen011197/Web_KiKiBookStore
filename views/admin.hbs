@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 
@@ -175,3 +176,14 @@
 </body>
 
 </html>
+=======
+{{#if login}}
+    {{> adminLogin}}
+{{else}}
+ {{>adminHeader}}
+<div class="content" style="margin:20px 10px 20px 270px" id="content">
+    {{>adminContent}}
+</div>
+{{/if}}
+{{>Script scripts=this.scripts}}
+>>>>>>> origin/ltanh2

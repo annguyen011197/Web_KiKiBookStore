@@ -1,0 +1,15 @@
+{{#if user}}
+<li>
+    <p>Hello, <span><a href="">{{user.name}}</a></span></p>
+</li>
+<li>
+    <a class="logout" href="" id="logout-button">Đăng xuất</a>
+</li>
+{{else}}
+<li>
+    <a class="signin" href="#" id="signin-button">Đăng nhập</a>
+</li>
+<li>
+    <a class="signup" href="#" id="signup-button">Đăng ký</a>
+</li>
+{{/if}}
