@@ -78,7 +78,6 @@ ul {
     margin-right: 30px;
 }
 .overview{
-    background-color: #fff;
     height: 160pt;
 }
 .overview .card {
@@ -96,7 +95,7 @@ ul {
     float: left;
 }
 .float-right {
-    /* float: right; */
+    float: right;
 }
 .clearfix::after {
     content: "";
@@ -111,7 +110,7 @@ div.order-table {
     padding: 20px;
     background: #fff;
     clear: both;
-    margin-top: 30px;
+    margin-top: -30px;
 }
 .btn-outline-success {
     border: 1px #08D419 solid;
