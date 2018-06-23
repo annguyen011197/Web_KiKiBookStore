@@ -1,4 +1,8 @@
 # Web_KiKiBookStore
 Final Project
 
-Crawler Data: https://github.com/ABA-Team/crawler-selenium-nodejs
+# Project use:
++ Nodejs Express
++ Handlebars
++ Mongoose
++ Crawl data from fahasa.com: https://github.com/ABA-Team/crawler-selenium-nodejs

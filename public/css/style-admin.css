@@ -78,10 +78,7 @@ ul {
     margin-right: 30px;
 }
 .overview{
-<<<<<<< HEAD
-=======
     background-color: #fff;
->>>>>>> origin/ltanh2
     height: 160pt;
 }
 .overview .card {
@@ -99,11 +96,7 @@ ul {
     float: left;
 }
 .float-right {
-<<<<<<< HEAD
-    float: right;
-=======
     /* float: right; */
->>>>>>> origin/ltanh2
 }
 .clearfix::after {
     content: "";
@@ -118,11 +111,7 @@ div.order-table {
     padding: 20px;
     background: #fff;
     clear: both;
-<<<<<<< HEAD
-    margin-top: -30px;
-=======
     margin-top: 30px;
->>>>>>> origin/ltanh2
 }
 .btn-outline-success {
     border: 1px #08D419 solid;
@@ -141,8 +130,6 @@ div.order-table {
     background-color: #FF0017;
 }
 
-<<<<<<< HEAD
-=======
 
 /* 
 Book form */
@@ -268,4 +255,3 @@ Book form */
     display: inline-block;
     margin:0 auto;
 }
->>>>>>> origin/ltanh2

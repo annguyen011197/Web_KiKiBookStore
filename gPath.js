@@ -1,1 +1,1 @@
-module.exports.connectString = "mongodb+srv://annguyen:minhan@kikibookstore-9aubp.mongodb.net/KikiBookStore"
+module.exports.connectString = "mongodb://localhost:27017/KiKiBookStore"

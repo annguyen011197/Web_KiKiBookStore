@@ -122,36 +122,6 @@ router.get('/booksCategory', (req, res) => {
   .then(val=>res.send(val))
   .catch(err=>res.send({error:err}))
 })
-//Comments
-router.get('/comments', (req, res) => {
-  let id = req.query.id;
-
-  let offset = req.query.offset ?
-    parseInt(req.query.offset) : 1
-  let limit = req.query.limit ?
-    parseInt(req.query.limit) : 0
-  if (id == undefined) {
-    res.status(404)
-    res.send({ error: 'Id empty' })
-    return
-  }
-
-  if (offset === 0) {
-    res.status(404)
-    res.send({ error: 'Offset > 0' })
-    return
-  }
-
-  if (offset < 0 || limit < 0) {
-    res.status(404)
-    res.send({ error: 'Offset > 0' })
-    return
-  }
-
-  db.ReadBookCommentList(id, offset, limit)
-    .then(val => res.send(val))
-    .catch(err => res.send(err))
-})
 
 
 /*post*/
@@ -259,41 +229,4 @@ router.post('/book', (req, res) => {
     }
   }
 })
-/*Comments*/
-router.post('/comments', (req, res) => {
-  if (req.body.name && req.body.message
-    && req.body.title && req.body.idbook) {
-    let dateNow = new Date();
-    let data = {
-      id: req.body.idbook,
-      data: {
-        name: req.body.name,
-        title: req.body.title,
-        message: req.body.message,
-        date: dateNow
-      }
-    }
-    db.UpdateComments(data)
-    .then(val => res.send(val))
-    .catch(err => res.send(err))
-  } else {
-    if (req.body.name) {
-      res.send({ error: 'Must have name' })
-      return
-    }
-    if (req.body.message) {
-      res.send({ error: 'Must have message' })
-      return
-    }
-    if (req.body.title) {
-      res.send({ error: 'Must have title' })
-      return
-    }
-    if (req.body.idbook) {
-      res.send({ error: 'Must have id book' })
-      return
-    }
-  }
-})
-
 module.exports = router;

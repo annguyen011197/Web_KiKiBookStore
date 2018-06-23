@@ -41,20 +41,6 @@ class Database {
         })
     }
 
-<<<<<<< HEAD
-    LoadBooks(offset, limit, callback) {
-        console.log('Call LoadBooks');
-        Book.find({})
-            .populate({ path: 'type', select: 'name', model: 'BookType' })
-            .populate({ path: 'author', select: 'name', model: 'Author' })
-            .skip((offset - 1)* limit)
-            .limit(limit)
-            .exec((err, books) => {
-                if(err) throw err
-                books = this.execImagePath(books)
-                this.books = books
-                callback(books)
-=======
     CreateCategory(val) {
         console.log("Tao Category moi")
         var category = new Category({
@@ -65,18 +51,10 @@ class Database {
                 if (err) reject(err)
                 resolve(res)
                 console.log(`Tao thanh cong Category ${res.name}`)
->>>>>>> origin/ltanh2
             })
         })
     }
 
-<<<<<<< HEAD
-    LoadBookTypes(offset, limit, callback) {
-        // if (this.booktypes.length > 0 && offset != 0) {
-        //     callback(this.booktypes)
-        // } else {
-            BookType.find({})
-=======
     CreateBook(val) {
         console.log("Tao book moi")
         let book = new Book({
@@ -141,12 +119,12 @@ class Database {
               resolve(res)
           })
         })
+        
     }
 
     ReadBookList(offset, limit) {
         return new Promise((resolve, reject) => {
             Book.find({})
->>>>>>> origin/ltanh2
                 .skip((offset - 1) * limit)
                 .limit(limit)
                 .lean()
@@ -154,41 +132,7 @@ class Database {
                     if (err) reject(err)
                     resolve(res)
                 })
-<<<<<<< HEAD
-        //}
-    }
-
-    LoadAllTypes(callback){
-        // BookType.find({})
-        // .skip(offset * limit)
-        // .limit(limit)
-        // .exec((err, data) => {
-        //     this.booktypes = data
-        //     callback(data)
-        // })
-        let cursor = BookType.find({}).cursor()
-        callback(cursor)
-    }
-
-    LoadBooksCategory(offset, limit, type, callback) {
-        try{
-            Book.find({ 'type': type })
-            .populate({ path: 'type', select: 'name', model: 'BookType' })
-            .populate({ path: 'author', select: 'name', model: 'Author' })
-=======
         });
-    }
-
-    ReadBookCommentList(id,offset,limit) {
-        return new Promise((resolve, reject) => {
-            Book.find({_id:id}, {comments:{$slice:[(offset - 1)*limit, limit]}})
-            .lean()
-            .exec((err,res)=>{
-                //console.log(res[0].comments)
-                if(err) reject(err)
-                resolve(res[0].comments)
-            })
-          })
     }
 
     ReadBookListIndex(offset,limit) {
@@ -232,7 +176,6 @@ class Database {
     ReadCategoryList(offset,limit){
         return new Promise((resolve, reject) => {
             Category.find({})
->>>>>>> origin/ltanh2
             .skip((offset - 1) * limit)
             .limit(limit)
             .exec((err,res)=>{
@@ -307,27 +250,6 @@ class Database {
                     })
                 }
             })
-<<<<<<< HEAD
-        }catch(err){
-            console.log(err)
-            callback([],'')
-        }
-    }
-
-    LoadCountByCategory(type, callback){
-        Book.find({ 'type': type }).populate({ path: 'type', select: 'name', model: 'BookType' }).count(function(err, result) {
-            callback(result);
-       });
-       //return Book.find({ 'type': type }).populate({ path: 'type', select: 'name', model: 'BookType' }).count();
-    }
-
-    LoadCountBook(){
-        return new Promise((resolve, reject) => {
-            Book.count().exec((err,res)=>{
-                resolve(res)
-            })
-        });
-=======
         })
     }
 
@@ -351,22 +273,6 @@ class Database {
                         )
                     })
                 }
-            })
-        })
-    }
-    //Comment.id = id sách, Comment.data = data sách
-    UpdateComments(comment) {
-        return  new Promise((resolve, reject) => {
-            Book.update(
-                { _id: comment.id },
-                {
-                    $push: {
-                        comments: comment.data
-                    }
-                }
-            ).exec((err, res) => {
-                if (err) reject(err)
-                resolve({"message": "Update comment complete!"})
             })
         })
     }
@@ -414,7 +320,6 @@ class Database {
                 resolve(res)
             })
         })
->>>>>>> origin/ltanh2
     }
 
     async DeleteAuthorByName(val) {
@@ -429,17 +334,6 @@ class Database {
         })
     }
 
-<<<<<<< HEAD
-    Test(offset, limit, type, callback) {
-        console.log(type)
-        Book.find({ 'type': type })
-            .populate({ path: 'type', select: 'name', model: 'BookType' })
-            .populate({ path: 'author', select: 'name', model: 'Author' })
-            .skip((offset - 1) * limit)
-            .limit(limit)
-            .exec((err, books) => {
-                callback(books)
-=======
     async DeletePublisherByName(val) {
         let id
         await this.CheckPublisher({ name: val.name }).then(res => {
@@ -487,7 +381,6 @@ class Database {
             Category.find({ name: val.name }).exec((err, res) => {
                 if (err) reject(err)
                 resolve(res)
->>>>>>> origin/ltanh2
             })
         })
     }

@@ -1,8 +1,7 @@
 <div class="wrapper">
     <header>
-        {{>Header info=this.info user=this.user}}
+        {{>Header info=this.info}}
     </header>
-    <p id="idBook" hidden>{{this.id}}</p>
     <div class="menu-and-slide mt-20">
         <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
@@ -122,23 +121,9 @@
                 </p>
             </div>
         </div>
-        <div class="mt-20" id="comments">
-          {{> Comment}}
-        </div>
     </div>
     <footer>
         {{> Footer info=this.info}}
     </footer>
 </div>
-
-<script id="menu-template" type="text/x-handlebars-template">
-    \{{#each booktypes}}
-        <li><a href="/category?id=\{{this._id}}">\{{ this.name }}</a></li>
-    \{{/each}}
-    <a href="/category" style="color:blue;">Xem thêm</a>
-</script> 
-
 {{> Script scripts=this.scripts}} 
-<script>
-    loadComment($("#idBook").text());
-</script>
