@@ -27,8 +27,10 @@ function loadComment(id) {
   var commentContent = Handlebars.compile(commentContentSource)
   var comment = $("#comments");
   var btn = $("#btn-load-more");
+  var loader = $(".loader");
   var page = comment.attr("page");
   btn.hide();
+  loader.show();
   $.ajax({
     type: "get",
     url: "./api/comments",
@@ -46,6 +48,7 @@ function loadComment(id) {
       comment.attr("page",1 + parseInt(page));
       if(response.length == 5)
         btn.show();
+      loader.hide();
     }
   });
 
