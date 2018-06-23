@@ -233,27 +233,27 @@ router.post('/book', (req, res) => {
       })
   } else {
     res.status(404)
-    if (req.body.name) {
+    if (!req.body.name) {
       res.send({ error: 'Must have name' })
       return
     }
 
-    if (req.body.price) {
+    if (!req.body.price) {
       res.send({ error: 'Must have price' })
       return
     }
 
-    if (req.body.author) {
+    if (!req.body.author) {
       res.send({ error: 'Must have author' })
       return
     }
 
-    if (req.body.publisher) {
+    if (!req.body.publisher) {
       res.send({ error: 'Must have publisher' })
       return
     }
 
-    if (req.body.category) {
+    if (!req.body.category) {
       res.send({ error: 'Must have category' })
       return
     }
@@ -261,35 +261,36 @@ router.post('/book', (req, res) => {
 })
 /*Comments*/
 router.post('/comments', (req, res) => {
-  if (req.body.name && req.body.message
-    && req.body.title && req.body.idbook) {
+  if (req.body.message
+    && req.body.title && req.body.idBook) {
     let dateNow = new Date();
-    let data = {
-      id: req.body.idbook,
-      data: {
-        name: req.body.name,
-        title: req.body.title,
-        message: req.body.message,
-        date: dateNow
+    let idUser = req.session.passport.user;
+    db.ReadAccount(idUser).then(val => {
+      let data = {
+        id: req.body.idBook,
+        data: {
+          name: val.local.username,
+          title: req.body.title,
+          message: req.body.message,
+          date: dateNow
+        }
       }
-    }
-    db.UpdateComments(data)
-    .then(val => res.send(val))
-    .catch(err => res.send(err))
+      db.UpdateComments(data)
+      .then(val => res.send(val))
+      .catch(err => res.send(err))}
+    )
+    .catch(err =>  res.send({ error: 'Find name error' }));
   } else {
-    if (req.body.name) {
-      res.send({ error: 'Must have name' })
-      return
-    }
-    if (req.body.message) {
+    res.status(404)
+    if (!req.body.message) {
       res.send({ error: 'Must have message' })
       return
     }
-    if (req.body.title) {
+    if (!req.body.title) {
       res.send({ error: 'Must have title' })
       return
     }
-    if (req.body.idbook) {
+    if (!req.body.idBook) {
       res.send({ error: 'Must have id book' })
       return
     }

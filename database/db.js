@@ -229,6 +229,7 @@ class Database {
     ReadAccount(id){
         return new Promise((resolve, reject) => {
             Account.findById(id)
+            .lean()
             .exec((err,res)=>{
                 console.log(res)
                 if(err) reject(err)

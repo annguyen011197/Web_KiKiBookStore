@@ -122,8 +122,20 @@
                 </p>
             </div>
         </div>
-        <div class="mt-20" id="comments">
-          {{> Comment}}
+        <div class="mt-20">
+            <div class="ma-review-col1 span5">
+                <h2 class="own-review">Khách Hàng Nhận Xét</h2>
+                <dl>
+                    <div id="comments" page=1 >
+                        {{> Comment}}
+                    </div>
+                </dl>
+                <button onclick="runLoad()" id="btn-load-more">Load more</button>
+            </div>
+            
+        </div>
+        <div class="mt-20" id="form-comment">
+          {{> FormComment item.name}}
         </div>
     </div>
     <footer>
@@ -140,5 +152,8 @@
 
 {{> Script scripts=this.scripts}} 
 <script>
-    loadComment($("#idBook").text());
+    function runLoad(){
+        loadComment($("#idBook").text());   
+    }
+    runLoad();
 </script>
