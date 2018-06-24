@@ -4,7 +4,9 @@ body {
     background: #F0F0F0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-
+.top-promote img {
+    width: 100%;
+}
 .top-banner-block {
     height: 70px;
     background: #fff;
@@ -37,6 +39,9 @@ body {
 }
 .mt-20 {
     margin-top: 20px;
+}
+.mt-40 {
+    margin-top: 40px;
 }
 .mr-5 {
     margin-right: 5px;
