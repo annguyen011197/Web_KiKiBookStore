@@ -1,0 +1,47 @@
+<form id="review-form">
+    <fieldset>
+        <div>Bạn đang nhận xét cho:
+            <span class="color-black font-bold">{{this}}</span>
+        </div>
+        <span id="input-message-box"></span>
+        <ul class="form-list">
+            <li>
+                <label for="summary_field" class="required">
+                    <em>*</em>Tiêu đề</label>
+                <div class="input-box full-width">
+                    <input type="text" name="title" id="summary_field" class="input-text required-entry full-width" value="">
+                </div>
+            </li>
+            <li>
+                <label for="review_field" class="required">
+                    <em>*</em>Nhận xét</label>
+                <div class="input-box full-width">
+                    <textarea name="message" id="review_field" cols="5" rows="3" class="required-entry full-width validate-length-minimum-100"></textarea>
+                    <h6 class="pull-right" id="count-message">0 ký tự</h6>
+                </div>
+            </li>
+        </ul>
+    </fieldset>
+    <div class="review-rule col-md-12 col-sm-12 col-sms-12">
+        <div class="fhs-review-rule">
+            <span class="review-rule-header">Tiêu chí xét duyệt nhận xét:</span>
+            <ul class="review-item">
+                <li>Được viết bằng tiếng Việt, viết hoa đầu dòng, có dấu, không được viết tắt, ký tự không rõ nghĩa và không
+                    được trùng lặp.</li>
+                <li>Nội dung phải do chính người gửi nhận xét viết và chưa từng được đăng trên các website, diễn đàn khác.</li>
+                <li>Nhận xét phải dựa trên trải nghiệm, cảm nhận thực tế của khách hàng về sản phẩm, nêu rõ điểm tốt hoặc chưa
+                    tốt của sản phẩm.</li>
+                <li>Nhận xét mang tính quảng cáo, kêu gọi mua sản phẩm không liên quan sẽ không được chấp nhận.</li>
+                <li>Không nhận xét ác ý, tiêu cực nhằm bôi xấu sản phẩm.</li>
+                <li>Bài viết sẽ được phê duyệt trước khi được đăng công khai trên website.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="buttons-set">
+        <button type="button" title="Gửi nhận xét" class="button" onclick="return formSubmit();">
+            <span>
+                <span>Gửi nhận xét</span>
+            </span>
+        </button>
+    </div>
+</form>
