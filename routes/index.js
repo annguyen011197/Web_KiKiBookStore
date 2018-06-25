@@ -10,7 +10,6 @@ let info = {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  console.log(req.session.passport)
   let data = {
     title: "KiKi Bookstore",
     info: info,
@@ -44,15 +43,51 @@ router.get('/category', (req, res) => {
 
 router.get('/details', (req, res) => {
   let id = req.query.id
-  bookController.GetBookDetail(id)
-    .then(val => {
-      let data = {
-        title: "KiKi Bookstore",
-        info: info,
-        scripts: [""],
-        item: val
-      }
-      res.render('detail', data)
+  if(req.session.passport){
+    accountController.ReadAccount(req.session.passport.user)
+    .then((value)=>{
+      bookController.GetBookDetail(id)
+      .then(val => {
+        let data = {
+          id: id,
+          title: "KiKi Bookstore",
+          info: info,
+          scripts: ["index/script.js"],
+          item: val
+        }
+        data.user = {
+          name: value.local.username
+        }
+        res.render('detail', data)
+      })
     })
-})
+    .catch(err=>{
+      bookController.GetBookDetail(id)
+      .then(val => {
+        let data = {
+          id: id,
+          title: "KiKi Bookstore",
+          info: info,
+          scripts: ["index/script.js"],
+          item: val
+        }
+        data.user = {
+          name: value.local.username
+        }
+        res.render('detail', data)
+      })
+    })
+ }else{
+  bookController.GetBookDetail(id)
+  .then(val => {
+    let data = {
+      id: id,
+      title: "KiKi Bookstore",
+      info: info,
+      scripts: ["index/script.js"],
+      item: val
+    }
+    res.render('detail', data)
+  })
+ }})
 module.exports = router;

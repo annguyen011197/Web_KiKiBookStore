@@ -1,7 +1,8 @@
 <div class="wrapper">
     <header>
-        {{>Header info=this.info}}
+        {{>Header info=this.info user=this.user}}
     </header>
+    <p id="idBook" hidden>{{this.id}}</p>
     <div class="menu-and-slide mt-20">
         <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
@@ -121,9 +122,39 @@
                 </p>
             </div>
         </div>
+        <div class="mt-20">
+            <div class="ma-review-col1 span5">
+                <h2 class="own-review">Khách Hàng Nhận Xét</h2>
+                <dl>
+                    <div id="comments" page=1 >
+                        {{> Comment}}
+                    </div>
+                </dl>
+                <div class="loader" hidden></div>
+                <button onclick="runLoad()" id="btn-load-more">Load more</button>
+            </div>
+            
+        </div>
+        <div class="mt-20" id="form-comment">
+          {{> FormComment item.name}}
+        </div>
     </div>
     <footer>
         {{> Footer info=this.info}}
     </footer>
 </div>
+
+<script id="menu-template" type="text/x-handlebars-template">
+    \{{#each booktypes}}
+        <li><a href="/category?id=\{{this._id}}">\{{ this.name }}</a></li>
+    \{{/each}}
+    <a href="/category" style="color:blue;">Xem thêm</a>
+</script> 
+
 {{> Script scripts=this.scripts}} 
+<script>
+    function runLoad(){
+        loadComment($("#idBook").text());   
+    }
+    runLoad();
+</script>

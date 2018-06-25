@@ -67,6 +67,12 @@ var BookSchema = new Schema({
             required:true
         }
     },
+    comments:[{
+        name : String,
+        message : String,
+        title: String,
+        date : Date
+        }]
 })
 
 module.exports = mongoose.model('Book',BookSchema)
