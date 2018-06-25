@@ -5,7 +5,8 @@ const categoryController = require('../controller/category')
 const authorController = require('../controller/author')
 const publisherController = require('../controller/publisher')
 const bookController = require('../controller/book')
-
+const accountController = require('../controller/account')
+var nodemailer = require('nodemailer');
 /*get*/
 router.get('/books', (req, res) => {
   let offset = req.query.offset ?
@@ -122,6 +123,35 @@ router.get('/booksCategory', (req, res) => {
   .then(val=>res.send(val))
   .catch(err=>res.send({error:err}))
 })
+
+router.get('/reset', (req, res) => {
+    //res.setHeader('Content-Type', 'application/json');
+    //controller.getBook(req, res)
+    var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'letuananhdev@gmail.com',
+        pass: '954753855135'
+    }
+    });
+
+    var mailOptions = {
+    from: 'letuananhdev@gmail.com',
+    to: 'letuananh035@gmail.com',
+    subject: 'Sending Email using Node.js',
+    text: 'That was easy!'
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        res.send(error);
+    } else {
+        res.send('Email sent: ' + info.response);
+    }
+    }); 
+})
+
+
 //Comments
 router.get('/comments', (req, res) => {
   let id = req.query.id;
@@ -148,11 +178,38 @@ router.get('/comments', (req, res) => {
     return
   }
 
-  db.ReadBookCommentList(id, offset, limit)
+  bookController.GetBookComments(id, offset, limit)
     .then(val => res.send(val))
     .catch(err => res.send(err))
 })
 
+router.get('/verify', (req, res) => {
+  if(req.query.email && req.query.code){
+    accountController.ReadAccountExt({"local.email": req.query.email}).then(val =>{
+      let code = val.local.verify
+      if(code == "Active"){
+        res.send({ error: 'You already active!' })
+        return
+      }
+      if(code == req.query.code){
+        accountController.UpdateAccount( {find: {"local.email": req.query.email },update: { $set: { "local.verify" :  "Active" }}})
+        .then(val =>{
+          res.status(200)
+          res.redirect('/');
+        }).catch(err => {
+          res.status(404)
+          res.send({ error: err })
+        })
+      }else{
+        res.send({ error: 'Code not exitst!' })
+        return
+      }
+    })
+  }else{
+    res.send({ error: 'Must have email' })
+    return
+  }
+})
 
 /*post*/
 /*category*/
@@ -184,7 +241,7 @@ router.post('/author', (req, res) => {
     authorController.CheckAndCreate(author)
       .then(() => {
         res.status(200)
-        res.send('Success')
+        res.redirect('/');
       })
       .catch(err => {
         res.status(404)
@@ -275,7 +332,7 @@ router.post('/comments', (req, res) => {
           date: dateNow
         }
       }
-      db.UpdateComments(data)
+      bookController.PostComment(data)
       .then(val => res.send(val))
       .catch(err => res.send(err))}
     )
@@ -296,5 +353,73 @@ router.post('/comments', (req, res) => {
     }
   }
 })
+
+router.post('/testCreate', (req, res) => {
+  if (req.body.firstName
+    && req.body.secondName) {
+      let val = {
+        firstName: req.body.firstName,
+        secondName: req.body.secondName,
+        address: req.body.address,
+        birthday: req.body.birthday,
+        contactNumber: req.body.contactNumber
+      }
+      accountController.CreateAccountInfo(val)
+      .then(val => res.send(val._id))
+      .catch(err => res.send({ error: err }))
+    }
+    else {
+      res.status(404)
+      if (!req.body.firstName) {
+        res.send({ error: 'Must have firstName' })
+        return
+      }
+      if (!req.body.secondName) {
+        res.send({ error: 'Must have secondName' })
+        return
+      }
+    }
+
+})
+
+router.post('/verify', (req, res) => {
+  //res.setHeader('Content-Type', 'application/json');
+  //controller.getBook(req, res)
+  if(req.body.email){
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+          user: 'letuananhdev@gmail.com',
+          pass: '954753855135'
+      }
+      });
+      accountController.ReadAccountExt({"local.email": req.body.email}).then(val =>{
+        let code = val.local.verify
+        let url = "http://" + req.headers.host + "/api/verify?email=" + req.body.email + "&code=" + code;
+
+        var mailOptions = {
+          from: 'letuananhdev@gmail.com',
+          to: req.body.email,
+          subject: 'Active account KikiBook',
+          html: '<a href=\"'+ url +'\">Click me!</a> </br> or </br><p>'+url+'</p>'
+        };
+      
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+              res.send(error);
+          } else {
+              res.send('Email sent: ' + info.response);
+          }
+        }); 
+      })
+
+      
+  }else{
+    res.send({ error: 'Must have email' })
+    return
+  }
+ 
+})
+
 
 module.exports = router;

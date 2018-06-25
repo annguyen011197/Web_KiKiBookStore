@@ -7,7 +7,7 @@ const Category = require("./models/BookTypeModel")
 const Author = require("./models/AuthorModel")
 const Publisher = require("./models/PublisherModel")
 const Account = require('./models/AccountModel')
-
+const AccountInfoModel = require('./models/AccountInfoModel')
 class Database {
     constructor() {
         mongoose.connect(mongoDB).then(console.log("Connected"))
@@ -51,6 +51,25 @@ class Database {
                 if (err) reject(err)
                 resolve(res)
                 console.log(`Tao thanh cong Category ${res.name}`)
+            })
+        })
+    }
+
+    CreateAccountInfo(val) {
+        console.log("Tao Account Info moi")
+        var accountInfoModel = new AccountInfoModel({
+            firstName: val.firstName ? val.firstName : "",
+            secondName: val.secondName ? val.secondName : "",
+            address: val.address ? val.address : null,
+            birthday: val.birthday ? val.birthday : null,
+            contactNumber: val.contactNumber ? val.contactNumber : null
+        })
+        console.log(accountInfoModel);
+        return new Promise((resolve, reject) => {
+            accountInfoModel.save((err, res) => {
+                if (err) reject(err)
+                resolve(res)
+                console.log(`Tao thanh cong AccountInfoModel ${res._id}`)
             })
         })
     }
@@ -139,9 +158,8 @@ class Database {
             Book.find({_id:id}, {comments:{$slice:[(offset - 1)*limit, limit]}})
             .lean()
             .exec((err,res)=>{
-                //console.log(res[0].comments)
                 if(err) reject(err)
-                resolve(res[0].comments)
+                resolve(res)
             })
           })
     }
@@ -223,13 +241,50 @@ class Database {
               resolve(res)
           })
         })
-        
     }
 
     ReadAccount(id){
         return new Promise((resolve, reject) => {
             Account.findById(id)
+            .populate('accountInfo')
             .lean()
+            .exec((err,res)=>{
+                console.log(res)
+                if(err) reject(err)
+                resolve(res)
+            })
+        });
+    }
+
+    ReadAccountExt(value){
+        return new Promise((resolve, reject) => {
+            Account.find(value)
+            .populate('accountInfo')
+            .lean()
+            .exec((err,res)=>{
+                console.log(res)
+                if(err) reject(err)
+                resolve(res)
+            })
+        });
+    }
+
+
+    ReadAccountInfo(id){
+        return new Promise((resolve, reject) => {
+            AccountInfo.findById(id)
+            .lean()
+            .exec((err,res)=>{
+                console.log(res)
+                if(err) reject(err)
+                resolve(res)
+            })
+        });
+    }
+
+    UpdateAccount(val){
+        return new Promise((resolve, reject) => {
+            Account.update(val.find,val.update)
             .exec((err,res)=>{
                 console.log(res)
                 if(err) reject(err)
@@ -292,6 +347,22 @@ class Database {
     UpdateComments(comment) {
         return  new Promise((resolve, reject) => {
             Book.update(
+                { _id: comment.id },
+                {
+                    $push: {
+                        comments: comment.data
+                    }
+                }
+            ).exec((err, res) => {
+                if (err) reject(err)
+                resolve({"message": "Update comment complete!"})
+            })
+        })
+    }
+
+    UpdateInfoAccount(val) {
+        return  new Promise((resolve, reject) => {
+            Account.update(
                 { _id: comment.id },
                 {
                     $push: {

@@ -277,6 +277,9 @@ jQuery(document).ready(function ($) {
           if (res.code == 0) {
             location.reload()
           }
+        },
+        error: err =>{
+          alert(err.responseJSON.message);
         }
       });
     }
@@ -318,6 +321,17 @@ jQuery(document).ready(function ($) {
         },
         dataType: "json",
         success: (res) => {
+          $.ajax({
+            type: "post",
+            url: "/api/verify",
+            data: {
+              email: email
+            },
+            dataType: "json",
+            success: res => {
+              console.log(res)
+            }
+          });
           alert(res.message);
           if (res.code == 0) {
             location.reload()

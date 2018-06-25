@@ -41,6 +41,33 @@ router.get('/category', (req, res) => {
   res.render('index', data);
 })
 
+router.get('/account', (req, res) => {
+  if(req.session.passport){
+    accountController.ReadAccount(req.session.passport.user)
+    .then((value)=>{
+      let data = {
+        title: "KiKi Bookstore",
+        info: info,
+        scripts: ["category/script.js"]
+      };
+      if(value.accountInfo != undefined){
+        console.log(value.accountInfo)
+      }
+      res.render("account",data);
+    })
+    .catch(err=>{
+      res.send("404");
+    })
+ }else{
+  let data = {
+    title: "KiKi Bookstore",
+    info: info,
+    scripts: ["index/script.js"]
+  };
+  res.render("account",data);
+ }
+})
+
 router.get('/details', (req, res) => {
   let id = req.query.id
   if(req.session.passport){

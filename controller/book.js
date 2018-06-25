@@ -42,10 +42,26 @@ class BookController {
                 })
                 .catch(err => reject(err))
         })
-
     }
 
-
+    GetBookComments(id,offset,limit) {
+        return new Promise((resolve, reject) => {
+            db.ReadBookCommentList(id,offset,limit)
+                .then(res => {
+                    resolve(res[0].comments)
+                })
+                .catch(err => reject(err))
+        })
+    }
+    PostComment(comment){
+        return new Promise((resolve, reject) => {
+            db.UpdateComments(comment)
+                .then(res => {
+                    resolve({"message": "Update comment complete!"})
+                })
+                .catch(err => reject(err))
+        })
+    }
 }
 
 module.exports = new BookController()

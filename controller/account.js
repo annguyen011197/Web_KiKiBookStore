@@ -13,6 +13,44 @@ class AccountController{
             })
         });
     }
+
+    ReadAccountExt(value){
+        console.log(value)
+        return new Promise((resolve, reject) => {
+            db.ReadAccountExt(value)
+            .then(res=>{
+                resolve(res[0])
+            })
+            .catch(err=>{
+                reject(err)
+            })
+        });
+    }
+
+    CreateAccountInfo(val) {
+        return new Promise((resolve, reject) => {
+            db.CreateAccountInfo(val)
+            .then(res=>{
+                resolve(res)
+            })
+            .catch(err=>{
+                reject(err)
+            })
+        });
+    }
+
+    UpdateAccount(val){
+        return new Promise((resolve, reject) => {
+            db.UpdateAccount(val)
+            .then(res=>{
+                resolve(res)
+            })
+            .catch(err=>{
+                reject(err)
+            })
+        });
+    }
+    
 }
 
 module.exports = new AccountController()
