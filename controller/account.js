@@ -38,6 +38,18 @@ class AccountController{
         });
     }
 
+    UpdateAccountInfo(val){
+        return new Promise((resolve, reject) => {
+            db.UpdateAccountInfo(val)
+            .then(res=>{
+                resolve(res)
+            })
+            .catch(err=>{
+                reject(err)
+            })
+        });
+    }
+
     UpdateAccount(val){
         return new Promise((resolve, reject) => {
             db.UpdateAccount(val)

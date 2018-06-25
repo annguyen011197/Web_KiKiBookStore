@@ -55,9 +55,8 @@
                                 <div class="page-title">
                                     <h1>Chỉnh sửa thông tin tài khoản</h1>
                                 </div>
-                                <form action="https://www.fahasa.com/customer/account/editPost/" method="post" id="form-validate" autocomplete="off">
+                                <form id="form-validate">
                                     <div class="fieldset">
-                                        <input name="form_key" type="hidden" value="g4xbBwCehBxHrboF">
                                         <h2 class="legend">Thông tin tài khoản</h2>
                                         <ul class="form-list">
                                             <li class="fields">
@@ -66,14 +65,16 @@
                                                         <label for="firstname" class="required">
                                                             <em>*</em>Tên</label>
                                                         <div class="input-box">
-                                                            <input type="text" id="firstname" name="firstname" value="Tuấn Anh" title="Tên" maxlength="255" class="input-text required-entry">
+                                                            <input type="text" id="secondName" name="secondName" value="{{this.account.local.accountInfo.secondName}}" title="Tên" maxlength="255"
+                                                                class="input-text required-entry">
                                                         </div>
                                                     </div>
                                                     <div class="field name-lastname">
                                                         <label for="lastname" class="required">
                                                             <em>*</em>Họ</label>
                                                         <div class="input-box">
-                                                            <input type="text" id="lastname" name="lastname" value=" Lê" title="Họ" maxlength="255" class="input-text required-entry">
+                                                            <input type="text" id="firstName" name="firstName" value="{{this.account.local.accountInfo.firstName}}" title="Họ" maxlength="255"
+                                                                class="input-text required-entry">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -81,23 +82,32 @@
                                             <li>
                                                 <label for="email" class="required">Địa chỉ Email</label>
                                                 <div class="input-box">
-                                                    <input readonly="" type="text" name="email" id="email" value="letuananh035@gmail.com" title="Địa chỉ Email" class="input-text required-entry validate-email">
+                                                    <input readonly="" type="text" name="email" id="email" value="{{this.account.local.email}}" title="Địa chỉ Email" class="input-text required-entry validate-email">
                                                 </div>
                                             </li>
                                             <li>
-                                                <label for="company_id">Mã VIP Tổ Chức</label>
+                                                <label for="phone_number">Số điện thoại</label>
                                                 <div class="input-box">
-                                                    <input type="text" name="company_id" id="company_id" value="" title="Mã VIP Tổ Chức" class="input-text">
+                                                    <input type="text" name="phone_number" id="phone_number" value="{{this.account.local.accountInfo.contactNumber}}" title="Số điện thoại"
+                                                        class="input-text">
                                                 </div>
                                             </li>
                                             <li>
+                                                <label for="address">Địa chỉ</label>
+                                                <div class="input-box">
+                                                    <input type="text" name="address" id="address" value="{{this.account.local.accountInfo.address}}" title="Địa chỉ" class="input-text">
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <p id="date-hide" hidden>{{this.account.local.accountInfo.birthday}}</p>
                                                 <label for="month">Ngày Sinh</label>
                                                 <div class="input-box customer-dob">
                                                     <div class="dob-day">
-                                                        <input style="width: 60px !important; type=" text "=" " id="day " name="day " value=" " title="Day " class="input-text validate-custom ">
-             <label for="day ">DD</label>
-         </div><div class="dob-month " style="margin-left: 5px; ">
-             <input style="width: 60px !important; type=" text"="" id="month" name="month" value="" title="Tháng" class="input-text validate-custom">
+                                                        <input style="width: 60px !important;" type="text" id="day" name="day" value="" title="Ngày" class="input-text validate-custom">
+                                                        <label for="day ">DD</label>
+                                                    </div>
+                                                    <div class="dob-month " style="margin-left: 5px;">
+                                                        <input style="width: 60px !important;" type="text" id="month" name="month" value="" title="Tháng" class="input-text validate-custom">
                                                         <label for="month">MM</label>
                                                     </div>
                                                     <div class="dob-year" style="margin-left: 5px !important; width: 0px !important;">
@@ -111,30 +121,24 @@
 
                                                     <div class="validation-advice" style="display:none;"></div>
                                                 </div>
-                                                <script type="text/javascript">
-                                                    //<![CDATA[
-                                                    var customer_dob = new Varien.DOB('.customer-dob', false, '%d/%m/%Y');
-//]]>
-                                                </script>
-                                            </li>
-                                            <li>
-                                                <label for="gender">Giới tính</label>
-                                                <div class="input-box dropdownfhs" style="width: 190px !important">
-                                                    <select id="gender" name="gender" title="Giới tính">
-                                                        <option value="" selected="selected"></option>
-                                                        <option value="1">Nam</option>
-                                                        <option value="2">Nữ</option>
-                                                    </select>
-                                                </div>
-                                            </li>
-                                            <li class="control">
-                                                <input type="checkbox" name="change_password" id="change_password" value="1" onclick="setPasswordForm(this.checked)" title="Đổi mật khẩu"
-                                                    class="checkbox">
-                                                <label for="change_password">Đổi mật khẩu</label>
-                                            </li>
+                                                {{!-- <li>
+                                                    <label for="gender">Giới tính</label>
+                                                    <div class="input-box dropdownfhs" style="width: 190px !important">
+                                                        <select id="gender" name="gender" title="Giới tính">
+                                                            <option value="" selected="selected"></option>
+                                                            <option value="1">Nam</option>
+                                                            <option value="2">Nữ</option>
+                                                        </select>
+                                                    </div>
+                                                </li> --}}
+                                                <li class="control">
+                                                    <input type="checkbox" name="change_password" id="change_password" value="1" onclick="setPasswordForm(this.checked)" title="Đổi mật khẩu"
+                                                        class="checkbox">
+                                                    <label for="change_password">Đổi mật khẩu</label>
+                                                </li>
                                         </ul>
                                     </div>
-                                    <div class="fieldset" style="display:none;">
+                                    <div class="fieldset-password" hidden>
                                         <h2 class="legend">Đổi mật khẩu</h2>
                                         <ul class="form-list">
                                             <li>
@@ -142,7 +146,7 @@
                                                     <em>*</em>Mật khẩu hiện tại</label>
                                                 <div class="input-box">
                                                     <!-- This is a dummy hidden field to trick firefox from auto filling the password -->
-                                                    <input type="text" class="input-text no-display" name="dummy" id="dummy">
+                                                    <input type="text" class="input-text no-display" name="dummy" id="dummy" hidden>
                                                     <input type="password" title="Mật khẩu hiện tại" class="input-text" name="current_password" id="current_password">
                                                 </div>
                                             </li>
@@ -170,31 +174,13 @@
                                             <a href="../">
                                                 <small>« </small>Quay lại</a>
                                         </p>
-                                        <button type="submit" title="Lưu" class="button">
+                                       <button type="button" title="Lưu" class="button" onclick="return submitUpdate();">
                                             <span>
                                                 <span>Lưu</span>
                                             </span>
                                         </button>
                                     </div>
                                 </form>
-                                <script type="text/javascript">
-                                    //<![CDATA[
-                                    var dataForm = new VarienForm('form-validate', true);
-                                    function setPasswordForm(arg) {
-                                        if (arg) {
-                                            $('current_password').up(3).show();
-                                            $('current_password').addClassName('required-entry');
-                                            $('password').addClassName('required-entry');
-                                            $('confirmation').addClassName('required-entry');
-
-                                        } else {
-                                            $('current_password').up(3).hide();
-                                            $('current_password').removeClassName('required-entry');
-                                            $('password').removeClassName('required-entry');
-                                            $('confirmation').removeClassName('required-entry');
-                                        }
-    //]]>
-                                </script>
                             </div>
                         </div>
                     </div>
@@ -203,3 +189,11 @@
         </div>
     </div>
 </div>
+<script id="menu-template" type="text/x-handlebars-template">
+    \{{#each booktypes}}
+        <li><a href="/category?id=\{{this._id}}">\{{ this.name }}</a></li>
+    \{{/each}}
+    <a href="/category" style="color:blue;">Xem thêm</a>
+</script> 
+
+{{> Script scripts=this.scripts}} 

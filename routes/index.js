@@ -48,7 +48,8 @@ router.get('/account', (req, res) => {
       let data = {
         title: "KiKi Bookstore",
         info: info,
-        scripts: ["category/script.js"]
+        scripts: ["account/script.js"],
+        account: value
       };
       if(value.accountInfo != undefined){
         console.log(value.accountInfo)
@@ -62,7 +63,7 @@ router.get('/account', (req, res) => {
   let data = {
     title: "KiKi Bookstore",
     info: info,
-    scripts: ["index/script.js"]
+    scripts: ["account/script.js"],
   };
   res.render("account",data);
  }
@@ -95,7 +96,7 @@ router.get('/details', (req, res) => {
           id: id,
           title: "KiKi Bookstore",
           info: info,
-          scripts: ["index/script.js"],
+          scripts: ["detail/script.js"],
           item: val
         }
         data.user = {
@@ -111,7 +112,7 @@ router.get('/details', (req, res) => {
       id: id,
       title: "KiKi Bookstore",
       info: info,
-      scripts: ["index/script.js"],
+      scripts: ["detail/script.js"],
       item: val
     }
     res.render('detail', data)

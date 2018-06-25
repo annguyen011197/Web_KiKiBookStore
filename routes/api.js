@@ -6,6 +6,7 @@ const authorController = require('../controller/author')
 const publisherController = require('../controller/publisher')
 const bookController = require('../controller/book')
 const accountController = require('../controller/account')
+const Account = require('../database/models/AccountModel')
 var nodemailer = require('nodemailer');
 /*get*/
 router.get('/books', (req, res) => {
@@ -382,9 +383,71 @@ router.post('/testCreate', (req, res) => {
 
 })
 
+router.post('/updateAccount', (req, res) => {
+  if (req.body.firstName
+    && req.body.secondName && req.session.passport.user) {
+      var update = {
+        firstName: req.body.firstName,
+        secondName: req.body.secondName,
+        address: req.body.address,
+        birthday: req.body.birthday,
+        contactNumber: req.body.contactNumber
+      }
+      accountController.ReadAccount(req.session.passport.user).then(account=>{
+          let passwordNew = req.body.passwordNew;
+          if(req.body.passwordNow && req.body.passwordNew){
+            if(!(new Account(account)).validPassword(req.body.passwordNow)){
+              res.send({ error: "Mật khẩu hiện tại nhập sai" })
+              return;
+            }else{
+              passwordNew = (new Account(account)).generateHash(req.body.passwordNew);
+            }
+          }else{
+            passwordNew = account.local.password;
+          }
+          if(!account.local.accountInfo){
+            accountController.CreateAccountInfo(update)
+            .then(data => {
+              accountController.UpdateAccount({find: {_id: req.session.passport.user},update:{"local.accountInfo": data._id,"local.password": passwordNew}}).then(result=>{
+                res.send({ message: 'Update Complete!' })
+              }).catch(err => res.send({ error: err }))
+            })
+            .catch(err => res.send({ error: err }))
+          }else{
+            accountController.UpdateAccount({find: {_id: req.session.passport.user},update:{"local.password": passwordNew}}).then(result=>{
+              accountController.UpdateAccountInfo({find:{_id: account.local.accountInfo._id},update:{
+                $set:{
+                  firstName: req.body.firstName,
+                  secondName: req.body.secondName,
+                  address: req.body.address,
+                  birthday: req.body.birthday,
+                  contactNumber: req.body.contactNumber
+                }
+              }}).then(result=>{
+                res.send({ message: 'Update Complete!' })
+              }).catch(err => res.send({ error: err }))
+            }).catch(err => res.send({ error: err }))
+          }
+      }).catch(err => res.send(err))
+    }
+    else {
+      res.status(404)
+      if (!req.body.firstName) {
+        res.send({ error: 'Must have firstName' })
+        return
+      }
+      if (!req.body.secondName) {
+        res.send({ error: 'Must have secondName' })
+        return
+      }
+      if(!req.session.passport.user){
+        res.send({ error: 'Must login' })
+        return
+      }
+    }
+})
+
 router.post('/verify', (req, res) => {
-  //res.setHeader('Content-Type', 'application/json');
-  //controller.getBook(req, res)
   if(req.body.email){
     var transporter = nodemailer.createTransport({
       service: 'gmail',

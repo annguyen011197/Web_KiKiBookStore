@@ -246,7 +246,11 @@ class Database {
     ReadAccount(id){
         return new Promise((resolve, reject) => {
             Account.findById(id)
-            .populate('accountInfo')
+            .populate({
+                path:'local.accountInfo',
+                select:'firstName secondName address birthday contactNumber',
+                model: 'AccountInfo'
+            })
             .lean()
             .exec((err,res)=>{
                 console.log(res)
@@ -259,7 +263,11 @@ class Database {
     ReadAccountExt(value){
         return new Promise((resolve, reject) => {
             Account.find(value)
-            .populate('accountInfo')
+            .populate({
+                path:'local.accountInfo',
+                select:'firstName secondName address birthday contactNumber',
+                model: 'AccountInfo'
+            })
             .lean()
             .exec((err,res)=>{
                 console.log(res)
@@ -272,8 +280,19 @@ class Database {
 
     ReadAccountInfo(id){
         return new Promise((resolve, reject) => {
-            AccountInfo.findById(id)
+            AccountInfoModel.findById(id)
             .lean()
+            .exec((err,res)=>{
+                console.log(res)
+                if(err) reject(err)
+                resolve(res)
+            })
+        });
+    }
+
+    UpdateAccountInfo(val){
+        return new Promise((resolve, reject) => {
+            AccountInfoModel.update(val.find,val.update)
             .exec((err,res)=>{
                 console.log(res)
                 if(err) reject(err)
