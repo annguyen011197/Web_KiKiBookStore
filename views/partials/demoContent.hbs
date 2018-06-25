@@ -1,0 +1,22 @@
+<div class="content" style="margin:20px 10px 20px 270px" id="content">
+</div>
+
+{{!-- Template --}}
+<script id="form-dashboard" type="text/x-handlebars-template">
+  <ul class="responsive-table">
+    <li class="table-header">
+      <div class="col col-1">Name</div>
+      <div class="col col-2">Category</div>
+      <div class="col col-3">Author</div>
+      <div class="col col-4">Price</div>
+    </li>
+    \{{#each booklist}}
+        <li class="table-row">
+      <div class="col col-1" data-label="Name">\{{this.name}}</div>
+      <div class="col col-2" data-label="Category">\{{this.type.name}}</div>
+      <div class="col col-3" data-label="Author">\{{this.author.name}}</div>
+      <div class="col col-4" data-label="Price">\{{this.price}}</div>
+    </li>
+    \{{/each}}
+  </ul>
+</script>

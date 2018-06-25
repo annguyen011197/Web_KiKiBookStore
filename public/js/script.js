@@ -131,10 +131,8 @@ jQuery(document).ready(function ($) {
     $.ajax({
       type: "GET",
       url: "/users/logout",
-      success:  (res)=>{
-        if(res.redirect){
-          window.location.href = res.redirect
-        }
+      success: ()=>{
+        location.reload()
       }
     });
   })
@@ -272,11 +270,14 @@ jQuery(document).ready(function ($) {
         },
         dataType: "json",
         success: res => {
-          console.log(res)
           alert(res.message);
           if (res.code == 0) {
             location.reload()
           }
+        },
+        error: (res)=>{
+          console.log(res)
+          alert(res.responseJSON.message);
         }
       });
     }

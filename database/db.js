@@ -151,7 +151,7 @@ class Database {
             Book.find({})
                 .skip((offset - 1) * limit)
                 .limit(limit)
-                .select('name author price image')
+                .select('name author price image type')
                 .lean()
                 .exec((err, res) => {
                     if (err) reject(err)

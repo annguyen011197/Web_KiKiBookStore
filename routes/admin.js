@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
+var accountController = require('../controller/account')
 
 router.route('/')
     .get((req, res) => {
         let data = {
-            login : true,
+            login: true,
             css: [
                 "adminLogin/vendor/bootstrap/css/bootstrap.min.css",
                 "adminLogin/fonts/font-awesome-4.7.0/css/font-awesome.min.css",
@@ -29,7 +30,27 @@ router.route('/')
                 "js/main.js"
             ],
         }
-        res.render('admin',data)
+        if (req.session.passport) {
+            let user = accountController.ReadAccount(req.session.passport.user)
+            .then(user=>{
+                if (user.local) {
+                    data.login = false
+                    data.user = user
+                    data.scripts = [
+                        'script.js',
+                        'admin/script.js'
+                    ]
+                    data.css = ['css/style-admin.css']
+                    data.admin = true
+                }
+                res.render('admin', data)
+            })
+            .catch(err=>{
+                res.render('admin', data)
+            })
+        return
+        }
+        res.render('admin', data)
     })
 
 module.exports = router;

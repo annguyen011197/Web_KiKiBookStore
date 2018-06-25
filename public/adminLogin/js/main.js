@@ -69,14 +69,30 @@
         
     });
 
+
 })(jQuery);
 
 function Login(){
     let username= $("input[name=username]").val(),
-        passowrd= $("input[name=pass]").val()
-    let data = {
-        username: username,
-        passowrd: passowrd
+        password= $("input[name=pass]").val()
+    if(!/^[a-zA-Z0-9]+$/.test(username)){
+        alert('Username Wrong')
+        return
     }
-    console.log(data)
+    $.ajax({
+        type: "post",
+        url: "/users/login",
+        data: {
+            email:username,
+            password:password,
+            type:'admin'
+        },
+        dataType: "json",
+        success: res => {
+          alert(res.message);
+          if (res.code == 0) {
+            location.reload()
+          }
+        }
+      });
 }

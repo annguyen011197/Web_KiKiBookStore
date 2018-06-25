@@ -21,6 +21,8 @@ class BookController {
                     res.forEach((e, i, a) => {
                         a[i].name = utils.UpperWord(e.name)
                         a[i].author.name = utils.UpperWord(e.author.name)
+                        a[i].type.name = utils.UpperWord(e.type.name)
+                        a[i].price = (e.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
                     })
                     resolve(res)
                 })
