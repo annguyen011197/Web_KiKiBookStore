@@ -40,7 +40,9 @@ router.route("/signup").post((req, res, next) => {
 });
 
 router.route("/login").post((req, res) => {
+  console.log(req.body)
   passport.authenticate("local-login", (err, user, info) => {
+
     if (err) {
       res.status(404);
       return res.send({
@@ -50,6 +52,7 @@ router.route("/login").post((req, res) => {
     if (!user) {
       if (info) {
         res.status(401);
+        console.log(info)
         return res.send({
           message: info.message
         });
@@ -62,7 +65,6 @@ router.route("/login").post((req, res) => {
           message: err
         });
       }
-      console.log(req.body.remember)
       if(req.body.remember){
         //30 days
         req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000
@@ -78,8 +80,8 @@ router.route("/login").post((req, res) => {
 
 router.route('/logout')
 .get((req,res)=>{
-  req.logout()
-  res.render('index');
+  req.logout();
+  res.redirect('/')
 })
 
 module.exports = router;

@@ -1,9 +1,12 @@
+<div class="top-promote">
+    <img src="./images/top-promo.jpg" class="img-responsive" alt="top-promote">
+</div>
 <div class="wrapper">
     <header>
         {{> Header info=this.info user=this.user}}
     </header>
     <p>{{message}}</p>
-    <div class="menu-and-slide mt-20">
+    <div class="menu-and-slide mt-40">
         <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <nav class="main-menu" id="menu">
@@ -14,7 +17,7 @@
                 </nav>
             </div>
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
-                + {{> Slider}} + </div>
+                 {{> Slider}}  </div>
         </div>
     </div>
     <div class="content">
@@ -30,7 +33,7 @@
 {{!Template }}
 <script id="content-template" type="text/x-handlebars-template">
     <div class="new-book-panel">
-        <div class="panel panel-primary">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">\{{ name }}</h3>
             </div>

@@ -9,8 +9,6 @@ var content = $("#content")
 getBookList(offset,limit)
 
 function getBookList(offset,limit){
-
-    
     $.ajax({
         type: "get",
         url: "./api/books",

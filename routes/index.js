@@ -10,6 +10,7 @@ let info = {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  console.log(req.session)
   let data = {
     title: "KiKi Bookstore",
     info: info,
@@ -21,7 +22,6 @@ router.get('/', function (req, res, next) {
       data.user = {
         name: value.local.username
       }
-      console.log(data)
       res.render('index', data);
     })
     .catch(err=>{

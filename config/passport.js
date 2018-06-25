@@ -81,28 +81,6 @@ module.exports = function (passport) {
     )
   );
 
-  // passport.use('local-login', new LocalStrategy(
-  //   {
-  //     usernameField: "email",
-  //     passwordField: "password",
-  //     passReqToCallback: true
-  //   },
-  //   (req, email, password, done) => {
-  //     process.nextTick(() => {
-  //       User.findOne({ 'local.email': email })
-  //         .exec((err, user) => {
-  //           if (err)
-  //             return done(err)
-  //           if (!user)
-  //             return done(null, false, req.flash('loginMessage', 'No user found.'))
-  //           if(!user.validPassword(password))
-  //             return done(null,false,req.flash('loginMessage', 'Wrong Password'))
-  //           return done(null,user,req.flash('loginMessage','Succesful'))
-  //         })
-  //     })
-  //   }
-  // ))
-
   passport.use('local-login', new LocalStrategy(
     {
       usernameField: "email",
@@ -111,18 +89,38 @@ module.exports = function (passport) {
     },
     (req, email, password, done) => {
       process.nextTick(() => {
-        User.findOne({ 'local.email': email })
-          .exec((err, user) => {
-            if (err)
-              return done(err)
-            if (!user)
-              return done(null, false, {message:'No user found'})
-            if(!user.validPassword(password))
-              return done(null,false,{message:'Wrong password'})
-            if(!user.local.verify != "Active")
-              return done(null,false,{message:'Must active email'})
-            return done(null,user,{message:'Succesful'})
+        if(req.body.type=='admin'){
+          User.findOne({ 
+            'local.username': email
           })
+            .exec((err, user) => {
+              if (err)
+                return done(err)
+              if (!user)
+                return done(null, false, { message: 'No user found' })
+              if (!user.validPassword(password))
+                return done(null, false, { message: 'Wrong password' })
+              if( user.local.verify != "Active")
+                return done(null,false,{message:'Must active email'})
+              return done(null, user, { message: 'Succesful' })
+            })
+        }else{
+          User.findOne({ 
+            'local.email': email,
+          })
+            .exec((err, user) => {
+              if (err)
+                return done(err)
+              if (!user)
+                return done(null, false, { message: 'No user found' })
+              if (!user.validPassword(password))
+                return done(null, false, { message: 'Wrong password' })
+              if(user.local.verify != "Active")
+                return done(null,false,{message:'Must active email'})
+              return done(null, user, { message: 'Succesful' })
+            })
+        }
+
       })
     }
   ))
