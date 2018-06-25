@@ -4,7 +4,9 @@ body {
     background: #F0F0F0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-
+.top-promote img {
+    width: 100%;
+}
 .top-banner-block {
     height: 70px;
     background: #fff;
@@ -37,6 +39,9 @@ body {
 }
 .mt-20 {
     margin-top: 20px;
+}
+.mt-40 {
+    margin-top: 40px;
 }
 .mr-5 {
     margin-right: 5px;
@@ -138,7 +143,33 @@ footer a {
 
 .dropbtn:active { border-style: outset;}
 
+
+.carousel-inner>.item>img {
+    width:100%;
+    height: 100%;
+    margin-top: -20px;
+}
+.kiki-banner img {
+    width:100%;
+    height: auto;
+}
 @media only screen and (max-width: 768px) {
+    .bn3 {
+        margin-top: 20px;
+    }
+    .carousel-inner {
+        margin-top: 20px;
+        width: 100%;
+        height: 250px;
+    }
+    .carousel-inner>.item>img {
+        width:100%;
+        height: 250px;
+        margin-top: -20px;
+    }
+    .wrapper {
+        margin: 0 5px 0 5px;
+    }
     .remove-content {
         display: none;
     }
