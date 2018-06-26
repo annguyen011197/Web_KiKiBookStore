@@ -64,6 +64,16 @@ class BookController {
                 .catch(err => reject(err))
         })
     }
+
+    SearchBookList(offset, limit, option){
+        return new Promise((resolve, reject) => {
+            db.SearchBookList(offset, limit, option)
+                .then(res => {
+                    resolve(res)
+                })
+                .catch(err => reject(err))
+        })
+    }
 }
 
 module.exports = new BookController()

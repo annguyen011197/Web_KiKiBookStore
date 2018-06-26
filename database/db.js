@@ -8,6 +8,7 @@ const Author = require("./models/AuthorModel")
 const Publisher = require("./models/PublisherModel")
 const Account = require('./models/AccountModel')
 const AccountInfoModel = require('./models/AccountInfoModel')
+const normalize = require('normalize-strings');
 class Database {
     constructor() {
         mongoose.connect(mongoDB).then(console.log("Connected"))
@@ -150,6 +151,39 @@ class Database {
                     if (err) reject(err)
                     resolve(res)
                 })
+        });
+    }
+
+    SearchBookList(offset, limit, option) {
+        let search = {}  
+        if(option.moneyMin && option.moneyMax){
+            search.price = { $gte: option.moneyMin, $lte: option.moneyMax }
+        }
+        if(option.author){
+            search["author.id"] = option.author;
+        }
+        if(option.type){
+            search["type.id"] = option.type;
+        }
+        const wordSearch = option.name ? normalize(option.name) : "";
+        return new Promise((resolve, reject) => {
+            Book.find(search)
+            .lean()
+            .sort(option.sort)
+            .exec((err, res) => {
+                if (err) reject(err)
+                if(wordSearch != ""){
+                    let result = [];
+                    res.forEach(element => {
+                        const nameNoUnicode = normalize(element.name);
+                        if(nameNoUnicode.indexOf(wordSearch) >= 0 || wordSearch == ""){
+                            result.push(element);
+                        }
+                    });
+                    resolve(result.slice((offset - 1)*limit, offset*limit))
+                }
+                resolve(res.slice((offset - 1)*limit, offset*limit))
+            })
         });
     }
 
