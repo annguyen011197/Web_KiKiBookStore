@@ -1,3 +1,42 @@
+$('.oder-button').hover((event)=>{
+  event.preventDefault()
+  let e = $(event.target)
+  e.append(' Thêm vào giỏ hàng')
+  e.stop(true, false).animate({ width: "300px" })
+},(event)=>{
+  event.preventDefault()
+  let e = $(event.target)
+  let span =   e.find('span')
+  e.empty()
+  e.html(span)
+  e.stop(true, false).animate({ width: "60px" })
+})
+
+let tempid = getCookie('tempID')
+
+$('.oder-button').on('click',(event)=>{
+  event.preventDefault()
+  let data = {
+    product: $('#idBook').text(),
+    size: $(`input[name='quantity'`).val()
+  }
+  data.size  = data.size.length > 0 ? data.size : 1
+  tempid = getCookie('tempID')
+  if(tempid.length > 0){
+    data.id = tempid
+  }
+  ajax({
+    type:'post',
+    url:'./api/cart',
+    data:data,
+    dataType:'json'
+  }).then(res=>{
+    console.log(res)
+    tempid = res.id
+    document.cookie = 'tempID='+res.id
+    $('#cart-size').html(res.size)
+  })
+})
 
 function loadComment(id) {
   var commentContentSource = $("#list-comment").html()

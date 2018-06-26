@@ -12,6 +12,7 @@ const Author = require("./models/AuthorModel")
 const Publisher = require("./models/PublisherModel")
 const Account = require('./models/AccountModel')
 const AccountInfoModel = require('./models/AccountInfoModel')
+const Cart = require('./models/Cart')
 class Database {
     constructor() {
         mongoose.connect(mongoDB).then(console.log("Connected"))
@@ -134,6 +135,45 @@ class Database {
                 })
                 .catch(err => reject(err))
         })
+    }
+
+    SetCart(val){
+        return new Promise((resolve, reject) => {
+            Cart.findOne({'user.id':val.id})
+            .exec((err,res)=>{
+                if(err) reject(err)
+                if(res){
+                    res.date = new Date()
+                    let size = res.value.get(val.product)
+                    res.value.set(val.product,size ? size+val.size : val.size)
+                    res.size = res.size + val.size
+                    res.save()
+                    resolve(res.size)
+                }else{
+                    let cart = new Cart({
+                        date: new Date(),
+                        'user.id': val.id,
+                        value:{},
+                        size: 0
+                    })
+                    cart.value.set(val.product,val.size)
+                    cart.size = cart.size + val.size
+                    cart.save()
+                    resolve(cart.size)
+                }
+            })
+        })
+    }
+
+    GetSizeCart(id){
+        return new Promise((resolve, reject) => {
+            Cart.findOne({'user.id':id})
+            .select('size')
+            .exec((err,res)=>{
+                if(err) reject(err)
+                resolve(res.size.toString())
+            })
+        });
     }
 
     SaveImage(base64) {
@@ -274,8 +314,6 @@ class Database {
         })
     }
 
-
-
     ReadAccount(id) {
         return new Promise((resolve, reject) => {
             Account.findById(id)
@@ -309,7 +347,6 @@ class Database {
             })
         });
     }
-
 
     ReadAccountInfo(id){
         return new Promise((resolve, reject) => {
@@ -554,6 +591,7 @@ class Database {
                 })
         })
     }
+
     CheckCategoryAndCreate(val) {
         return new Promise((resolve, reject) => {
             this.CheckCategory(val)
@@ -572,6 +610,7 @@ class Database {
                 })
         })
     }
+
     CheckPublisherAndCreate(val) {
         return new Promise((resolve, reject) => {
             this.CheckPublisher(val)

@@ -60,10 +60,12 @@ input[type=text] {
     font-size: 12px;
 }
 button[type=button] {
-    width: 60px;
+    width: fit-content;
     font-size: 18px;
     height: 40px;
+    min-width: 60px;
 }
+
 
 div.shopping-cart span {
     font-size: 30px;

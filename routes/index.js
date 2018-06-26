@@ -83,11 +83,13 @@ router.get('/details', (req, res) => {
           id: id,
           title: "KiKi Bookstore",
           info: info,
-          scripts: ["index/script.js","script.js"],
+          scripts: ["detail/script.js","script.js"],
           item: val
         }
-        data.user = {
-          name: value.local.username
+        if(value){
+          data.user = {
+            name: value.local.username
+          }
         }
         res.render('detail', data)
       })
@@ -99,7 +101,7 @@ router.get('/details', (req, res) => {
           id: id,
           title: "KiKi Bookstore",
           info: info,
-          scripts: ["index/script.js","script.js"],
+          scripts: ["detail/script.js","script.js"],
           item: val
         }
         data.user = {
@@ -115,7 +117,7 @@ router.get('/details', (req, res) => {
       id: id,
       title: "KiKi Bookstore",
       info: info,
-      scripts: ["detail/script.js"],
+      scripts: ["detail/script.js","script.js"],
       item: val
     }
     res.render('detail', data)

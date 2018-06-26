@@ -3,6 +3,7 @@ var menuContent = Handlebars.compile(menuContentSource)
 var menu = $("#types")
 
 loadCategory()
+setCartSize()
 
 function loadCategory() {
   $.ajax({
@@ -334,3 +335,17 @@ jQuery.fn.putCursorAtEnd = function () {
     }
   });
 };
+
+function setCartSize(){
+  let tempid = getCookie('tempID')
+  let url = 'api/cartsize'
+  if(tempid.length > 0){
+    url = `${url}?id=${tempid}`
+  }
+  ajax({
+    type:'get',
+    url:url,
+  }).then(res=>{
+    $('#cart-size').html(res)
+  })
+}
