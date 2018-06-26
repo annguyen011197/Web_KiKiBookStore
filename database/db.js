@@ -12,7 +12,11 @@ const Author = require("./models/AuthorModel")
 const Publisher = require("./models/PublisherModel")
 const Account = require('./models/AccountModel')
 const AccountInfoModel = require('./models/AccountInfoModel')
+<<<<<<< HEAD
 const Cart = require('./models/Cart')
+=======
+const normalize = require('normalize-strings');
+>>>>>>> ltanh2
 class Database {
     constructor() {
         mongoose.connect(mongoDB).then(console.log("Connected"))
@@ -214,7 +218,47 @@ class Database {
         });
     }
 
+<<<<<<< HEAD
     ReadBookCommentList(id, offset, limit) {
+=======
+    SearchBookList(option) {
+        let search = {}  
+        if(option.moneyMin && option.moneyMax){
+            search.price = { $gte: option.moneyMin, $lte: option.moneyMax }
+        }
+        if(option.author){
+            search["author.id"] = option.author;
+        }
+        if(option.type){
+            search["type.id"] = option.type;
+        }
+        const wordSearch = option.name ? normalize(option.name) : "";
+        return new Promise((resolve, reject) => {
+            Book.find(search)
+            .lean()
+            .sort(option.sort)
+            .exec((err, res) => {
+                if (err) reject(err)
+                if(wordSearch != ""){
+                    let result = [];
+                    if(res)
+                        res.forEach(element => {
+                            const nameNoUnicode = normalize(element.name);
+                            if(nameNoUnicode.indexOf(wordSearch) >= 0 || wordSearch == ""){
+                                result.push(element);
+                            }
+                        });
+                    resolve(result)
+                }else{
+                    resolve(res)
+                }
+               
+            })
+        });
+    }
+
+    ReadBookCommentList(id,offset,limit) {
+>>>>>>> ltanh2
         return new Promise((resolve, reject) => {
             Book.find({_id:id}, {comments:{$slice:[(offset - 1)*limit, limit]}})
             .lean()
@@ -298,7 +342,11 @@ class Database {
         });
     }
 
+<<<<<<< HEAD
     ReadBookListType(offset, limit, id) {
+=======
+    ReadBookListType(id){
+>>>>>>> ltanh2
         return new Promise((resolve, reject) => {
             Category.findById(id)
                 .populate({

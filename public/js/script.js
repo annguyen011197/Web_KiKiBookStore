@@ -65,6 +65,18 @@ function validateUsername(text) {
 }
 
 jQuery(document).ready(function ($) {
+  $(".search-button").click(function() {
+    window.location.href = '/search?name=' + $(".form-control").val();
+   }); 
+  $(".form-control").keypress(function(e) {
+    if(e.which == 13) {
+      window.location.href = '/search?name=' + $(".form-control").val();
+      event.preventDefault();
+      return false;
+    }
+  });
+
+
   var $form_modal = $('.user-modal'),
     $form_login = $form_modal.find('#login'),
     $form_signup = $form_modal.find('#signup'),
