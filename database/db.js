@@ -191,12 +191,11 @@ class Database {
           Cart.findOne({'user.id':val,status:'new'})
           .populate({
             path: 'books',
-            select: 'name price image',
+            select: 'name price image author',
             model: 'Book'
             })
           .exec((err,res)=>{
             if (err) reject(err)
-            console.log(res)
             resolve(res)
           })
         })

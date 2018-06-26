@@ -26,7 +26,6 @@ class BookController {
                         a[i].price = (e.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
                         a[i].image.forEach((el,il,al)=>{
                             al[il] = utils.validURL(el) ? el : `/media/${el}`
-                            console.log(al[il])
                         })
                     })
                     resolve(res)

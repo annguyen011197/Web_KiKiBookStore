@@ -19,27 +19,32 @@
     <div class="cart-content">
         <h4>GIỎ HÀNG</h4>
         <div class="row">
+
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+            {{#each cartlist.books}}
                 <div class="cart-detail">
                     <div class="row">
+
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                            <img class="img-responsive" src="https://vcdn.tikicdn.com/cache/175x175/media/catalog/product/c/o/combo_17.jpg">
+                            <img class="img-responsive" src={{this.image.[0]}} onerror="this.src='../images/null.jpg'">
                         </div>
                         <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                            <a class="title" href="#">Another (Trọn bộ 2 tập)</a>
+                            <a class="title" href="#">{{this.name}}</a>
                             <p class="author">Tác giả:
-                                <a href="#">Yukito Ayatsuji</a>
+                                <a href="#">{{this.author.name}}</a>
                             </p>
-                            <p class="delete"><a href="#">Xóa</a></p>
+                            <p class="delete">
+                                <a href="#">Xóa</a>
+                            </p>
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            <p class="price">128.000
+                            <p class="price">{{this.price}}
                                 <u>đ</u>
                             </p>
-                            <p class="save">160.000
+                            <p class="save">{{this.price}}
                                 <u>đ</u>
                             </p>
-                            <p class="percent">-20%</p>
+                            <p class="percent"></p>
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                             <input type="number" name="" id="input${1/(\w+)/\u\1/g}" class="form-control" value="1" min="1" max="20" step="1" required="required"
@@ -47,16 +52,18 @@
                         </div>
                     </div>
                 </div>
+            {{/each}}
             </div>
+            
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <div class="cart-order">
                     <p>Tạm tính:
-                        <span>128.000
+                        <span id="temp-paid">128.000
                             <u>đ</u>
                         </span>
                     </p>
                     <p class="high-light">Thành tiền:
-                        <span>128.000
+                        <span id="total-paid">128.000
                             <u>đ</u>
                         </span>
                     </p>
@@ -64,9 +71,8 @@
                 </div>
             </div>
         </div>
+        <footer class="rps-hidden">
+            {{> Footer info=this.info}}
+        </footer>
     </div>
-</div>
-<footer class="rps-hidden">
-    {{> Footer info=this.info}}
-</footer>
-</div>
+    {{> Script scripts=this.scripts}}

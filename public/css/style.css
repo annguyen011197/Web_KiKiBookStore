@@ -5,6 +5,10 @@ body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+a{
+text-decoration: none !important
+}
+
 
 .top-promote img {
     width: 100%;

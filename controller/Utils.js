@@ -41,7 +41,6 @@ module.exports.validURL = (str) => {
     } else {
       return true;
     }
-<<<<<<< HEAD
   }
 
 module.exports.createID = ()=>{
@@ -54,6 +53,3 @@ module.exports.createID = ()=>{
     let now = new Date()
     return uuidv4()+now.getUTCMilliseconds().toString()
 }
-=======
-  }
->>>>>>> ngocbao

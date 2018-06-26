@@ -63,7 +63,6 @@ function getBase64(file) {
         };
     });
 
-<<<<<<< HEAD
 }
 
 function getCookie(cname) {
@@ -80,6 +79,4 @@ function getCookie(cname) {
         }
     }
     return '';
-=======
->>>>>>> ngocbao
 }

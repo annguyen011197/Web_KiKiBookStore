@@ -92,11 +92,7 @@ router.get('/details', (req, res) => {
           id: id,
           title: "KiKi Bookstore",
           info: info,
-<<<<<<< HEAD
           scripts: ["detail/script.js","script.js"],
-=======
-          scripts: ["index/script.js","script.js"],
->>>>>>> ngocbao
           item: val
         }
         if(value){
@@ -141,13 +137,10 @@ router.get('/media/:name',(req,res)=>{
   let name = req.params.name
   res.sendFile(path.join(imageStore,name))
 })
-<<<<<<< HEAD
-=======
 
 
 router.get('/cart', (req, res) => {
   res.render('cart');
 })
 
->>>>>>> ngocbao
 module.exports = router;

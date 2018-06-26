@@ -1,6 +1,7 @@
 var menuContentSource = $("#menu-template").html()
 var menuContent = Handlebars.compile(menuContentSource)
 var menu = $("#types")
+var buttonShoppingCart = $("#shopping-cart-b")
 
 loadCategory()
 setCartSize()
@@ -348,7 +349,6 @@ jQuery.fn.putCursorAtEnd = function () {
   });
 };
 
-<<<<<<< HEAD
 function setCartSize(){
   let tempid = getCookie('tempID')
   let url = 'api/cartsize'
@@ -362,5 +362,13 @@ function setCartSize(){
     $('#cart-size').html(res)
   })
 }
-=======
->>>>>>> ngocbao
+
+buttonShoppingCart.on('click',event=>{
+  console.log('Click')
+  let tempid = getCookie('tempID')
+  let url = 'checkout/cart'
+  if(tempid.length > 0){
+    url = `${url}?id=${tempid}`
+  }
+  location.href = url;
+})
