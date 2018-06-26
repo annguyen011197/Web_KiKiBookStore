@@ -7,14 +7,6 @@ function submitUpdate() {
   let passwordNow = $("#current_password").val();
   let passwordNew = $("#password").val();
   let passwordNewRe = $("#confirmation").val();
-  if(passwordNow == passwordNew){
-    alert("Mật khẩu mới và cũ không được giống nhau");
-    return;
-  }
-  if(passwordNew == passwordNewRe){
-    alert("Nhập lại mật khẩu sai!");
-    return;
-  }
   let data = {
     firstName: firstName,
     secondName: secondName,
@@ -26,6 +18,14 @@ function submitUpdate() {
     data.passwordNow = passwordNow;
     data.passwordNewRe = passwordNewRe;
     data.passwordNew = passwordNew;
+    if(passwordNow == passwordNew){
+      alert("Mật khẩu mới và cũ không được giống nhau");
+      return;
+    }
+    if(passwordNew == passwordNewRe){
+      alert("Nhập lại mật khẩu sai!");
+      return;
+    }
   }
   $.ajax({
       type: "post",
