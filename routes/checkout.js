@@ -15,29 +15,29 @@ router.get('/cart', function (req, res, next) {
     let data = {
         title: "KiKi Bookstore",
         info: info,
-        scripts: ["index/script.js", 'script.js']
+        scripts: ["checkout/script.js", 'script.js']
     };
     if (req.session.passport && req.session.passport.user) {
-        let cart = cartController.get(req.session.passport.user)
+        //let cart = cartController.get(req.session.passport.user)
         let account = accountController.ReadAccount(req.session.passport.user)
 
-        Promise.all([cart, account])
-            .then(([cartRes, accountRes]) => {
+        Promise.all([account])
+            .then(([ accountRes]) => {
                 data.user = {
                     name: accountRes.local.username,
-                    cartlist: cartRes
                 }
                 res.render('cart', data)
             })
             .catch(err => res.render('cart', data))
     } else {
-        let id = req.query.id
-        cartController.GetCart(id)
-        .then(val=>{
-            data.cartlist= val
-            res.render('cart', data);
-        })
-        .catch(err=>res.render('cart', data))
+        res.render('cart', data)    
+        // let id = req.query.id
+        // cartController.GetCart(id)
+        // .then(val=>{
+        //     data.cartlist= val
+        //     res.render('cart', data);
+        // })
+        // .catch(err=>res.render('cart', data))
     }
 });
 

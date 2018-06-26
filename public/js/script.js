@@ -2,14 +2,14 @@ var menuContentSource = $("#menu-template").html()
 var menuContent = Handlebars.compile(menuContentSource)
 var menu = $("#types")
 var buttonShoppingCart = $("#shopping-cart-b")
-
+console.log('Script.js')
 loadCategory()
 setCartSize()
 
 function loadCategory() {
   $.ajax({
     type: "get",
-    url: "./api/category",
+    url: "/api/category",
     data: {
       offset: 1,
       limit: 3,
@@ -29,7 +29,7 @@ function loadListCategory() {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: "get",
-      url: "./api/category",
+      url: "/api/category",
       data: {
         offset: 1,
         limit: 30,
@@ -352,7 +352,7 @@ jQuery.fn.putCursorAtEnd = function () {
 
 function setCartSize(){
   let tempid = getCookie('tempID')
-  let url = 'api/cartsize'
+  let url = '/api/cartsize'
   if(tempid.length > 0){
     url = `${url}?id=${tempid}`
   }

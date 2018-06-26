@@ -229,21 +229,21 @@ router.get('/verify', (req, res) => {
 
 router.get('/search', (req, res) => {
   let offset = req.query.offset ?
-  parseInt(req.query.offset) : 1
+    parseInt(req.query.offset) : 1
   let limit = req.query.limit ?
-  parseInt(req.query.limit) : 15
-  let option = {name: req.query.name,sort: {}}
-  if(req.query.moneyMin && req.query.moneyMax){
+    parseInt(req.query.limit) : 15
+  let option = { name: req.query.name, sort: {} }
+  if (req.query.moneyMin && req.query.moneyMax) {
     option.moneyMin = req.query.moneyMin;
     option.moneyMax = req.query.moneyMax;
   }
-  if(req.query.type){
+  if (req.query.type) {
     option.type = req.query.type;
   }
-  if(req.query.author){
+  if (req.query.author) {
     option.author = req.query.author;
   }
-  bookController.SearchBookList(offset,limit,option).then(data =>{
+  bookController.SearchBookList(offset, limit, option).then(data => {
     res.send(data)
   })
 })
@@ -522,7 +522,7 @@ router.post('/verify', (req, res) => {
 })
 
 
-router.route('/cart').post((req,res)=>{
+router.route('/cart').post((req, res) => {
   let data = {
     product: req.body.product,
     size: req.body.size
@@ -549,11 +549,59 @@ router.route('/cart').post((req,res)=>{
     res.end()
   })
 })
-.get((req,res)=>{
-  let id = req.query.id
-  cartController.GetCart(id)
-  res.end()
+  .get((req, res) => {
+    let tempid = req.query.id
+    if (req.session.passport && req.session.passport.user) {
+      tempid = req.session.passport.user
+    }
+    cartController.GetCart(tempid)
+      .then(val => {
+        res.send(val)
+      })
+      .catch(err => {
+        res.end()
+      })
+  })
+
+router.route('/cartremoveitem').post((req, res) => {
+  let data = {
+    product: req.body.product,
+    id: req.body.id
+  }
+  if (req.session.passport && req.session.passport.user) {
+    data.id = req.session.passport.user
+  }
+  console.log(data)
+  cartController.Delete(data).then(val => {
+    console.log(val)
+    res.send({
+      size: val
+    })
+  }).catch((err) => {
+    console.log(err)
+    res.end()
+  })
 })
+
+router.route('/savecart').post((req, res) => {
+  let data = {
+    id: req.body.id,
+    list: req.body.list
+  }
+  if (req.session.passport && req.session.passport.user) {
+    data.id = req.session.passport.user
+  }
+  cartController.SaveCart(data).then(val => {
+    console.log(val)
+    res.send({
+      size: val
+    })
+  }).catch((err) => {
+    console.log(err)
+    res.end()
+  })
+})
+
 
 router.get('/cartsize', (req, res) => {
   let id = req.query.id ?
@@ -575,35 +623,35 @@ router.get('/cartsize', (req, res) => {
 })
 
 router.get('/reset', (req, res) => {
- 
-  if(req.body.email){
+
+  if (req.body.email) {
     var transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-          user: 'letuananhdev@gmail.com',
-          pass: '954753855135'
+        user: 'letuananhdev@gmail.com',
+        pass: '954753855135'
       }
-      });
-      accountController.ReadAccountExt({"local.email": req.body.email}).then(val =>{
-        let code = val.local.verify
-        let url = "http://" + req.headers.host + "/api/verify?email=" + req.body.email + "&code=" + code;
+    });
+    accountController.ReadAccountExt({ "local.email": req.body.email }).then(val => {
+      let code = val.local.verify
+      let url = "http://" + req.headers.host + "/api/verify?email=" + req.body.email + "&code=" + code;
 
-        var mailOptions = {
-          from: 'letuananhdev@gmail.com',
-          to: req.body.email,
-          subject: 'Active account KikiBook',
-          html: '<a href=\"'+ url +'\">Click me!</a> </br> or </br><p>'+url+'</p>'
-        };
-      
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-              res.send(error);
-          } else {
-              res.send('Email sent: ' + info.response);
-          }
-        }); 
-      })
-  }else{
+      var mailOptions = {
+        from: 'letuananhdev@gmail.com',
+        to: req.body.email,
+        subject: 'Active account KikiBook',
+        html: '<a href=\"' + url + '\">Click me!</a> </br> or </br><p>' + url + '</p>'
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          res.send(error);
+        } else {
+          res.send('Email sent: ' + info.response);
+        }
+      });
+    })
+  } else {
     res.send({ error: 'Must have email' })
     return
   }

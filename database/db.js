@@ -4,7 +4,7 @@ var mongoDB = require("../gPath.js").connectString
 const utils = require('../controller/Utils')
 const sharp = require('sharp')
 
-const imageStore = path.join(__dirname,'./images')
+const imageStore = path.join(__dirname, './images')
 
 const Book = require("./models/BookModel")
 const Category = require("./models/BookTypeModel")
@@ -107,12 +107,12 @@ class Database {
 
     async CreateNewBook(val) {
         let publisher, author, category
-        if(val.publisher)
+        if (val.publisher)
             await this.CheckPublisherAndCreate({ name: val.publisher }).then(res => {
                 val.publisher = { name: res.name, id: res._id }
                 publisher = res
             })
-        if(val.author)
+        if (val.author)
             await this.CheckAuthorAndCreate({ name: val.author }).then(res => {
                 val.author = { name: res.name, id: res._id }
                 author = res
@@ -122,9 +122,9 @@ class Database {
             category = res
         })
 
-        await this.SaveImage(val.image).then(res=>{
+        await this.SaveImage(val.image).then(res => {
             val.image = res
-        }).catch(err=> val.image = '')
+        }).catch(err => val.image = '')
         return new Promise((resolve, reject) => {
             this.CreateBook(val)
                 .then(res => {
@@ -140,66 +140,113 @@ class Database {
         })
     }
 
-    SetCart(val){
+    DeleteCartItem(val){
         let bookID
         return new Promise((resolve, reject) => {
-            Cart.findOne({'user.id':val.id,status:'new'})
-            .exec((err,res)=>{
-                if(err) reject(err)
-                //console.log(bookID)
-                bookID = new mongoose.Types.ObjectId(val.product)
-                if(res){
-                    res.date = new Date()
-                    let size = res.value.get(val.product)
-                    res.value.set(val.product,size ? size+val.size : val.size)
-                    res.size = res.size + val.size
-                    res.books.addToSet(bookID)
-                    res.save()
-                    resolve(res.size)
-                }else{
-                    let cart = new Cart({
-                        date: new Date(),
-                        'user.id': val.id,
-                        value:{},
-                        size: 0,
-                        status:'new'
-                    })
-                    cart.value.set(val.product,val.size)
-                    cart.size = cart.size + val.size
-                    cart.books.addToSet(bookID)
-                    cart.save()
-                    resolve(cart.size)
-                }
-            })
+            Cart.findOne({ 'user.id': val.id, status: 'new' })
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    bookID = new mongoose.Types.ObjectId(val.product)
+                    if (res) {
+                        console.log(res)
+                        res.date = new Date()
+                        let size = res.value.get(val.product)
+                        res.value.delete(val.product)
+                        console.log(size)
+                        res.size = res.size - size
+                        res.books.pull(bookID)
+                        res.delete
+                        res.save()
+                        resolve(res.size)
+                    } 
+                })
         })
     }
 
-    GetSizeCart(id){
+    SetCart(val) {
+        let bookID
         return new Promise((resolve, reject) => {
-            Cart.findOne({'user.id':id,status:'new'})
-            .select('size')
-            .exec((err,res)=>{
-                if(err) reject(err)
-                if(res){
-                    resolve(res.size.toString())
-                }
-                reject(null)
-            })
+            Cart.findOne({ 'user.id': val.id, status: 'new' })
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    //console.log(bookID)
+                    bookID = new mongoose.Types.ObjectId(val.product)
+                    if (res) {
+                        res.date = new Date()
+                        let size = res.value.get(val.product)
+                        res.value.set(val.product, size ? size + val.size : val.size)
+                        res.size = res.size + val.size
+                        res.books.addToSet(bookID)
+                        res.save()
+                        resolve(res.size)
+                    } else {
+                        let cart = new Cart({
+                            date: new Date(),
+                            'user.id': val.id,
+                            value: {},
+                            size: 0,
+                            status: 'new'
+                        })
+                        cart.value.set(val.product, val.size)
+                        cart.size = cart.size + val.size
+                        cart.books.addToSet(bookID)
+                        cart.save()
+                        resolve(cart.size)
+                    }
+                })
+        })
+    }
+
+    GetSizeCart(id) {
+        return new Promise((resolve, reject) => {
+            Cart.findOne({ 'user.id': id, status: 'new' })
+                .select('size')
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    if (res) {
+                        resolve(res.size.toString())
+                    }
+                    reject(null)
+                })
         });
     }
 
-    GetCartInfo(val){
+    SaveCart(val){
         return new Promise((resolve, reject) => {
-          Cart.findOne({'user.id':val,status:'new'})
-          .populate({
-            path: 'books',
-            select: 'name price image author',
-            model: 'Book'
-            })
-          .exec((err,res)=>{
-            if (err) reject(err)
-            resolve(res)
-          })
+            Cart.findOne({ 'user.id': val.id, status: 'new' })
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    if (res) {
+                        res.date = new Date()
+                        res.total = 0
+                        res.value.clear()
+                        res.books = []
+                        for(let key in val.list){
+                            res.value.set(key,parseInt(val.list[key]))
+                            res.total += parseInt(val.list[key])
+                            res.books.addToSet(new mongoose.Types.ObjectId(key))
+                        }
+                        res.status = 'accept'
+                        res.save()
+                        resolve(res)
+                    } 
+                })
+        })
+    }
+
+    GetCartInfo(val) {
+        return new Promise((resolve, reject) => {
+            Cart.findOne({ 'user.id': val, status: 'new' })
+                .populate({
+                    path: 'books',
+                    select: 'name price image author',
+                    model: 'Book'
+                })
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
         })
     }
 
@@ -208,7 +255,7 @@ class Database {
             let name = utils.hashName('webp')
             let res = utils.decodeBase64Image(base64)
             sharp(res.data)
-                .toFile(path.join(imageStore,name), (err, info) => {
+                .toFile(path.join(imageStore, name), (err, info) => {
                     if (err) reject(err)
                     resolve(name)
                 })
@@ -242,50 +289,50 @@ class Database {
     }
 
     SearchBookList(option) {
-        let search = {}  
-        if(option.moneyMin && option.moneyMax){
+        let search = {}
+        if (option.moneyMin && option.moneyMax) {
             search.price = { $gte: option.moneyMin, $lte: option.moneyMax }
         }
-        if(option.author){
+        if (option.author) {
             search["author.id"] = option.author;
         }
-        if(option.type){
+        if (option.type) {
             search["type.id"] = option.type;
         }
         const wordSearch = option.name ? normalize(option.name) : "";
         return new Promise((resolve, reject) => {
             Book.find(search)
-            .lean()
-            .sort(option.sort)
-            .exec((err, res) => {
-                if (err) reject(err)
-                if(wordSearch != ""){
-                    let result = [];
-                    if(res)
-                        res.forEach(element => {
-                            const nameNoUnicode = normalize(element.name).toLowerCase();
-                            if(nameNoUnicode.indexOf(wordSearch.toLowerCase()) >= 0 || wordSearch == ""){
-                                result.push(element);
-                            }
-                        });
-                    resolve(result)
-                }else{
-                    resolve(res)
-                }
-               
-            })
+                .lean()
+                .sort(option.sort)
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    if (wordSearch != "") {
+                        let result = [];
+                        if (res)
+                            res.forEach(element => {
+                                const nameNoUnicode = normalize(element.name).toLowerCase();
+                                if (nameNoUnicode.indexOf(wordSearch.toLowerCase()) >= 0 || wordSearch == "") {
+                                    result.push(element);
+                                }
+                            });
+                        resolve(result)
+                    } else {
+                        resolve(res)
+                    }
+
+                })
         });
     }
 
-    ReadBookCommentList(id,offset,limit) {
+    ReadBookCommentList(id, offset, limit) {
         return new Promise((resolve, reject) => {
-            Book.find({_id:id}, {comments:{$slice:[(offset - 1)*limit, limit]}})
-            .lean()
-            .exec((err,res)=>{
-                if(err) reject(err)
-                resolve(res)
-            })
-          })
+            Book.find({ _id: id }, { comments: { $slice: [(offset - 1) * limit, limit] } })
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
+        })
     }
 
     ReadBookListIndex(offset, limit) {
@@ -302,14 +349,14 @@ class Database {
         });
     }
 
-    ReadBookCount(){
+    ReadBookCount() {
         return new Promise((resolve, reject) => {
-          Book.count({}).exec((err,count)=>{
-            if (err) reject(err)
-            resolve(count)
-          })
+            Book.count({}).exec((err, count) => {
+                if (err) reject(err)
+                resolve(count)
+            })
         })
-        
+
     }
 
     ReadAuthorList(offset, limit) {
@@ -361,7 +408,7 @@ class Database {
         });
     }
 
-    ReadBookListType(id){
+    ReadBookListType(id) {
         return new Promise((resolve, reject) => {
             Category.findById(id)
                 .populate({
@@ -380,68 +427,68 @@ class Database {
     ReadAccount(id) {
         return new Promise((resolve, reject) => {
             Account.findById(id)
-            .populate({
-                path:'local.accountInfo',
-                select:'firstName secondName address birthday contactNumber',
-                model: 'AccountInfo'
-            })
-            .lean()
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+                .populate({
+                    path: 'local.accountInfo',
+                    select: 'firstName secondName address birthday contactNumber',
+                    model: 'AccountInfo'
+                })
+                .lean()
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    ReadAccountExt(value){
+    ReadAccountExt(value) {
         return new Promise((resolve, reject) => {
             Account.find(value)
-            .populate({
-                path:'local.accountInfo',
-                select:'firstName secondName address birthday contactNumber',
-                model: 'AccountInfo'
-            })
-            .lean()
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+                .populate({
+                    path: 'local.accountInfo',
+                    select: 'firstName secondName address birthday contactNumber',
+                    model: 'AccountInfo'
+                })
+                .lean()
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    ReadAccountInfo(id){
+    ReadAccountInfo(id) {
         return new Promise((resolve, reject) => {
             AccountInfoModel.findById(id)
-            .lean()
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+                .lean()
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    UpdateAccountInfo(val){
+    UpdateAccountInfo(val) {
         return new Promise((resolve, reject) => {
-            AccountInfoModel.update(val.find,val.update)
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+            AccountInfoModel.update(val.find, val.update)
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    UpdateAccount(val){
+    UpdateAccount(val) {
         return new Promise((resolve, reject) => {
-            Account.update(val.find,val.update)
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+            Account.update(val.find, val.update)
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
@@ -513,7 +560,7 @@ class Database {
     }
 
     UpdateInfoAccount(val) {
-        return  new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             Account.update(
                 { _id: comment.id },
                 {
@@ -523,7 +570,7 @@ class Database {
                 }
             ).exec((err, res) => {
                 if (err) reject(err)
-                resolve({"message": "Update comment complete!"})
+                resolve({ "message": "Update comment complete!" })
             })
         })
     }
