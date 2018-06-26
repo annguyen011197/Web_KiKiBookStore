@@ -900,7 +900,7 @@ label {
 }
 
 .review-rule {
-    border: 1px solid #F7941E;
+    border: 1px solid #d9534f;
     padding-left: 30px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -916,10 +916,11 @@ label {
 
 button.button span {
     color: white;
-    background-color: #F7941E;
+    background-color: #d9534f;
     border: none;
     padding: 10px 20px;
     border-radius: 3px;
+    font-size: 12px;
 }
 
 button.button {
@@ -931,7 +932,9 @@ button.button {
     background: transparent;
     cursor: pointer;
 }
-
+#btn-load-more {
+    font-size: 12px;
+}
 .loader {
     border: 8px solid #f3f3f3; /* Light grey */
     border-top: 8px solid #3498db; /* Blue */
@@ -1101,4 +1104,138 @@ button.button {
 .main .form-list li.control input.checkbox {
     margin-right: 6px;
     float: left;
+}
+
+.book-content {
+    margin-top: 20px;
+}
+.book-detail {
+    background-color: #fff;
+}
+
+.book-detail .book-image {
+    border-right: 1px solid #e9e9e9;
+    padding: 40px;
+
+}
+
+.book-detail .book-image img.img-responsive {
+    margin: 0 auto;
+}
+.book-detail .book-main {
+    padding-top: 20px;
+}
+.book-detail .book-main h3{
+    text-transform: uppercase;
+}
+.book-detail .book-main .author{
+    font-size: 14px;
+}
+.book-detail .book-main .price{
+    color: red;
+    font-size: 22px;
+}
+.book-detail .book-main .save{
+    color: #9b9b9b;
+    font-size: 12px;
+}
+.block {
+    border: 1px solid #e9e9e9;
+    margin-top: 20px;
+    margin-left: -31px;
+    padding: 20px;
+    border-left: none;
+    border-right: none;
+}
+.info-detail {
+    background-color: #fff;
+    padding: 20px;
+}
+.info-detail table,th,td {
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-collapse: collapse;
+}
+.info-detail table th {
+    background-color: #efefef;
+}
+.rps-hidden {
+    display: block;
+}
+@media only screen and (max-width: 768px) {
+    .book-main {
+        margin-left: 30px;
+    }
+    .rps-hidden {
+        display: none;
+    }
+}
+.cart-content {
+    margin-top: 40px;
+}
+.cart-content h4{
+    margin-bottom: 10px;
+}
+.cart-content .cart-detail {
+    background-color: #fff;
+    padding: 20px;
+}
+.cart-content .cart-detail img.img-responsive {
+    margin: 0 auto;
+}
+
+.cart-content .cart-detail .title {
+    font-size: 16px;
+}
+.cart-content .cart-detail .author {
+    font-size: 12px;
+    margin-top: 10px;
+}
+.cart-content .cart-detail .delete {
+    margin-top: 40px;
+}
+.cart-content .cart-detail .price {
+    font-weight: bold;
+    font-size: 16px;
+}
+.cart-content .cart-detail .save {
+    font-size: 12px;
+    text-decoration: line-through;
+    color: #9b9b9b;
+}
+.cart-content .cart-detail .percent {
+    background: #ff9601;
+    font-size: 13px;
+    color: #fff;
+    padding: 3px 6px;
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.cart-content .cart-detail input {
+    width: 80px;
+}
+.cart-content .cart-order {
+    background-color: #fff;
+}
+.cart-order button {
+    width: 100%;
+}
+
+.cart-order p{
+    padding: 20px;
+    text-align: left;
+}
+.cart-order span {
+    float: right;
+}
+.cart-order .high-light span{
+    color: red;
+    font-weight: bold;
+}
+.cart-order .high-light {
+    border-top: 1px solid #e9e9e9;
 }

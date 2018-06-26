@@ -95,7 +95,7 @@ jQuery(document).ready(function ($) {
     $.ajax({
       type: "GET",
       url: "/users/logout",
-      success: ()=>{
+      success: () => {
         location.reload()
       }
     });
@@ -111,7 +111,7 @@ jQuery(document).ready(function ($) {
       //show modal layer
       $form_modal.addClass('is-visible');
       //show the selected form
-      ($(event.target).is('.signup')) ? signup_selected() : login_selected();
+      ($(event.target).is('.signup')) ? signup_selected(): login_selected();
     }
   })
 
@@ -125,7 +125,7 @@ jQuery(document).ready(function ($) {
       //show modal layer
       $form_modal.addClass('is-visible');
       //show the selected form
-      ($(event.target).is('.signup')) ? signup_selected() : login_selected();
+      ($(event.target).is('.signup')) ? signup_selected(): login_selected();
     }
   })
 
@@ -161,7 +161,7 @@ jQuery(document).ready(function ($) {
   //switch from a tab to another
   $form_modal_tab.on('click', function (event) {
     event.preventDefault();
-    ($(event.target).is($tab_login)) ? login_selected() : signup_selected();
+    ($(event.target).is($tab_login)) ? login_selected(): signup_selected();
   });
 
   //hide or show password
@@ -169,8 +169,8 @@ jQuery(document).ready(function ($) {
     var $this = $(this),
       $password_field = $this.prev('input');
 
-    ('password' == $password_field.attr('type')) ? $password_field.attr('type', 'text') : $password_field.attr('type', 'password');
-    ('Show' == $this.text()) ? $this.text('Hide') : $this.text('Show');
+    ('password' == $password_field.attr('type')) ? $password_field.attr('type', 'text'): $password_field.attr('type', 'password');
+    ('Show' == $this.text()) ? $this.text('Hide'): $this.text('Show');
     //focus and move cursor to the end of input field
     $password_field.putCursorAtEnd();
   });
@@ -239,7 +239,7 @@ jQuery(document).ready(function ($) {
             location.reload()
           }
         },
-        error: (res)=>{
+        error: (res) => {
           console.log(res)
           alert(res.responseJSON.message);
         }
@@ -348,6 +348,7 @@ jQuery.fn.putCursorAtEnd = function () {
   });
 };
 
+<<<<<<< HEAD
 function setCartSize(){
   let tempid = getCookie('tempID')
   let url = 'api/cartsize'
@@ -361,3 +362,5 @@ function setCartSize(){
     $('#cart-size').html(res)
   })
 }
+=======
+>>>>>>> ngocbao

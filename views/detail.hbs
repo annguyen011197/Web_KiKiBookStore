@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>
-    <div class="content">
+    <div class="book-content">
         <div class="book-detail">
             <div class="row">
                 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -29,16 +29,17 @@
                     <div class="book-main">
                         <h3>{{item.name}}</h3>
                         <br>
-                        <br>
                         <p class="author">Tác giả:</p>
                         <a href="#">{{item.author.name}}</a>
-                        <hr/>
-                        <p class="price">
-                            <b>{{item.price}} đ </b>
-                        </p>
-                        <p class="save">Tiết kiệm: {{item.deal}}%</p>
-                        <p class="save">Giá thị trường: {{item.price}} đ</p>
-                        <hr/>
+                        <div class="block">
+                            <p class="price">
+                                <b>{{item.price}}
+                                    <u>đ</u>
+                                </b>
+                            </p>
+                            <p class="save">Tiết kiệm: {{item.deal}}%</p>
+                            <p class="save">Giá thị trường: {{item.price}} đ</p>
+                        </div>
                     </div>
                     
                     <div class="order">
@@ -69,7 +70,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table">
                                 {{!--
                                 <tr>
                                     <th>Công ty phát hành</th>
@@ -126,20 +127,20 @@
             <div class="ma-review-col1 span5">
                 <h2 class="own-review">Khách Hàng Nhận Xét</h2>
                 <dl>
-                    <div id="comments" page=1 >
+                    <div id="comments" page=1>
                         {{> Comment}}
                     </div>
                 </dl>
                 <div class="loader" hidden></div>
-                <button onclick="runLoad()" id="btn-load-more">Load more</button>
+                <button class="btn btn-danger"  onclick="runLoad()" id="btn-load-more">Load more</button>
             </div>
-            
+
         </div>
         <div class="mt-20" id="form-comment">
-          {{> FormComment item.name}}
+            {{> FormComment item.name}}
         </div>
     </div>
-    <footer>
+    <footer class="rps-hidden">
         {{> Footer info=this.info}}
     </footer>
 </div>
@@ -149,12 +150,10 @@
         <li><a href="/category?id=\{{this._id}}">\{{ this.name }}</a></li>
     \{{/each}}
     <a href="/category" style="color:blue;">Xem thêm</a>
-</script> 
-
-{{> Script scripts=this.scripts}} 
+</script> {{> Script scripts=this.scripts}}
 <script>
-    function runLoad(){
-        loadComment($("#idBook").text());   
+    function runLoad() {
+        loadComment($("#idBook").text());
     }
     runLoad();
 </script>
