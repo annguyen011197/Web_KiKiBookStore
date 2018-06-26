@@ -1,0 +1,72 @@
+<div class="wrapper">
+    <header>
+        {{>Header info=this.info user=this.user}}
+    </header>
+    <div class="menu-and-slide mt-20">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                <nav class="main-menu" id="menu">
+                    <button onclick="showMenu()" class="dropbtn">
+                        <span>DANH MỤC</span>
+                    </button>
+                    <div class="detail-menu">
+                        {{>Menu}}
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="cart-content">
+        <h4>GIỎ HÀNG</h4>
+        <div class="row">
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+                <div class="cart-detail">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                            <img class="img-responsive" src="https://vcdn.tikicdn.com/cache/175x175/media/catalog/product/c/o/combo_17.jpg">
+                        </div>
+                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                            <a class="title" href="#">Another (Trọn bộ 2 tập)</a>
+                            <p class="author">Tác giả:
+                                <a href="#">Yukito Ayatsuji</a>
+                            </p>
+                            <p class="delete"><a href="#">Xóa</a></p>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                            <p class="price">128.000
+                                <u>đ</u>
+                            </p>
+                            <p class="save">160.000
+                                <u>đ</u>
+                            </p>
+                            <p class="percent">-20%</p>
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                            <input type="number" name="" id="input${1/(\w+)/\u\1/g}" class="form-control" value="1" min="1" max="20" step="1" required="required"
+                                title="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                <div class="cart-order">
+                    <p>Tạm tính:
+                        <span>128.000
+                            <u>đ</u>
+                        </span>
+                    </p>
+                    <p class="high-light">Thành tiền:
+                        <span>128.000
+                            <u>đ</u>
+                        </span>
+                    </p>
+                    <button class="btn btn-danger order-btn">Đặt hàng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="rps-hidden">
+    {{> Footer info=this.info}}
+</footer>
+</div>

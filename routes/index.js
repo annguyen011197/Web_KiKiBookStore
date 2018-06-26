@@ -126,4 +126,10 @@ router.get('/media/:name',(req,res)=>{
   let name = req.params.name
   res.sendFile(path.join(imageStore,name))
 })
+
+
+router.get('/cart', (req, res) => {
+  res.render('cart');
+})
+
 module.exports = router;
