@@ -10,8 +10,8 @@ fs.readdir(testFolder, (err, files) => {
           return console.log(err);
         }
         var data = JSON.parse(obj);
-        var height = (data.kichthuoc ? data.kichthuoc.split(" x ")[0] : 0)
-        var weight = (data.kichthuoc ? data.kichthuoc.split(" x ")[1] : 0)
+        var height =  (data.kichthuoc && data.kichthuoc.indexOf("x") >= 0 ? parseInt(data.kichthuoc.split("x")[0].trim()) : 0) 
+        var weight =  (data.kichthuoc && data.kichthuoc.indexOf("x") >= 0 ? parseInt(data.kichthuoc.split("x")[1].trim()) : 0) 
         db.CreateNewBook({
             name:data.title.trim(),
             price: parseInt(data.oldPrice.replace(".","")),
@@ -26,7 +26,7 @@ fs.readdir(testFolder, (err, files) => {
             },
             typebook:data.hinhthuc,
             language:data.ngonngu,
-            category:'Kỹ năng sống',
+            category:'Khoa học vũ trụ',
             publisher: data.nxb,
             author: data.tacgia ? data.tacgia.split(", ")[0] : undefined
         }).then(res=>console.log(res))
