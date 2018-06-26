@@ -898,7 +898,7 @@ label {
 }
 
 .review-rule {
-    border: 1px solid #c9302c;
+    border: 1px solid #d9534f;
     padding-left: 30px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -914,10 +914,11 @@ label {
 
 button.button span {
     color: white;
-    background-color: #c9302c;
+    background-color: #d9534f;
     border: none;
     padding: 10px 20px;
     border-radius: 3px;
+    font-size: 12px;
 }
 
 button.button {
@@ -929,7 +930,9 @@ button.button {
     background: transparent;
     cursor: pointer;
 }
-
+#btn-load-more {
+    font-size: 12px;
+}
 .loader {
     border: 8px solid #f3f3f3; /* Light grey */
     border-top: 8px solid #3498db; /* Blue */
@@ -1130,7 +1133,7 @@ button.button {
     font-size: 22px;
 }
 .book-detail .book-main .save{
-    color: #9b9b9b;;
+    color: #9b9b9b;
     font-size: 12px;
 }
 .block {
