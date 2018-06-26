@@ -140,5 +140,7 @@ router.get('/media/:name',(req,res)=>{
 router.get('/cart', (req, res) => {
   res.render('cart');
 })
-
+router.get('/shipping', (req, res) => {
+  res.render('shipping');
+})
 module.exports = router;
