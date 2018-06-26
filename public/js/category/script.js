@@ -1,7 +1,7 @@
 const url = $(location).attr('href')
 let id = getParameterByName("id") ;
 let offset = getParameterByName("offset") ? getParameterByName("offset") : 1;
-let limit = getParameterByName("limit") ? getParameterByName("limit") : 2;
+let limit = getParameterByName("limit") ? getParameterByName("limit") : 10;
 
 /**Content Template */
 var templateContentSource = $("#content-template").html()

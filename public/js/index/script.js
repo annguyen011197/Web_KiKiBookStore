@@ -1,5 +1,5 @@
 let offset = 1
-let limit = 2
+let limit = 10
 
 /**Content Template */
 var templateContentSource = $("#content-template").html()
@@ -22,6 +22,7 @@ function getBookList(offset,limit){
                 name:"Sách",
                 items:response
             }
+            $(".loader").hide();
             content.append(templateContent(data))
         }
     });

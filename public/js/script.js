@@ -30,7 +30,7 @@ function loadListCategory() {
       url: "./api/category",
       data: {
         offset: 1,
-        limit: 3,
+        limit: 30,
         type: 'name'
       },
       dataType: "json",
@@ -64,13 +64,14 @@ function validateUsername(text) {
 }
 
 jQuery(document).ready(function ($) {
-  $(".search-button").click(function() {
+  $("#search-button").click(function() {
     window.location.href = '/search?name=' + $(".form-control").val();
    }); 
-  $(".form-control").keypress(function(e) {
-    if(e.which == 13) {
+  $(".form-control").on('keyup keypress', function(e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode === 13) { 
       window.location.href = '/search?name=' + $(".form-control").val();
-      event.preventDefault();
+      e.preventDefault();
       return false;
     }
   });

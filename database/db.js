@@ -23,7 +23,7 @@ class Database {
             author.save((err, res) => {
                 if (err) reject(err)
                 resolve(res)
-                console.log(`Tao thanh cong Author ${res.name}`)
+                console.log(`Tao thanh cong Author` + val.name)
             })
         })
     }
@@ -37,7 +37,7 @@ class Database {
             publisher.save((err, res) => {
                 if (err) reject(err)
                 resolve(res)
-                console.log(`Tao thanh cong Publisher ${res.name}`)
+                console.log(`Tao thanh cong Publisher` + val.name)
             })
         })
     }
@@ -51,7 +51,7 @@ class Database {
             category.save((err, res) => {
                 if (err) reject(err)
                 resolve(res)
-                console.log(`Tao thanh cong Category ${res.name}`)
+                console.log(`Tao thanh cong Category` + val.name)
             })
         })
     }
@@ -102,14 +102,16 @@ class Database {
 
     async CreateNewBook(val) {
         let publisher, author, category
-        await this.CheckPublisherAndCreate({ name: val.publisher }).then(res => {
-            val.publisher = { name: res.name, id: res._id }
-            publisher = res
-        })
-        await this.CheckAuthorAndCreate({ name: val.author }).then(res => {
-            val.author = { name: res.name, id: res._id }
-            author = res
-        })
+        if(val.publisher)
+            await this.CheckPublisherAndCreate({ name: val.publisher }).then(res => {
+                val.publisher = { name: res.name, id: res._id }
+                publisher = res
+            })
+        if(val.author)
+            await this.CheckAuthorAndCreate({ name: val.author }).then(res => {
+                val.author = { name: res.name, id: res._id }
+                author = res
+            })
         await this.CheckCategoryAndCreate({ name: val.category }).then(res => {
             val.category = { name: res.name, id: res._id }
             category = res
@@ -117,12 +119,18 @@ class Database {
         return new Promise((resolve, reject) => {
             this.CreateBook(val)
                 .then(res => {
-                    publisher.books.push(res)
-                    author.books.push(res)
-                    category.books.push(res)
-                    publisher.save()
-                    author.save()
-                    category.save()
+                    if(publisher){
+                        publisher.books.push(res)
+                        publisher.save()
+                    }
+                    if(author){
+                        author.books.push(res)
+                        category.save()
+                    }
+                    if(category){
+                        category.books.push(res)   
+                        author.save()
+                    }
                     resolve(res)
                 })
                 .catch(err => reject(err))
@@ -176,8 +184,8 @@ class Database {
                     let result = [];
                     if(res)
                         res.forEach(element => {
-                            const nameNoUnicode = normalize(element.name);
-                            if(nameNoUnicode.indexOf(wordSearch) >= 0 || wordSearch == ""){
+                            const nameNoUnicode = normalize(element.name).toLowerCase();
+                            if(nameNoUnicode.indexOf(wordSearch.toLowerCase()) >= 0 || wordSearch == ""){
                                 result.push(element);
                             }
                         });
