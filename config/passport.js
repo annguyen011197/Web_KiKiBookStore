@@ -47,7 +47,7 @@ module.exports = function (passport) {
                 newUser.local.username = username
                 newUser.local.email = email;
                 newUser.local.password = newUser.generateHash(password);
-
+                newUser.local.verify = new Date().getTime();
                 newUser.save(function (err) {
                   if (err) return done(err);
                   return done(null, newUser, req.flash("signupMessage", "Successful"));
@@ -65,6 +65,7 @@ module.exports = function (passport) {
                   var user = req.user;
                   user.local.email = email;
                   user.local.password = user.generateHash(password);
+                  user.local.verify = new Date().getTime();
                   user.save(function (err) {
                     if (err) return done(err);
                     return done(null, user, req.flash('signupMessage', 'Successful'));
@@ -99,6 +100,8 @@ module.exports = function (passport) {
                 return done(null, false, { message: 'No user found' })
               if (!user.validPassword(password))
                 return done(null, false, { message: 'Wrong password' })
+              if( user.local.verify != "Active")
+                return done(null,false,{message:'Must active email'})
               return done(null, user, { message: 'Succesful' })
             })
         }else{
@@ -112,6 +115,8 @@ module.exports = function (passport) {
                 return done(null, false, { message: 'No user found' })
               if (!user.validPassword(password))
                 return done(null, false, { message: 'Wrong password' })
+              if(user.local.verify != "Active")
+                return done(null,false,{message:'Must active email'})
               return done(null, user, { message: 'Succesful' })
             })
         }

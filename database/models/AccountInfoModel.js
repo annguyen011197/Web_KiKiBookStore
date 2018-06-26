@@ -22,7 +22,6 @@ var AccountInfoSchema = new Schema({
     },
     address:String,
     birthday:Date,
-    email:String,
     contactNumber:String
 })
 

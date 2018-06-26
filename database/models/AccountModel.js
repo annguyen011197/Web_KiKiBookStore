@@ -29,6 +29,9 @@ var AccountSchema = mongoose.Schema({
     accountInfo: {
       type: Schema.Types.ObjectId,
       ref: "AccountInfo"
+    },
+    verify:{
+      type: String
     }
   },
   facebook: {
