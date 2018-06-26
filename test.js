@@ -1,7 +1,18 @@
 const utils = require('./controller/Utils')
 const fs = require('fs')
 const sharp = require('sharp')
+const mongoose  = require('mongoose')
 
+let id1 ='4edd40c86762e0fb12000003'
+let id2 ='4edd40c86762e0fb12321313'
+let arr = []
+arr.push(mongoose.Types.ObjectId(id1))
+arr.push(mongoose.Types.ObjectId(id2))
+console.log(arr)
+arr.push(mongoose.Types.ObjectId(id1))
+arr = Array.from(new Set(arr))
+
+console.log(arr)
 
 //console.log(utils.validURL('https://www.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/8/9/8932000129608.png'))
 // let arr = [{
@@ -22,10 +33,3 @@ const sharp = require('sharp')
 // }]
 // console.log(arr)
 
-let map = new Map()
-map.set('eqwe23123',2)
-map.set('123213',2)
-map.set('545454',2)
-console.log(map)
-map.set('eqwe23123',10)
-console.log(map)

@@ -35,6 +35,7 @@ $('.oder-button').on('click',(event)=>{
     tempid = res.id
     document.cookie = 'tempID='+res.id
     $('#cart-size').html(res.size)
+    alertify.success("Đã thêm một sản phẩm vào giỏ hàng")
   })
 })
 

@@ -521,8 +521,8 @@ router.post('/verify', (req, res) => {
 
 })
 
-router.post('/cart', (req, res) => {
 
+router.route('/cart').post((req,res)=>{
   let data = {
     product: req.body.product,
     size: req.body.size
@@ -548,7 +548,11 @@ router.post('/cart', (req, res) => {
     console.log(err)
     res.end()
   })
-
+})
+.get((req,res)=>{
+  let id = req.query.id
+  cartController.GetCart(id)
+  res.end()
 })
 
 router.get('/cartsize', (req, res) => {

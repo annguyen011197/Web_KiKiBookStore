@@ -10,10 +10,15 @@ var CartSchema = new Schema({
     },
     date: Date,
     size:Number,
+    status:String,
     value:{
         type:Map,
         of:Number
-    } 
+    },
+    books:[{
+        type:Schema.Types.ObjectId,
+        ref:'Book'
+    }]
 })
 
 module.exports = mongoose.model('Cart',CartSchema)

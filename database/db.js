@@ -139,15 +139,19 @@ class Database {
     }
 
     SetCart(val){
+        let bookID
         return new Promise((resolve, reject) => {
-            Cart.findOne({'user.id':val.id})
+            Cart.findOne({'user.id':val.id,status:'new'})
             .exec((err,res)=>{
                 if(err) reject(err)
+                //console.log(bookID)
+                bookID = new mongoose.Types.ObjectId(val.product)
                 if(res){
                     res.date = new Date()
                     let size = res.value.get(val.product)
                     res.value.set(val.product,size ? size+val.size : val.size)
                     res.size = res.size + val.size
+                    res.books.addToSet(bookID)
                     res.save()
                     resolve(res.size)
                 }else{
@@ -155,10 +159,12 @@ class Database {
                         date: new Date(),
                         'user.id': val.id,
                         value:{},
-                        size: 0
+                        size: 0,
+                        status:'new'
                     })
                     cart.value.set(val.product,val.size)
                     cart.size = cart.size + val.size
+                    cart.books.addToSet(bookID)
                     cart.save()
                     resolve(cart.size)
                 }
@@ -168,13 +174,32 @@ class Database {
 
     GetSizeCart(id){
         return new Promise((resolve, reject) => {
-            Cart.findOne({'user.id':id})
+            Cart.findOne({'user.id':id,status:'new'})
             .select('size')
             .exec((err,res)=>{
                 if(err) reject(err)
-                resolve(res.size.toString())
+                if(res){
+                    resolve(res.size.toString())
+                }
+                reject(null)
             })
         });
+    }
+
+    GetCartInfo(val){
+        return new Promise((resolve, reject) => {
+          Cart.findOne({'user.id':val,status:'new'})
+          .populate({
+            path: 'books',
+            select: 'name price image',
+            model: 'Book'
+            })
+          .exec((err,res)=>{
+            if (err) reject(err)
+            console.log(res)
+            resolve(res)
+          })
+        })
     }
 
     SaveImage(base64) {
@@ -195,7 +220,7 @@ class Database {
             Book.findById(id)
                 .lean()
                 .exec((err, res) => {
-                    console.log(res)
+                    //console.log(res)
                     if (err) reject(err)
                     resolve(res)
                 })

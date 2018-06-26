@@ -19,7 +19,17 @@ class CartController{
               reject(err)
           });
         })
-        
+    }
+    
+    GetCart(value){
+        return new Promise((resolve, reject) => {
+            db.GetCartInfo(value)
+            .then((result) => {
+                console.log(result)
+            }).catch((err) => {
+                reject(err)
+            });
+        });
     }
 }
 
