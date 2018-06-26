@@ -52,6 +52,10 @@ class CategoryController {
                 res.books.forEach((e,i,a) => {
                     a[i].name = utils.UpperWord(e.name)
                     a[i].author.name = utils.UpperWord(e.author.name)
+                    a[i].image.forEach((el,il,al)=>{
+                        al[il] = utils.validURL(el) ? el : `/media/${el}`
+                        console.log(al[il])
+                    })
                 });
                 resolve(res)
             })

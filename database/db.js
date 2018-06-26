@@ -1,6 +1,10 @@
 var mongoose = require("mongoose")
 const path = require("path")
 var mongoDB = require("../gPath.js").connectString
+const utils = require('../controller/Utils')
+const sharp = require('sharp')
+
+const imageStore = path.join(__dirname,'./images')
 
 const Book = require("./models/BookModel")
 const Category = require("./models/BookTypeModel")
@@ -94,6 +98,10 @@ class Database {
             val.category = { name: res.name, id: res._id }
             category = res
         })
+
+        await this.SaveImage(val.image).then(res=>{
+            val.image = res
+        }).catch(err=> val.image = '')
         return new Promise((resolve, reject) => {
             this.CreateBook(val)
                 .then(res => {
@@ -109,15 +117,28 @@ class Database {
         })
     }
 
-    ReadBookById(id){
+    SaveImage(base64) {
         return new Promise((resolve, reject) => {
-          Book.findById(id)
-          .lean()
-          .exec((err,res)=>{
-              console.log(res)
-              if(err) reject(err)
-              resolve(res)
-          })
+            let name = utils.hashName('webp')
+            let res = utils.decodeBase64Image(base64)
+            sharp(res.data)
+                .toFile(path.join(imageStore,name), (err, info) => {
+                    if (err) reject(err)
+                    resolve(name)
+                })
+        })
+
+    }
+
+    ReadBookById(id) {
+        return new Promise((resolve, reject) => {
+            Book.findById(id)
+                .lean()
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         })
     }
 
@@ -134,19 +155,19 @@ class Database {
         });
     }
 
-    ReadBookCommentList(id,offset,limit) {
+    ReadBookCommentList(id, offset, limit) {
         return new Promise((resolve, reject) => {
-            Book.find({_id:id}, {comments:{$slice:[(offset - 1)*limit, limit]}})
-            .lean()
-            .exec((err,res)=>{
-                //console.log(res[0].comments)
-                if(err) reject(err)
-                resolve(res[0].comments)
-            })
-          })
+            Book.find({ _id: id }, { comments: { $slice: [(offset - 1) * limit, limit] } })
+                .lean()
+                .exec((err, res) => {
+                    //console.log(res[0].comments)
+                    if (err) reject(err)
+                    resolve(res[0].comments)
+                })
+        })
     }
 
-    ReadBookListIndex(offset,limit) {
+    ReadBookListIndex(offset, limit) {
         return new Promise((resolve, reject) => {
             Book.find({})
                 .skip((offset - 1) * limit)
@@ -158,6 +179,16 @@ class Database {
                     resolve(res)
                 })
         });
+    }
+
+    ReadBookCount(){
+        return new Promise((resolve, reject) => {
+          Book.count({}).exec((err,count)=>{
+            if (err) reject(err)
+            resolve(count)
+          })
+        })
+        
     }
 
     ReadAuthorList(offset, limit) {
@@ -172,69 +203,71 @@ class Database {
         });
     }
 
-    ReadPublisherList(offset,limit) {
+    ReadPublisherList(offset, limit) {
         return new Promise((resolve, reject) => {
             Publisher.find({})
-            .skip((offset - 1) * limit)
-            .limit(limit)
-            .exec((err,res)=>{
-                if(err) reject(err)
-                resolve(res)
-            })
+                .skip((offset - 1) * limit)
+                .limit(limit)
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    ReadCategoryList(offset,limit){
+    ReadCategoryList(offset, limit) {
         return new Promise((resolve, reject) => {
             Category.find({})
-            .skip((offset - 1) * limit)
-            .limit(limit)
-            .exec((err,res)=>{
-                if(err) reject(err)
-                resolve(res)
-            })
+                .skip((offset - 1) * limit)
+                .limit(limit)
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    ReadCategoryListName(offset,limit){
+    ReadCategoryListName(offset, limit) {
         return new Promise((resolve, reject) => {
             Category.find({})
-            .skip((offset - 1) * limit)
-            .limit(limit)
-            .select('name')
-            .exec((err,res)=>{
-                if(err) reject(err)
-                resolve(res)
-            })
+                .skip((offset - 1) * limit)
+                .limit(limit)
+                .select('name')
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    ReadBookListType(offset,limit,id){
+    ReadBookListType(offset, limit, id) {
         return new Promise((resolve, reject) => {
-          Category.findById(id)
-          .populate({
-              path:'books',
-              select:'name author price image',
-              model: 'Book'
-          })
-          .lean()
-          .exec((err,res)=>{
-              if(err) reject(err)
-              resolve(res)
-          })
+            Category.findById(id)
+                .populate({
+                    path: 'books',
+                    select: 'name author price image',
+                    model: 'Book'
+                })
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
         })
-        
+
     }
 
-    ReadAccount(id){
+
+
+    ReadAccount(id) {
         return new Promise((resolve, reject) => {
             Account.findById(id)
-            .lean()
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+                .lean()
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
@@ -290,7 +323,7 @@ class Database {
     }
     //Comment.id = id sách, Comment.data = data sách
     UpdateComments(comment) {
-        return  new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             Book.update(
                 { _id: comment.id },
                 {
@@ -300,7 +333,7 @@ class Database {
                 }
             ).exec((err, res) => {
                 if (err) reject(err)
-                resolve({"message": "Update comment complete!"})
+                resolve({ "message": "Update comment complete!" })
             })
         })
     }

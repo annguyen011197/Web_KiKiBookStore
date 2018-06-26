@@ -1,27 +1,185 @@
+//script for admin site
 let offset = 1
-let limit = 2
+let limit = 10
+let type ='dashboard'
 
-var templateMainSource  = $("#form-dashboard").html()
-var templateMain = Handlebars.compile(templateMainSource)
+var templateMain = Handlebars.compile($("#form-dashboard").html())
 var content = $("#content")
 var avatar_big = $("#avatar-big")
 var username = $('#username')
+var templateBookForm = Handlebars.compile($("#form-add-book").html())
+var templateBookRows = Handlebars.compile($("#form-dashboard-row").html())
+let progressbar = `
+<div class="progress">
+<div class="progress-bar progress-bar-striped active" role="progressbar"
+aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+</div>
+</div>
+`
+let maxbook = false
 
 getBookList(offset,limit)
 avatar_big.attr("src",LetterAvatar(username.html(),avatar_big.height()))
 
+$(window).scroll(function() {
+    if($(window).scrollTop() == $(document).height() - $(window).height()) {
+        switch(type){
+            case 'dashboard':
+            if(maxbook){
+                return
+            }
+            offset=offset+1
+            content.append(progressbar)
+            ajax({
+                type: "get",
+                url: "./api/books",
+                data: {
+                    offset: offset,
+                    limit: limit
+                },
+                dataType: "json",
+            }).then(res=>{
+                let data ={
+                    name:"Sách",
+                    booklist:res
+                }
+                if(res.length==0){
+                    maxbook = true
+                    setTimeout(()=>{
+                        maxbook = false
+                    }, 1000*60*5);
+                    //5 phut
+                }
+                $(".progress").remove()
+                $(".responsive-table").append(templateBookRows(data))
+            })
+            break
+        }
+    }
+});
+
 $("#menu_book").on('click',(event)=>{
     event.preventDefault()
-    content.empty()
-    content.html("Book")
+    LoadAddBookForm()
 })
 
 $("#menu_dashboard").on('click',(event)=>{
     event.preventDefault()
+    type ='dashboard'
     content.empty()
     getBookList(offset,limit)
 })
 
+$(document).on('click','#input-button',(event)=>{
+    event.preventDefault()
+    getBase64($('#input-file').get(0).files[0])
+    .then(image=>{
+        let val = ValidateFormBook()
+        val.image = image
+        content.empty()
+        content.html(progressbar)
+        ajax({
+            type: "post",
+            url: "./api/book",
+            data: val,
+            dataType: "json"
+        }).then(res=>{
+            content.html('Success')
+            setTimeout(LoadAddBookForm(),3000)
+        }).catch(err=>{
+            alert(err)
+        })
+    })
+})
+
+function ValidateFormBook(){
+    let name = $('#input-name').val().trim()
+    let category= $('#input-category').val().trim()
+    let price = $('#input-price').val().trim()
+    let publisher= $('#input-publisher').val().trim()
+    let author=$('#input-author').val().trim()
+    let size = {
+        width:$('#input-size-width').val().trim(),
+        height:$('#input-size-height').val().trim(),
+        weight:$('#input-size-weight').val().trim(),
+    }
+
+    let covertype = $('#input-covertype').val().trim()
+    let language = $('#input-language').val().trim()
+    let date = $('#input-date').val().trim()
+    let page =$('#input-page').val().trim()
+    let description =$('#input-description').val().trim()
+
+    if(name === ''){
+        alert('Tên sách không được để trống')
+        return false
+    }
+
+    if(author===''){
+        alert('Tên tác giả không được để trống')
+        return false
+    }
+
+    if(publisher===''){
+        alert('Nhà xuất bản không được để trống')
+        return false
+    }
+
+    if(price===''){
+        alert('Giá không được để trống')
+        return false
+    }
+    return {
+        name: name,
+        category: category,
+        price: price,
+        size: {
+            width:size.width,
+            height:size.height,
+            weight:size.weight
+        },
+        publisher: publisher,
+        author: author,
+        typebook:covertype,
+        language:language,
+        date:date,
+        pages:page,
+        description:description
+
+    }
+}
+
+
+let getCategoryName = ajax({
+    type: "get",
+    url: "./api/category",
+    data: {
+        type:'name'
+    },
+    dataType: "json"
+})
+
+let getBook =  ajax({
+    type: "get",
+    url: "./api/books",
+    data: {
+        offset: offset,
+        limit: limit
+    },
+    dataType: "json"
+})
+
+let getAuthor = ajax({
+    type: "get",
+    url: "./api/books",
+    dataType: "json"
+})
+
+let getPublisher = ajax({
+    type: "get",
+    url: "./api/publisher",
+    dataType: "json"
+})
 
 function getBookList(offset, limit) {
     $.ajax({
@@ -42,47 +200,22 @@ function getBookList(offset, limit) {
     });
 }
 
-function LetterAvatar (name, size) {
-    let w = window
-    let d = document
-    name  = name || '';
-    size  = size || 60;
-
-    var colours = [
-            "#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e", "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50", 
-            "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6", "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"
-        ],
-
-        nameSplit = String(name).toUpperCase().split(' '),
-        initials, charIndex, colourIndex, canvas, context, dataURI;
-
-
-    if (nameSplit.length == 1) {
-        initials = nameSplit[0] ? nameSplit[0].charAt(0):'?';
-    } else {
-        initials = nameSplit[0].charAt(0) + nameSplit[1].charAt(0);
-    }
-
-    if (w.devicePixelRatio) {
-        size = (size * w.devicePixelRatio);
-    }
-        
-    charIndex     = (initials == '?' ? 72 : initials.charCodeAt(0)) - 64;
-    colourIndex   = charIndex % 20;
-    canvas        = d.createElement('canvas');
-    canvas.width  = size;
-    canvas.height = size;
-    context       = canvas.getContext("2d");
-     
-    context.fillStyle = colours[colourIndex - 1];
-    context.fillRect (0, 0, canvas.width, canvas.height);
-    context.font = Math.round(canvas.width/2)+"px Arial";
-    context.textAlign = "center";
-    context.fillStyle = "#FFF";
-    context.fillText(initials, size / 2, size / 1.5);
-
-    dataURI = canvas.toDataURL();
-    canvas  = null;
-
-    return dataURI;
+function LoadAddBookForm(){
+    content.empty()
+    type ='book'
+    Promise.all([getAuthor,getCategoryName,getPublisher])
+    .then(([author,category,publisher])=>{
+        let data = {
+            author: author,
+            publisher: publisher,
+            category: category
+        }
+        content.html(templateBookForm(data))
+        $( "#input-date" ).datepicker();
+    })
+    .catch(err=>{
+        content.html(templateBookForm({}))
+        $( "#input-date" ).datepicker();
+        alert(err+'')
+    })
 }

@@ -29,6 +29,15 @@ router.get('/books', (req, res) => {
     .catch(err => res.send({ error: err }))
 })
 
+router.get('/bookcount',(req,res)=>{
+  bookController.GetBookCount()
+  .then(val=>res.send(val+''))
+  .catch(err => {
+    res.status(404)
+    res.send({ error: err })
+  })
+})
+
 router.get('/category', (req, res, next) => {
   let offset = req.query.offset ?
     parseInt(req.query.offset) : 1
@@ -92,8 +101,10 @@ router.get('/publisher', (req, res) => {
     res.send({ error: 'Offset > 0' })
     return
   }
-  publisherController(offset,limit)
-  .then(res=>res.send(res))
+  publisherController.GetList(offset,limit)
+  .then(val=>{
+    res.send(val)
+  })
   .catch(err=>{
     res.status(404)
     res.send({error:err})
@@ -225,7 +236,7 @@ router.post('/book', (req, res) => {
     bookController.Create(req.body)
       .then(() => {
         res.status(200)
-        res.send('Success')
+        res.send({message:'Success'})
       })
       .catch(err => {
         res.status(404)

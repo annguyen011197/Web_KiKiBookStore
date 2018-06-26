@@ -37,7 +37,6 @@ router.route('/')
                     data.login = false
                     data.user = user
                     data.scripts = [
-                        'script.js',
                         'admin/script.js'
                     ]
                     data.css = ['css/style-admin.css']

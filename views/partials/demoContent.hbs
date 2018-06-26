@@ -11,7 +11,7 @@
       <div class="col col-4">Price</div>
     </li>
     \{{#each booklist}}
-        <li class="table-row">
+    <li class="table-row">
       <div class="col col-1" data-label="Name">\{{this.name}}</div>
       <div class="col col-2" data-label="Category">\{{this.type.name}}</div>
       <div class="col col-3" data-label="Author">\{{this.author.name}}</div>
@@ -19,4 +19,70 @@
     </li>
     \{{/each}}
   </ul>
+</script> 
+{{!-- Template Dashboard --}}
+<script id="form-dashboard-row" type="text/x-handlebars-template">
+    \{{#each booklist}}
+    <li class="table-row">
+      <div class="col col-1" data-label="Name">\{{this.name}}</div>
+      <div class="col col-2" data-label="Category">\{{this.type.name}}</div>
+      <div class="col col-3" data-label="Author">\{{this.author.name}}</div>
+      <div class="col col-4" data-label="Price">\{{this.price}}</div>
+    </li>
+    \{{/each}}
+</script> 
+{{!-- Template BookForm --}}
+<script id="form-add-book" type="text/x-handlebars-template">
+    <div class="form-style-9" id="addBookForm">
+        <ul>
+            <li>
+                <input id="input-name" type="text" name="field1" class="field-style field-full align-left" placeholder="Tên" />
+            </li>
+            <li>
+                <input id="input-category" type="text" name="field1" class="field-style field-full align-left" placeholder="Thể loại" list="book-type-data" />
+                <datalist id="book-type-data">
+                    {{!-- < option value="Internet Explorer"></option> --}}
+            \{{#each category}}<option value="\{{this.name}}"></option> \{{/ each}}
+            </datalist>
+        </li>
+        <li>
+            <input id="input-price" type="number" name="field3" class="field-style field-full align-left" placeholder="Giá" />
+        </li>
+        <li>
+            <input id="input-publisher" type="text" name="field1" class="field-style field-full align-left" placeholder="Nhà xuất bản" list="publisher-data" />
+            <datalist id="publisher-data">
+                \{{#each publisher}}<option value="\{{this.name}}"></option> \{{/ each}}
+            </datalist>
+        </li>
+        <li>
+            <input id="input-author" type="text" name="field1" class="field-style field-full align-left" placeholder="Tác giả" list="author-data" />
+            <datalist id="author-data">
+                \{{#each author}}<option value="\{{this.name}}"></option> \{{/ each}}
+            </datalist>
+        </li>
+        <li class="input-container">
+            <input id="input-size-width" type="number" name="field1" class="field-style field-three align-left" placeholder="Độ rộng" />
+            <input id="input-size-height" type="number" name="field1" class="field-style field-three align-none" placeholder="Độ dài" />
+            <input id="input-size-weight" type="number" name="field1" class="field-style field-three align-right" placeholder="Khối lượng" />
+
+        </li>
+        <li>
+            <input id="input-covertype" type="text" name="field1" class="field-style field-split align-left" placeholder="Loại bìa" />
+            <input id="input-language" type="text" name="field1" class="field-style field-split align-right" placeholder="Ngôn ngữ" />
+        </li>
+        <li>
+            <input id="input-date" type="text" name="field1" class="field-style field-split align-left" placeholder="Ngày xuất bản"  />
+            <input id="input-page" type="number" name="field1" class="field-style field-split align-right" placeholder="Số trang" />
+        </li>
+        <li>
+            <textarea id="input-description" name="field5" class="field-style" placeholder="Mô tả"></textarea>
+        </li>
+        <li>
+            <input id="input-file" type="file" name="img[]" class="field-style field-split align-left" placeholder="File" multiple/>
+        </li>
+        <li>
+            <input id="input-button" type="button" value="Thêm sách" />
+        </li>
+    </ul>
+</div >
 </script>
