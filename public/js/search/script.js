@@ -1,5 +1,5 @@
 const url = $(location).attr('href')
-let id = getParameterByName("id") ;
+let nameSearch = getParameterByName("name") ;
 let offset = getParameterByName("offset") ? getParameterByName("offset") : 1;
 let limit = getParameterByName("limit") ? getParameterByName("limit") : 2;
 
@@ -8,25 +8,16 @@ var templateContentSource = $("#content-template").html()
 var templateContent = Handlebars.compile(templateContentSource)
 var content = $("#content")
 
-if(id){
-    getBookListType(offset,limit,id)
-}else{
-    loadListCategory()
-    .then(res=>{
-        res.forEach(element => {
-            getBookListType(offset,limit,element._id)
-        })
-    })
-}
+getBookListType(offset,limit,nameSearch)
 
-function getBookListType(offset,limit,id){
+function getBookListType(offset,limit,name){
     $.ajax({
         type: "get",
-        url: "./api/booksCategory",
+        url: "./api/search",
         data: {
             offset: offset,
             limit: limit,
-            id: id
+            name: name
         },
         dataType: "json",
         success: function (res) {
@@ -38,7 +29,7 @@ function getBookListType(offset,limit,id){
             for(var i = start; i <= end;++i){
               let disabled = "";
               if(i == offset) disabled = "disabled";
-              page.push({text: i,url: `category?offset=${i}&limit=${limit}&id=${id}`,disabled: disabled});
+              page.push({text: i,url: `search?offset=${i}&limit=${limit}&name=${nameSearch}`,disabled: disabled});
             }
             let data ={
                 itemsPage:page,
@@ -47,7 +38,6 @@ function getBookListType(offset,limit,id){
             }
             $(".loader").hide();
             content.append(templateContent(data))
-            
         }
     });
 }

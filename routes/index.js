@@ -44,6 +44,15 @@ router.get('/category', (req, res) => {
   res.render('index', data);
 })
 
+router.get('/search', (req, res) => {
+  let data = {
+    title: "KiKi Bookstore",
+    info: info,
+    scripts: ["search/script.js"]
+  };
+  res.render('index', data);
+})
+
 router.get('/account', (req, res) => {
   if(req.session.passport){
     accountController.ReadAccount(req.session.passport.user)
@@ -99,7 +108,7 @@ router.get('/details', (req, res) => {
           id: id,
           title: "KiKi Bookstore",
           info: info,
-          scripts: ["index/script.js","script.js"],
+          scripts: ["detail/script.js","script.js"],
           item: val
         }
         data.user = {
@@ -115,7 +124,7 @@ router.get('/details', (req, res) => {
       id: id,
       title: "KiKi Bookstore",
       info: info,
-      scripts: ["detail/script.js"],
+      scripts: ["detail/script.js","script.js"],
       item: val
     }
     res.render('detail', data)

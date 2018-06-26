@@ -12,6 +12,10 @@ const Author = require("./models/AuthorModel")
 const Publisher = require("./models/PublisherModel")
 const Account = require('./models/AccountModel')
 const AccountInfoModel = require('./models/AccountInfoModel')
+<<<<<<< HEAD
+=======
+const normalize = require('normalize-strings');
+>>>>>>> ltanh2
 class Database {
     constructor() {
         mongoose.connect(mongoDB).then(console.log("Connected"))
@@ -174,7 +178,47 @@ class Database {
         });
     }
 
+<<<<<<< HEAD
     ReadBookCommentList(id, offset, limit) {
+=======
+    SearchBookList(option) {
+        let search = {}  
+        if(option.moneyMin && option.moneyMax){
+            search.price = { $gte: option.moneyMin, $lte: option.moneyMax }
+        }
+        if(option.author){
+            search["author.id"] = option.author;
+        }
+        if(option.type){
+            search["type.id"] = option.type;
+        }
+        const wordSearch = option.name ? normalize(option.name) : "";
+        return new Promise((resolve, reject) => {
+            Book.find(search)
+            .lean()
+            .sort(option.sort)
+            .exec((err, res) => {
+                if (err) reject(err)
+                if(wordSearch != ""){
+                    let result = [];
+                    if(res)
+                        res.forEach(element => {
+                            const nameNoUnicode = normalize(element.name);
+                            if(nameNoUnicode.indexOf(wordSearch) >= 0 || wordSearch == ""){
+                                result.push(element);
+                            }
+                        });
+                    resolve(result)
+                }else{
+                    resolve(res)
+                }
+               
+            })
+        });
+    }
+
+    ReadBookCommentList(id,offset,limit) {
+>>>>>>> ltanh2
         return new Promise((resolve, reject) => {
             Book.find({_id:id}, {comments:{$slice:[(offset - 1)*limit, limit]}})
             .lean()
@@ -323,6 +367,85 @@ class Database {
         });
     }
 
+<<<<<<< HEAD
+    UpdateAccountInfo(val){
+        return new Promise((resolve, reject) => {
+            AccountInfoModel.update(val.find,val.update)
+            .exec((err,res)=>{
+                console.log(res)
+                if(err) reject(err)
+                resolve(res)
+            })
+        });
+=======
+    ReadBookListType(id){
+        return new Promise((resolve, reject) => {
+          Category.findById(id)
+          .populate({
+              path:'books',
+              select:'name author price image',
+              model: 'Book'
+          })
+          .lean()
+          .exec((err,res)=>{
+              if(err) reject(err)
+              resolve(res)
+          })
+        })
+>>>>>>> ltanh2
+    }
+
+    UpdateAccount(val){
+        return new Promise((resolve, reject) => {
+<<<<<<< HEAD
+            Account.update(val.find,val.update)
+=======
+            Account.findById(id)
+            .populate({
+                path:'local.accountInfo',
+                select:'firstName secondName address birthday contactNumber',
+                model: 'AccountInfo'
+            })
+            .lean()
+>>>>>>> ltanh2
+            .exec((err,res)=>{
+                console.log(res)
+                if(err) reject(err)
+                resolve(res)
+            })
+        });
+    }
+
+    ReadAccountExt(value){
+        return new Promise((resolve, reject) => {
+            Account.find(value)
+            .populate({
+                path:'local.accountInfo',
+                select:'firstName secondName address birthday contactNumber',
+                model: 'AccountInfo'
+            })
+            .lean()
+            .exec((err,res)=>{
+                console.log(res)
+                if(err) reject(err)
+                resolve(res)
+            })
+        });
+    }
+
+
+    ReadAccountInfo(id){
+        return new Promise((resolve, reject) => {
+            AccountInfoModel.findById(id)
+            .lean()
+            .exec((err,res)=>{
+                console.log(res)
+                if(err) reject(err)
+                resolve(res)
+            })
+        });
+    }
+
     UpdateAccountInfo(val){
         return new Promise((resolve, reject) => {
             AccountInfoModel.update(val.find,val.update)
@@ -408,6 +531,22 @@ class Database {
             ).exec((err, res) => {
                 if (err) reject(err)
                 resolve({ "message": "Update comment complete!" })
+            })
+        })
+    }
+
+    UpdateInfoAccount(val) {
+        return  new Promise((resolve, reject) => {
+            Account.update(
+                { _id: comment.id },
+                {
+                    $push: {
+                        comments: comment.data
+                    }
+                }
+            ).exec((err, res) => {
+                if (err) reject(err)
+                resolve({"message": "Update comment complete!"})
             })
         })
     }
