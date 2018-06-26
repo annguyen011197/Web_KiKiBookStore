@@ -46,8 +46,9 @@ class CategoryController {
 
     GetBook(offset,limit,id) {
         return new Promise((resolve, reject) => {
-            db.ReadBookListType(offset,limit,id)
+            db.ReadBookListType(id)
             .then(res=>{
+                res.count = res.books.length;
                 res.name = utils.UpperWord(res.name)
                 res.books.forEach((e,i,a) => {
                     a[i].name = utils.UpperWord(e.name)
@@ -57,6 +58,7 @@ class CategoryController {
                         console.log(al[il])
                     })
                 });
+                res.books = res.books.slice((offset - 1) * limit, offset * limit);
                 resolve(res)
             })
             .catch(err=>reject(err))
