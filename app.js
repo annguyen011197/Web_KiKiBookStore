@@ -38,7 +38,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
   secret: 'webdevteamABBA', // session secret
-  resave: true,
+  resave: false,
   saveUninitialized: true
 }))
 app.use(passport.initialize())

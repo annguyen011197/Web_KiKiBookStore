@@ -7,31 +7,29 @@
                 </a>
             </li>
             <li class="avatar">
-                <img src="/images/face4.jpg" alt="avatar" class="img-responsive img-circle">
+                <img src="/images/face4.jpg" alt="avatar" class="img-responsive img-circle" id="avatar-big">
                 <div class="avatar-info">
-                    <p style="font-size:12px;font-weight: 500;">Richard V.Welsh</p>
-                    <p style="color:#8d9498">Manager</p>
-                    <p class="online-status">Online</p>
+                    <p style="font-size:12px;font-weight: 500;" id="username">{{user.local.username}}</p>
+                    {{!-- <p style="color:#8d9498">Manager</p>
+                    <p class="online-status">Online</p> --}}
                 </div>
             </li>
-            <li class="menu">
-                <a href="/admin">Dashboard</a>
+            <li class="menu" id="menu_dashboard">
+                <a href="#">Dashboard</a>
             </li>
-            <li class="menu">
+            <li class="menu" id="menu_order">
                 <a href="#">Order</a>
             </li>
-            <li class="menu">
+            <li class="menu" id="menu_sale">
                 <a href="#">Sale</a>
             </li>
-            <li class="menu">
-                <a href="/admin/Book">
-                    Book
-                </a>
+            <li class="menu" id="menu_book">
+                <a href="#">Book</a>
             </li>
-            <li class="menu">
+            <li class="menu" id="menu_category">
                 <a href="#">Category</a>
             </li>
-            <li class="menu">
+            <li class="menu" id="menu_statistic">
                 <a href="#">Statistic</a>
             </li>
         </ul>

@@ -4,6 +4,8 @@ body {
     background: #F0F0F0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+
 .top-promote img {
     width: 100%;
 }
@@ -940,4 +942,161 @@ button.button {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.main {
+    margin: 0 auto;
+    min-height: 400px;
+    padding: 0px;
+    text-align: left;
+}
+
+.main .row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.main .block {
+    margin-bottom: 30px;
+    position: relative;
+    background: white;
+    border: 1px solid #e6e6e6;
+    -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.main .block {
+    clear: both;
+    margin-bottom: 30px;
+}
+
+.main .block .block-title {
+    background: none;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.main .block .block-title {
+    color: #6a6a6a;
+    position: relative;
+    font-family: "Poppins", sans-serif;
+    padding: 18px 20px;
+    padding-bottom: 0px;
+    font-size: 20px;
+    font-weight: 600;
+    border-bottom: 2px solid #f6f6f6;
+}
+
+.main .sidebar .block .block-content {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.main .block .block-content {
+    padding: 20px;
+}
+
+.main .block-account li {
+    padding: 5px 0;
+}
+
+.main .block-account .block-content li.current {
+    color: #c00 !important;
+}
+
+.main .block-account .block-content li.current {
+    border-bottom: 1px solid #f2f2f2;
+    padding: 5px 0;
+    color: #ea7696;
+}
+
+.main ul li, ol li {
+    list-style: none;
+}   
+
+.main .block-account .block-content li a {
+    display: block;
+    border-bottom: 1px solid #f2f2f2;
+    padding: 5px 0;
+}       
+
+.main .my-account {
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 0px 1px 1px #ddd;
+    border: 1px solid #e6e6e6;
+}
+
+.main .page-title {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+    margin: 0 0 15px;
+}
+
+.main .page-title h1, .page-title h2{
+    color: #c00 !important;
+}
+
+.main .page-title h1 {
+    padding: 0 0 10px;
+}
+
+.main .fieldset {
+    background: white !important;
+    border: 1px solid #f2f2f2;
+    padding: 22px 24px 12px 24px;
+    margin: 28px 0;
+}
+
+.main .legend {
+    float: left;
+    font-weight: normal;
+    font-size: 13px;
+    border: 1px solid #f2f2f2;
+    background: #fff;
+    color: #444443;
+    margin: -45px 0 0 -10px;
+    padding: 0 8px;
+    position: relative;
+}
+
+.main .form-list li {
+    overflow: hidden;
+    padding: 5px 3px;
+    margin: 0;
+}
+
+.main .form-list .field {
+    width: 300px;
+    margin-right: 10px;
+    float: left;
+}
+
+.main .form-list .input-box {
+    display: block;
+    clear: both;
+    width: 260px;
+}
+
+.main .form-list .customer-dob .dob-day, .form-list .customer-dob .dob-month {
+    width: 60px;
+}
+
+.main .form-list .customer-dob .dob-month, .form-list .customer-dob .dob-day, .form-list .customer-dob .dob-year {
+    float: left;
+}
+
+.main .main .required {
+    font-size: 11px;
+    text-align: right;
+    color: #EB340A;
+}
+
+.main .my-account .form-list li.control input.checkbox {
+    margin-top: 6px;
+}
+.main .form-list li.control input.checkbox {
+    margin-right: 6px;
+    float: left;
 }

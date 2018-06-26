@@ -47,7 +47,7 @@ module.exports = function (passport) {
                 newUser.local.username = username
                 newUser.local.email = email;
                 newUser.local.password = newUser.generateHash(password);
-
+                newUser.local.verify = new Date().getTime();
                 newUser.save(function (err) {
                   if (err) return done(err);
                   return done(null, newUser, req.flash("signupMessage", "Successful"));
@@ -65,6 +65,7 @@ module.exports = function (passport) {
                   var user = req.user;
                   user.local.email = email;
                   user.local.password = user.generateHash(password);
+                  user.local.verify = new Date().getTime();
                   user.save(function (err) {
                     if (err) return done(err);
                     return done(null, user, req.flash('signupMessage', 'Successful'));
@@ -80,28 +81,6 @@ module.exports = function (passport) {
     )
   );
 
-  // passport.use('local-login', new LocalStrategy(
-  //   {
-  //     usernameField: "email",
-  //     passwordField: "password",
-  //     passReqToCallback: true
-  //   },
-  //   (req, email, password, done) => {
-  //     process.nextTick(() => {
-  //       User.findOne({ 'local.email': email })
-  //         .exec((err, user) => {
-  //           if (err)
-  //             return done(err)
-  //           if (!user)
-  //             return done(null, false, req.flash('loginMessage', 'No user found.'))
-  //           if(!user.validPassword(password))
-  //             return done(null,false,req.flash('loginMessage', 'Wrong Password'))
-  //           return done(null,user,req.flash('loginMessage','Succesful'))
-  //         })
-  //     })
-  //   }
-  // ))
-
   passport.use('local-login', new LocalStrategy(
     {
       usernameField: "email",
@@ -110,16 +89,38 @@ module.exports = function (passport) {
     },
     (req, email, password, done) => {
       process.nextTick(() => {
-        User.findOne({ 'local.email': email })
-          .exec((err, user) => {
-            if (err)
-              return done(err)
-            if (!user)
-              return done(null, false, {message:'No user found'})
-            if(!user.validPassword(password))
-              return done(null,false,{message:'Wrong password'})
-            return done(null,user,{message:'Succesful'})
+        if(req.body.type=='admin'){
+          User.findOne({ 
+            'local.username': email
           })
+            .exec((err, user) => {
+              if (err)
+                return done(err)
+              if (!user)
+                return done(null, false, { message: 'No user found' })
+              if (!user.validPassword(password))
+                return done(null, false, { message: 'Wrong password' })
+              if( user.local.verify != "Active")
+                return done(null,false,{message:'Must active email'})
+              return done(null, user, { message: 'Succesful' })
+            })
+        }else{
+          User.findOne({ 
+            'local.email': email,
+          })
+            .exec((err, user) => {
+              if (err)
+                return done(err)
+              if (!user)
+                return done(null, false, { message: 'No user found' })
+              if (!user.validPassword(password))
+                return done(null, false, { message: 'Wrong password' })
+              if(user.local.verify != "Active")
+                return done(null,false,{message:'Must active email'})
+              return done(null, user, { message: 'Succesful' })
+            })
+        }
+
       })
     }
   ))

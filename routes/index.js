@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var bookController = require('../controller/book')
-var accountController =require('../controller/account') 
+var accountController =require('../controller/account')
+const fs = require('fs')
+const path = require('path')
+const imageStore = path.join(__dirname,'../database/images')
 
 let info = {
   email: "info@kikibook.com",
@@ -10,10 +13,11 @@ let info = {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  console.log(req.session)
   let data = {
     title: "KiKi Bookstore",
     info: info,
-    scripts: ["index/script.js"]
+    scripts: ["index/script.js",'script.js']
   };
  if(req.session.passport){
     accountController.ReadAccount(req.session.passport.user)
@@ -21,7 +25,6 @@ router.get('/', function (req, res, next) {
       data.user = {
         name: value.local.username
       }
-      console.log(data)
       res.render('index', data);
     })
     .catch(err=>{
@@ -36,9 +39,37 @@ router.get('/category', (req, res) => {
   let data = {
     title: "KiKi Bookstore",
     info: info,
-    scripts: ["category/script.js"]
+    scripts: ["category/script.js","script.js"]
   };
   res.render('index', data);
+})
+
+router.get('/account', (req, res) => {
+  if(req.session.passport){
+    accountController.ReadAccount(req.session.passport.user)
+    .then((value)=>{
+      let data = {
+        title: "KiKi Bookstore",
+        info: info,
+        scripts: ["account/script.js"],
+        account: value
+      };
+      if(value.accountInfo != undefined){
+        console.log(value.accountInfo)
+      }
+      res.render("account",data);
+    })
+    .catch(err=>{
+      res.send("404");
+    })
+ }else{
+  let data = {
+    title: "KiKi Bookstore",
+    info: info,
+    scripts: ["account/script.js"],
+  };
+  res.render("account",data);
+ }
 })
 
 router.get('/details', (req, res) => {
@@ -52,7 +83,7 @@ router.get('/details', (req, res) => {
           id: id,
           title: "KiKi Bookstore",
           info: info,
-          scripts: ["index/script.js"],
+          scripts: ["index/script.js","script.js"],
           item: val
         }
         data.user = {
@@ -68,7 +99,7 @@ router.get('/details', (req, res) => {
           id: id,
           title: "KiKi Bookstore",
           info: info,
-          scripts: ["index/script.js"],
+          scripts: ["index/script.js","script.js"],
           item: val
         }
         data.user = {
@@ -84,10 +115,15 @@ router.get('/details', (req, res) => {
       id: id,
       title: "KiKi Bookstore",
       info: info,
-      scripts: ["index/script.js"],
+      scripts: ["detail/script.js"],
       item: val
     }
     res.render('detail', data)
   })
  }})
+
+router.get('/media/:name',(req,res)=>{
+  let name = req.params.name
+  res.sendFile(path.join(imageStore,name))
+})
 module.exports = router;
