@@ -24,13 +24,6 @@ class BookController {
                         a[i].author.name = utils.UpperWord(e.author.name)
                         a[i].type.name = utils.UpperWord(e.type.name)
                         a[i].price = (e.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
-<<<<<<< HEAD
-                        a[i].image.forEach((el,il,al)=>{
-                            al[il] = utils.validURL(el) ? el : `/media/${el}`
-                            console.log(al[il])
-                        })
-=======
->>>>>>> ltanh2
                     })
                     resolve(res)
                 })
@@ -83,8 +76,6 @@ class BookController {
                 .catch(err => reject(err))
         })
     }
-<<<<<<< HEAD
-=======
 
     SearchBookList(offset, limit, option){
         return new Promise((resolve, reject) => {
@@ -103,7 +94,6 @@ class BookController {
                 .catch(err => reject(err))
         })
     }
->>>>>>> ltanh2
 }
 
 module.exports = new BookController()
