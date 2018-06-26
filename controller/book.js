@@ -67,9 +67,17 @@ class BookController {
 
     SearchBookList(offset, limit, option){
         return new Promise((resolve, reject) => {
-            db.SearchBookList(offset, limit, option)
+            db.SearchBookList(option)
                 .then(res => {
-                    resolve(res)
+                    let result = {}
+                    result.count = res.length;
+                    result.name = "Tìm kiếm từ: " + utils.UpperWord(option.name)
+                    res.forEach((e,i,a) => {
+                        a[i].name = utils.UpperWord(e.name)
+                        a[i].author.name = utils.UpperWord(e.author.name)
+                    });
+                    result.books = res.slice((offset - 1) * limit, offset * limit);
+                    resolve(result)
                 })
                 .catch(err => reject(err))
         })

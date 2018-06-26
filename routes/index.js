@@ -41,6 +41,15 @@ router.get('/category', (req, res) => {
   res.render('index', data);
 })
 
+router.get('/search', (req, res) => {
+  let data = {
+    title: "KiKi Bookstore",
+    info: info,
+    scripts: ["search/script.js"]
+  };
+  res.render('index', data);
+})
+
 router.get('/account', (req, res) => {
   if(req.session.passport){
     accountController.ReadAccount(req.session.passport.user)

@@ -154,7 +154,7 @@ class Database {
         });
     }
 
-    SearchBookList(offset, limit, option) {
+    SearchBookList(option) {
         let search = {}  
         if(option.moneyMin && option.moneyMax){
             search.price = { $gte: option.moneyMin, $lte: option.moneyMax }
@@ -174,15 +174,18 @@ class Database {
                 if (err) reject(err)
                 if(wordSearch != ""){
                     let result = [];
-                    res.forEach(element => {
-                        const nameNoUnicode = normalize(element.name);
-                        if(nameNoUnicode.indexOf(wordSearch) >= 0 || wordSearch == ""){
-                            result.push(element);
-                        }
-                    });
-                    resolve(result.slice((offset - 1)*limit, offset*limit))
+                    if(res)
+                        res.forEach(element => {
+                            const nameNoUnicode = normalize(element.name);
+                            if(nameNoUnicode.indexOf(wordSearch) >= 0 || wordSearch == ""){
+                                result.push(element);
+                            }
+                        });
+                    resolve(result)
+                }else{
+                    resolve(res)
                 }
-                resolve(res.slice((offset - 1)*limit, offset*limit))
+               
             })
         });
     }
