@@ -92,14 +92,30 @@ $(document).on('click','#order-btn',event=>{
         let size = e.find(`input[type='number']`).val()
         data.list[id] = size
     })
+
     ajax({
         type:'post',
         url:'/api/savecart',
         data: data,
         dataType:'json'
     }).then(res=>{
-        location.href = '/'
+        console.log(res)
+        //location.href = '/'
     }).catch(err=>{
-        alertify.alert('Xảy ra lỗi',err+'');
+        console.log(err)
+        switch(err.status){
+            case 403:
+            alertify.alert('Hãy tạo tài khoản mới để tiến hành đặt hàng', function(){ 
+                let $signup_button = $('#signup-button')
+                $signup_button.click()
+            });
+            break
+            case 402:
+            alertify.alert('Hãy thêm thông tin để tiến hành đặt hàng', function(){ 
+                location.href = '/account'
+            });
+            break
+        }
+
     })
 })

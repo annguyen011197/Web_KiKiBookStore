@@ -590,27 +590,48 @@ router.route('/savecart').post((req, res) => {
   }
   if (req.session.passport && req.session.passport.user) {
     data.id = req.session.passport.user
-  }
-  cartController.SaveCart(data).then(val => {
-    console.log(val)
-    res.send({
-      size: val
+    accountController.ReadAccount(req.session.passport.user)
+    .then((value)=>{
+      if(value.accountInfo){
+        cartController.SaveCart(data).then(val => {
+          console.log(val)
+          res.send({
+            size: val
+          })
+        }).catch((err) => {
+          console.log(err)
+          res.end()
+        })
+      }else{
+        res.status(402)
+        res.send({message:'Not Update Info'})
+      }
     })
-  }).catch((err) => {
-    console.log(err)
-    res.end()
-  })
+    .catch(err=>{
+      res.render('index', data);
+    })
+
+  }else{
+    res.status(403)
+    res.send({message:'Not Login'})
+  }
+
 })
 
 
 router.get('/cartsize', (req, res) => {
   let id = req.query.id ?
     req.query.id : null
+  let data = {}
   if (req.session.passport && req.session.passport.user) {
-    id = req.session.passport.user
+    if(id)
+      data.newId = req.session.passport.user
+    else
+      id = req.session.passport.user
   }
-  if (id) {
-    cartController.GetSize(id)
+  data.id = id
+  if (data) {
+    cartController.GetSize(data)
       .then((result) => {
         res.send(result)
       }).catch((err) => {

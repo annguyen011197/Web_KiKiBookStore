@@ -31,13 +31,6 @@ router.get('/cart', function (req, res, next) {
             .catch(err => res.render('cart', data))
     } else {
         res.render('cart', data)    
-        // let id = req.query.id
-        // cartController.GetCart(id)
-        // .then(val=>{
-        //     data.cartlist= val
-        //     res.render('cart', data);
-        // })
-        // .catch(err=>res.render('cart', data))
     }
 });
 

@@ -203,13 +203,18 @@ class Database {
         })
     }
 
-    GetSizeCart(id) {
+    GetSizeCart(val) {
         return new Promise((resolve, reject) => {
-            Cart.findOne({ 'user.id': id, status: 'new' })
-                .select('size')
+            Cart.findOne({ 'user.id': val.id, status: 'new' })
                 .exec((err, res) => {
                     if (err) reject(err)
                     if (res) {
+                        console.log(val)
+                        if(val.newId ){
+                            res.user.id = val.newId
+                            console.log(res)
+                            res.save()
+                        }
                         resolve(res.size.toString())
                     }
                     reject(null)
@@ -435,7 +440,7 @@ class Database {
             Account.findById(id)
                 .populate({
                     path: 'local.accountInfo',
-                    select: 'firstName secondName address birthday contactNumber',
+                    select: 'firstName secondName address birthday contactNumber verify',
                     model: 'AccountInfo'
                 })
                 .lean()
