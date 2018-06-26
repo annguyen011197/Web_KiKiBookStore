@@ -24,6 +24,7 @@ function getBookList(offset,limit){
                 name:"Sách",
                 items:response
             }
+            $(".loader").hide();
             content.append(templateContent(data))
         }
     });
