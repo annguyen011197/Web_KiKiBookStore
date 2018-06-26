@@ -1,24 +1,43 @@
 var db = require('./database/db')
+const testFolder = './temp/Kynangsong';
+const fs = require('fs');
 
-// db.CreateNewBook({
-    // name:"Con mèo bú con chó",
-    // price: 3000,
-    // date: new Date(),
-    // pages:200,
-    // image: [''],
-    // description: '',
-    // size:{
-    //     width:30,
-    //     height:100,
-    //     weight:100
-    // },
-    // typebook:'Mềm',
-    // language:'Tiếng việt',
-    // category:'Đam mỹ',
-    // publisher:'NXB Đéo đi hoc',
-    // author:'Yeu cc'
-// }).then(res=>console.log(res))
-// .catch(err=>console.log(err))
+fs.readdir(testFolder, (err, files) => {
+  files.forEach(file => {
+    console.log(file);
+    fs.readFile(testFolder + "/" + file, 'utf8', function (err,obj) {
+        if (err) {
+          return console.log(err);
+        }
+        var data = JSON.parse(obj);
+        var height = (data.kichthuoc ? data.kichthuoc.split(" x ")[0] : 0)
+        var weight = (data.kichthuoc ? data.kichthuoc.split(" x ")[1] : 0)
+        db.CreateNewBook({
+            name:data.title.trim(),
+            price: parseInt(data.oldPrice.replace(".","")),
+            date: data.namXB,
+            pages:data.sotrang,
+            image: [data.image],
+            description: '',
+            size:{
+                width: data.trongluong ? data.trongluong : 0,
+                height:  height,
+                weight: weight
+            },
+            typebook:data.hinhthuc,
+            language:data.ngonngu,
+            category:'Kỹ năng sống',
+            publisher: data.nxb,
+            author: data.tacgia ? data.tacgia.split(", ")[0] : undefined
+        }).then(res=>console.log(res))
+        .catch(err=>console.log(err))
+        console.log(data);
+      });
+  });
+})
+
+
+
 
 // newFunction();
 

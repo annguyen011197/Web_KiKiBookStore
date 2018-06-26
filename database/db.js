@@ -107,14 +107,16 @@ class Database {
 
     async CreateNewBook(val) {
         let publisher, author, category
-        await this.CheckPublisherAndCreate({ name: val.publisher }).then(res => {
-            val.publisher = { name: res.name, id: res._id }
-            publisher = res
-        })
-        await this.CheckAuthorAndCreate({ name: val.author }).then(res => {
-            val.author = { name: res.name, id: res._id }
-            author = res
-        })
+        if(val.publisher)
+            await this.CheckPublisherAndCreate({ name: val.publisher }).then(res => {
+                val.publisher = { name: res.name, id: res._id }
+                publisher = res
+            })
+        if(val.author)
+            await this.CheckAuthorAndCreate({ name: val.author }).then(res => {
+                val.author = { name: res.name, id: res._id }
+                author = res
+            })
         await this.CheckCategoryAndCreate({ name: val.category }).then(res => {
             val.category = { name: res.name, id: res._id }
             category = res
@@ -261,8 +263,8 @@ class Database {
                     let result = [];
                     if(res)
                         res.forEach(element => {
-                            const nameNoUnicode = normalize(element.name);
-                            if(nameNoUnicode.indexOf(wordSearch) >= 0 || wordSearch == ""){
+                            const nameNoUnicode = normalize(element.name).toLowerCase();
+                            if(nameNoUnicode.indexOf(wordSearch.toLowerCase()) >= 0 || wordSearch == ""){
                                 result.push(element);
                             }
                         });
