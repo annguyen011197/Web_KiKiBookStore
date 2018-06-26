@@ -261,7 +261,7 @@ class Database {
         });
     }
 
-    ReadBookListType(offset,limit,id){
+    ReadBookListType(id){
         return new Promise((resolve, reject) => {
           Category.findById(id)
           .populate({

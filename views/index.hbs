@@ -23,7 +23,7 @@
     <div class="content">
         {{> Banners}}
         <div class="category-slider mt-20" id="content">
-
+            <div class="loader"></div>
         </div>
     </div>
     <footer>
@@ -40,10 +40,10 @@
             <div class="panel-body">
                 <ul class="row" style="list-style: none;">
                     \{{#each items}}
-                <li class="col-xs-12 col-sm-6 col-md-3 col-lg-3 item">
+                    <li class="col-xs-12 col-sm-6 col-md-3 col-lg-3 item">
                         <a class="card" href="./details?id=\{{_id}}">
                             <div class="item-img-container">
-                                <img class="card-img-top img-responsive item-img" src={{ image }} alt='./api/media?name=null.jpg'>
+                                <img class="card-img-top img-responsive item-img" src="\{{ image }}" alt='./api/media?name=null.jpg'>
                             </div>
 
                                 <div class="card-body">
@@ -57,8 +57,13 @@
                                 </div>
                         </a>
                     </li>
-                        \{{/ each}}
+                    \{{/ each}}
             </ul>
+            <ul class="pagination"  style="display: flex;justify-content: center;">
+                \{{#each itemsPage}}
+                    <li class="page-item \{{this.disabled}}"><a class="page-link" href="\{{this.url}}">\{{this.text}}</a></li>
+                \{{/each}}
+           </ul> 
         </div>
             </div>
         </div>
