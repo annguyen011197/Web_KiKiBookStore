@@ -35,7 +35,7 @@ function getEventList(){
     var templateContentEventSource = $("#list-event").html()
     var templateContentEvent = Handlebars.compile(templateContentEventSource)
     var contentEvent = $("#slide-id")
-
+    contentEvent.html("");
     $.ajax({
         type: "get",
         url: "./api/getEvent",
@@ -52,4 +52,17 @@ function getEventList(){
             contentEvent.append(templateContentEvent(data))
         }
     });
+}
+
+function openModal(obj){
+
+    var templateContentModalSource = $("#model-event-script").html()
+    var templateContentModal = Handlebars.compile(templateContentModalSource)
+    var contentModal = $("#modal-event")
+    contentModal.html("");
+    let name = obj.getAttribute("alt");
+    let detail = obj.getAttribute("detail");
+    contentModal.append(templateContentModal({name: name,detail:detail}));
+    $("#modal-event").modal();
+
 }
