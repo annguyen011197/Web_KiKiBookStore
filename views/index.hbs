@@ -66,6 +66,14 @@
         </div>
 </script>
 
+<script id="list-event" type="text/x-handlebars-template">
+    \{{#each event}}
+        <div class="item \{{this.active}}">
+            <img class="img-responsive" src="\{{this.image}}" alt="\{{this.name}}">
+        </div>
+    \{{/each}}
+</script> 
+
 <script id="menu-template" type="text/x-handlebars-template">
     \{{#each booktypes}}
         <li><a href="/category?id=\{{this._id}}">\{{ this.name }}</a></li>
