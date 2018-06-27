@@ -60,7 +60,7 @@ router.get('/account', (req, res) => {
   if(req.session.passport){
     accountController.ReadAccount(req.session.passport.user)
     .then((value)=>{
-      if(value.local.verify=='Active'){
+      if(value.local.verify !='Active'){
         res.redirect('/')
       }
       value.local.password = ''
