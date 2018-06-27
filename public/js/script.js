@@ -14,7 +14,7 @@ function loadCategory() {
     url: "/api/category",
     data: {
       offset: 1,
-      limit: 3,
+      limit: 30,
       type: 'name'
     },
     dataType: "json",

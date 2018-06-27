@@ -1,5 +1,5 @@
 let offset = 1
-let limit = 10
+let limit = 30
 
 /**Content Template */
 var templateContentSource = $("#content-template").html()
