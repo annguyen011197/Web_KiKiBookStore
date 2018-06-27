@@ -113,37 +113,60 @@
             </div>
         </div>
         <div class="mt-20">
-            <h4>GIỚI THIỆU SÁCH</h4>
-            <div class="book-introduce">
-                <h5>
-                    {{item.name}}
-                </h5>
-                <p>
-                    {{item.description}}
-                </p>
+            <div class="ma-review-col1 span5">
+                <h4>GIỚI THIỆU SÁCH</h4>
+                <div class="book-introduce">
+                    <h5>
+                        {{item.name}}
+                    </h5>
+                    <p>
+                        {{item.description}}
+                    </p>
+                </div>
             </div>
         </div>
+
         <div class="mt-20">
             <div class="ma-review-col1 span5">
                 <h2 class="own-review">Khách Hàng Nhận Xét</h2>
                 <dl>
                     <div id="comments" page=1>
-                        {{> Comment}}
                     </div>
+                    
                 </dl>
                 <div class="loader" hidden></div>
                 <button class="btn btn-danger"  onclick="runLoad()" id="btn-load-more">Load more</button>
             </div>
 
         </div>
+        {{#if user}}
         <div class="mt-20" id="form-comment">
             {{> FormComment item.name}}
         </div>
+        {{/if}}
     </div>
     <footer class="rps-hidden">
         {{> Footer info=this.info}}
     </footer>
 </div>
+
+<script id="list-comment" type="text/x-handlebars-template">
+\{{#each listComment}}
+    <div class="f-review-container">
+        <div class="fhs-review-title">
+            <h4>\{{this.title}}</h4>
+        </div>
+        <div class="fhs-review-by-block">
+            Nhận xét bởi
+            <span class="fhs-review-by">\{{this.name}}</span>,
+            <small class="date">vào ngày \{{this.date}}</small>
+        </div>
+        <dd class="fhs-review-block-content">
+            \{{this.message}}
+        </dd>
+    </div>
+\{{/each}}
+</script> 
 
 <script id="menu-template" type="text/x-handlebars-template">
     \{{#each booktypes}}
