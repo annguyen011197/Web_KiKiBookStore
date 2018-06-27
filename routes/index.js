@@ -1,7 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var bookController = require('../controller/book')
-var accountController =require('../controller/account') 
+var accountController =require('../controller/account')
+const fs = require('fs')
+const path = require('path')
+const imageStore = path.join(__dirname,'../database/images')
 
 let info = {
   email: "info@kikibook.com",
@@ -14,13 +17,16 @@ router.get('/', function (req, res, next) {
   let data = {
     title: "KiKi Bookstore",
     info: info,
-    scripts: ["index/script.js"]
+    scripts: ["index/script.js",'script.js']
   };
  if(req.session.passport){
     accountController.ReadAccount(req.session.passport.user)
     .then((value)=>{
-      data.user = {
-        name: value.local.username
+      console.log(value.local.verify)
+      if(value.local.verify=='Active'){
+        data.user = {
+          name: value.local.username
+        }
       }
       res.render('index', data);
     })
@@ -36,7 +42,7 @@ router.get('/category', (req, res) => {
   let data = {
     title: "KiKi Bookstore",
     info: info,
-    scripts: ["category/script.js"]
+    scripts: ["category/script.js","script.js"]
   };
   res.render('index', data);
 })
@@ -54,6 +60,10 @@ router.get('/account', (req, res) => {
   if(req.session.passport){
     accountController.ReadAccount(req.session.passport.user)
     .then((value)=>{
+      if(value.local.verify=='Active'){
+        res.redirect('/')
+      }
+      value.local.password = ''
       let data = {
         title: "KiKi Bookstore",
         info: info,
@@ -74,7 +84,8 @@ router.get('/account', (req, res) => {
     info: info,
     scripts: ["account/script.js"],
   };
-  res.render("account",data);
+  res.redirect('/')
+  //res.render("index",data);
  }
 })
 
@@ -89,11 +100,16 @@ router.get('/details', (req, res) => {
           id: id,
           title: "KiKi Bookstore",
           info: info,
-          scripts: ["index/script.js"],
+          scripts: ["detail/script.js","script.js"],
           item: val
         }
-        data.user = {
-          name: value.local.username
+
+        if(value){
+          if(value.local.verify=='Active'){
+            data.user = {
+              name: value.local.username
+            }
+          }
         }
         res.render('detail', data)
       })
@@ -105,7 +121,7 @@ router.get('/details', (req, res) => {
           id: id,
           title: "KiKi Bookstore",
           info: info,
-          scripts: ["detail/script.js"],
+          scripts: ["detail/script.js","script.js"],
           item: val
         }
         data.user = {
@@ -121,10 +137,21 @@ router.get('/details', (req, res) => {
       id: id,
       title: "KiKi Bookstore",
       info: info,
-      scripts: ["detail/script.js"],
+      scripts: ["detail/script.js","script.js"],
       item: val
     }
     res.render('detail', data)
   })
  }})
+
+router.get('/media/:name',(req,res)=>{
+  let name = req.params.name
+  res.sendFile(path.join(imageStore,name))
+})
+
+
+router.get('/cart', (req, res) => {
+  res.render('cart');
+})
+
 module.exports = router;

@@ -1,6 +1,10 @@
 var mongoose = require("mongoose")
 const path = require("path")
 var mongoDB = require("../gPath.js").connectString
+const utils = require('../controller/Utils')
+const sharp = require('sharp')
+
+const imageStore = path.join(__dirname, './images')
 
 const Book = require("./models/BookModel")
 const Category = require("./models/BookTypeModel")
@@ -8,6 +12,7 @@ const Author = require("./models/AuthorModel")
 const Publisher = require("./models/PublisherModel")
 const Account = require('./models/AccountModel')
 const AccountInfoModel = require('./models/AccountInfoModel')
+const Cart = require('./models/Cart')
 const normalize = require('normalize-strings');
 class Database {
     constructor() {
@@ -102,12 +107,12 @@ class Database {
 
     async CreateNewBook(val) {
         let publisher, author, category
-        if(val.publisher)
+        if (val.publisher)
             await this.CheckPublisherAndCreate({ name: val.publisher }).then(res => {
                 val.publisher = { name: res.name, id: res._id }
                 publisher = res
             })
-        if(val.author)
+        if (val.author)
             await this.CheckAuthorAndCreate({ name: val.author }).then(res => {
                 val.author = { name: res.name, id: res._id }
                 author = res
@@ -116,6 +121,10 @@ class Database {
             val.category = { name: res.name, id: res._id }
             category = res
         })
+
+        await this.SaveImage(val.image).then(res => {
+            val.image = res
+        }).catch(err => val.image = '')
         return new Promise((resolve, reject) => {
             this.CreateBook(val)
                 .then(res => {
@@ -137,15 +146,143 @@ class Database {
         })
     }
 
-    ReadBookById(id){
+    DeleteCartItem(val){
+        let bookID
         return new Promise((resolve, reject) => {
-          Book.findById(id)
-          .lean()
-          .exec((err,res)=>{
-              console.log(res)
-              if(err) reject(err)
-              resolve(res)
-          })
+            Cart.findOne({ 'user.id': val.id, status: 'new' })
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    bookID = new mongoose.Types.ObjectId(val.product)
+                    if (res) {
+                        console.log(res)
+                        res.date = new Date()
+                        let size = res.value.get(val.product)
+                        res.value.delete(val.product)
+                        console.log(size)
+                        res.size = res.size - size
+                        res.books.pull(bookID)
+                        res.delete
+                        res.save()
+                        resolve(res.size)
+                    } 
+                })
+        })
+    }
+
+    SetCart(val) {
+        let bookID
+        return new Promise((resolve, reject) => {
+            Cart.findOne({ 'user.id': val.id, status: 'new' })
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    //console.log(bookID)
+                    bookID = new mongoose.Types.ObjectId(val.product)
+                    if (res) {
+                        res.date = new Date()
+                        let size = res.value.get(val.product)
+                        res.value.set(val.product, size ? size + val.size : val.size)
+                        res.size = res.size + val.size
+                        res.books.addToSet(bookID)
+                        res.save()
+                        resolve(res.size)
+                    } else {
+                        let cart = new Cart({
+                            date: new Date(),
+                            'user.id': val.id,
+                            value: {},
+                            size: 0,
+                            status: 'new'
+                        })
+                        cart.value.set(val.product, val.size)
+                        cart.size = cart.size + val.size
+                        cart.books.addToSet(bookID)
+                        cart.save()
+                        resolve(cart.size)
+                    }
+                })
+        })
+    }
+
+    GetSizeCart(val) {
+        return new Promise((resolve, reject) => {
+            Cart.findOne({ 'user.id': val.id, status: 'new' })
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    if (res) {
+                        console.log(val)
+                        if(val.newId ){
+                            res.user.id = val.newId
+                            console.log(res)
+                            res.save()
+                        }
+                        resolve(res.size.toString())
+                    }
+                    reject(null)
+                })
+        });
+    }
+
+    SaveCart(val){
+        return new Promise((resolve, reject) => {
+            Cart.findOne({ 'user.id': val.id, status: 'new' })
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    if (res) {
+                        res.date = new Date()
+                        res.total = 0
+                        res.value.clear()
+                        res.books = []
+                        for(let key in val.list){
+                            res.value.set(key,parseInt(val.list[key]))
+                            res.total += parseInt(val.list[key])
+                            res.books.addToSet(new mongoose.Types.ObjectId(key))
+                        }
+                        res.status = 'accept'
+                        res.save()
+                        resolve(res)
+                    } 
+                })
+        })
+    }
+
+    GetCartInfo(val) {
+        return new Promise((resolve, reject) => {
+            Cart.findOne({ 'user.id': val, status: 'new' })
+                .populate({
+                    path: 'books',
+                    select: 'name price image author',
+                    model: 'Book'
+                })
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
+        })
+    }
+
+    SaveImage(base64) {
+        return new Promise((resolve, reject) => {
+            let name = utils.hashName('webp')
+            let res = utils.decodeBase64Image(base64)
+            sharp(res.data)
+                .toFile(path.join(imageStore, name), (err, info) => {
+                    if (err) reject(err)
+                    resolve(name)
+                })
+        })
+
+    }
+
+    ReadBookById(id) {
+        return new Promise((resolve, reject) => {
+            Book.findById(id)
+                .lean()
+                .exec((err, res) => {
+                    //console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         })
     }
 
@@ -163,53 +300,53 @@ class Database {
     }
 
     SearchBookList(option) {
-        let search = {}  
-        if(option.moneyMin && option.moneyMax){
+        let search = {}
+        if (option.moneyMin && option.moneyMax) {
             search.price = { $gte: option.moneyMin, $lte: option.moneyMax }
         }
-        if(option.author){
+        if (option.author) {
             search["author.id"] = option.author;
         }
-        if(option.type){
+        if (option.type) {
             search["type.id"] = option.type;
         }
         const wordSearch = option.name ? normalize(option.name) : "";
         return new Promise((resolve, reject) => {
             Book.find(search)
-            .lean()
-            .sort(option.sort)
-            .exec((err, res) => {
-                if (err) reject(err)
-                if(wordSearch != ""){
-                    let result = [];
-                    if(res)
-                        res.forEach(element => {
-                            const nameNoUnicode = normalize(element.name).toLowerCase();
-                            if(nameNoUnicode.indexOf(wordSearch.toLowerCase()) >= 0 || wordSearch == ""){
-                                result.push(element);
-                            }
-                        });
-                    resolve(result)
-                }else{
-                    resolve(res)
-                }
-               
-            })
+                .lean()
+                .sort(option.sort)
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    if (wordSearch != "") {
+                        let result = [];
+                        if (res)
+                            res.forEach(element => {
+                                const nameNoUnicode = normalize(element.name).toLowerCase();
+                                if (nameNoUnicode.indexOf(wordSearch.toLowerCase()) >= 0 || wordSearch == "") {
+                                    result.push(element);
+                                }
+                            });
+                        resolve(result)
+                    } else {
+                        resolve(res)
+                    }
+
+                })
         });
     }
 
-    ReadBookCommentList(id,offset,limit) {
+    ReadBookCommentList(id, offset, limit) {
         return new Promise((resolve, reject) => {
-            Book.find({_id:id}, {comments:{$slice:[(offset - 1)*limit, limit]}})
-            .lean()
-            .exec((err,res)=>{
-                if(err) reject(err)
-                resolve(res)
-            })
-          })
+            Book.find({ _id: id }, { comments: { $slice: [(offset - 1) * limit, limit] } })
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
+        })
     }
 
-    ReadBookListIndex(offset,limit) {
+    ReadBookListIndex(offset, limit) {
         return new Promise((resolve, reject) => {
             Book.find({})
                 .skip((offset - 1) * limit)
@@ -221,6 +358,16 @@ class Database {
                     resolve(res)
                 })
         });
+    }
+
+    ReadBookCount() {
+        return new Promise((resolve, reject) => {
+            Book.count({}).exec((err, count) => {
+                if (err) reject(err)
+                resolve(count)
+            })
+        })
+
     }
 
     ReadAuthorList(offset, limit) {
@@ -235,125 +382,124 @@ class Database {
         });
     }
 
-    ReadPublisherList(offset,limit) {
+    ReadPublisherList(offset, limit) {
         return new Promise((resolve, reject) => {
             Publisher.find({})
-            .skip((offset - 1) * limit)
-            .limit(limit)
-            .exec((err,res)=>{
-                if(err) reject(err)
-                resolve(res)
-            })
+                .skip((offset - 1) * limit)
+                .limit(limit)
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    ReadCategoryList(offset,limit){
+    ReadCategoryList(offset, limit) {
         return new Promise((resolve, reject) => {
             Category.find({})
-            .skip((offset - 1) * limit)
-            .limit(limit)
-            .exec((err,res)=>{
-                if(err) reject(err)
-                resolve(res)
-            })
+                .skip((offset - 1) * limit)
+                .limit(limit)
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    ReadCategoryListName(offset,limit){
+    ReadCategoryListName(offset, limit) {
         return new Promise((resolve, reject) => {
             Category.find({})
-            .skip((offset - 1) * limit)
-            .limit(limit)
-            .select('name')
-            .exec((err,res)=>{
-                if(err) reject(err)
-                resolve(res)
-            })
+                .skip((offset - 1) * limit)
+                .limit(limit)
+                .select('name')
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    ReadBookListType(id){
+    ReadBookListType(id) {
         return new Promise((resolve, reject) => {
-          Category.findById(id)
-          .populate({
-              path:'books',
-              select:'name author price image',
-              model: 'Book'
-          })
-          .lean()
-          .exec((err,res)=>{
-              if(err) reject(err)
-              resolve(res)
-          })
+            Category.findById(id)
+                .populate({
+                    path: 'books',
+                    select: 'name author price image',
+                    model: 'Book'
+                })
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
         })
     }
 
-    ReadAccount(id){
+    ReadAccount(id) {
         return new Promise((resolve, reject) => {
             Account.findById(id)
-            .populate({
-                path:'local.accountInfo',
-                select:'firstName secondName address birthday contactNumber',
-                model: 'AccountInfo'
-            })
-            .lean()
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+                .populate({
+                    path: 'local.accountInfo',
+                    select: 'firstName secondName address birthday contactNumber verify',
+                    model: 'AccountInfo'
+                })
+                .lean()
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    ReadAccountExt(value){
+    ReadAccountExt(value) {
         return new Promise((resolve, reject) => {
             Account.find(value)
-            .populate({
-                path:'local.accountInfo',
-                select:'firstName secondName address birthday contactNumber',
-                model: 'AccountInfo'
-            })
-            .lean()
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+                .populate({
+                    path: 'local.accountInfo',
+                    select: 'firstName secondName address birthday contactNumber',
+                    model: 'AccountInfo'
+                })
+                .lean()
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-
-    ReadAccountInfo(id){
+    ReadAccountInfo(id) {
         return new Promise((resolve, reject) => {
             AccountInfoModel.findById(id)
-            .lean()
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+                .lean()
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    UpdateAccountInfo(val){
+    UpdateAccountInfo(val) {
         return new Promise((resolve, reject) => {
-            AccountInfoModel.update(val.find,val.update)
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+            AccountInfoModel.update(val.find, val.update)
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
-    UpdateAccount(val){
+    UpdateAccount(val) {
         return new Promise((resolve, reject) => {
-            Account.update(val.find,val.update)
-            .exec((err,res)=>{
-                console.log(res)
-                if(err) reject(err)
-                resolve(res)
-            })
+            Account.update(val.find, val.update)
+                .exec((err, res) => {
+                    console.log(res)
+                    if (err) reject(err)
+                    resolve(res)
+                })
         });
     }
 
@@ -409,7 +555,7 @@ class Database {
     }
     //Comment.id = id sách, Comment.data = data sách
     UpdateComments(comment) {
-        return  new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             Book.update(
                 { _id: comment.id },
                 {
@@ -419,13 +565,13 @@ class Database {
                 }
             ).exec((err, res) => {
                 if (err) reject(err)
-                resolve({"message": "Update comment complete!"})
+                resolve({ "message": "Update comment complete!" })
             })
         })
     }
 
     UpdateInfoAccount(val) {
-        return  new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             Account.update(
                 { _id: comment.id },
                 {
@@ -435,7 +581,7 @@ class Database {
                 }
             ).exec((err, res) => {
                 if (err) reject(err)
-                resolve({"message": "Update comment complete!"})
+                resolve({ "message": "Update comment complete!" })
             })
         })
     }
@@ -566,6 +712,7 @@ class Database {
                 })
         })
     }
+
     CheckCategoryAndCreate(val) {
         return new Promise((resolve, reject) => {
             this.CheckCategory(val)
@@ -584,6 +731,7 @@ class Database {
                 })
         })
     }
+
     CheckPublisherAndCreate(val) {
         return new Promise((resolve, reject) => {
             this.CheckPublisher(val)

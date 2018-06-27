@@ -14,9 +14,11 @@ class PublisherController{
     }
 
     GetList(offset,limit){
-        db.ReadPublisherList(offset, limit)
-        .then(val => resolve(val))
-        .catch(err => reject(err))
+        return new Promise((resolve, reject) => {
+            db.ReadPublisherList(offset, limit)
+            .then(val => resolve(val))
+            .catch(err => reject(err))
+        })
     }
 }
 
