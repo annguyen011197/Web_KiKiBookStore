@@ -117,7 +117,7 @@ $(document).on('click','#input-button-event',(event)=>{
             content.html('Success')
             setTimeout(LoadAddEventForm(),3000)
         }).catch(err=>{
-            alert(err)
+            alert(err.err)
         })
     })
 })
