@@ -15,6 +15,16 @@ class BookController {
         });
     }
 
+    Edit(value){
+        return new Promise((resolve, reject) => {
+            db.UpdateBook(value).then((res) => {
+                resolve(res)
+            }).catch((err) => {
+                reject(err)
+            });
+        });
+    }
+
     GetBook(offset, limit) {
         return new Promise((resolve, reject) => {
             db.ReadBookListIndex(offset, limit)
@@ -34,6 +44,16 @@ class BookController {
                     reject(err)
                 })
         })
+    }
+
+    Delete(id){
+        return new Promise((resolve, reject) => {
+            db.DeleteBookByID(id).then((res) => {
+                resolve(res)
+            }).catch((err) => {
+                reject(err)
+            });
+        });
     }
 
     GetBookCount(){

@@ -1,5 +1,12 @@
 <div class="content" style="margin:20px 10px 20px 270px" id="content">
 </div>
+<div id="search">
+    <button type="button" class="close">×</button>
+    <form id="search-form">
+        <input type="search" value="" placeholder="type keyword(s) here" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
 
 {{!-- Template --}}
 <script id="form-dashboard" type="text/x-handlebars-template">
@@ -9,6 +16,7 @@
       <div class="col col-2">Category</div>
       <div class="col col-3">Author</div>
       <div class="col col-4">Price</div>
+      <div class="col col-5" ></div>
     </li>
     \{{#each booklist}}
     <li class="table-row">
@@ -16,11 +24,18 @@
       <div class="col col-2" data-label="Category">\{{this.type.name}}</div>
       <div class="col col-3" data-label="Author">\{{this.author.name}}</div>
       <div class="col col-4" data-label="Price">\{{this.price}}</div>
+      <div class="col col-5" >      
+        <a href="#" data-id=\{{this._id}} class="delete">
+            <i class="fa fa-trash" style="font-size:24px"></i>
+        </a>
+        <a href="#" data-id=\{{this._id}} class="edit">
+            <i class="fa fa-edit" style="font-size:24px"></i>
+        </a>
+      </div>
     </li>
     \{{/each}}
   </ul>
-</script> 
-{{!-- Template Dashboard --}}
+</script> {{!-- Template Dashboard --}}
 <script id="form-dashboard-row" type="text/x-handlebars-template">
     \{{#each booklist}}
     <li class="table-row">
@@ -28,7 +43,32 @@
       <div class="col col-2" data-label="Category">\{{this.type.name}}</div>
       <div class="col col-3" data-label="Author">\{{this.author.name}}</div>
       <div class="col col-4" data-label="Price">\{{this.price}}</div>
+      <div class="col col-5" >      
+        <a href="#" data-id=\{{this._id}} class="delete">
+            <i class="fa fa-trash" style="font-size:24px"></i>
+        </a>
+        <a href="#" data-id=\{{this._id}} class="edit">
+            <i class="fa fa-edit" style="font-size:24px"></i>
+        </a>
+      </div>
+     </li>
+    \{{/each}}
+</script> 
+
+<script id="form-category" type="text/x-handlebars-template">
+  <ul class="responsive-table">
+    <li class="table-header">
+      <div class="col col-1">Name</div>
+      <div class="col col-5">Size</div>
     </li>
+  </ul>
+</script>
+<script id="form-category-row" type="text/x-handlebars-template">
+    \{{#each category}}
+    <li class="table-row">
+      <div class="col col-1" data-label="Name">\{{this.name}}</div>
+      <div class="col col-5" data-label="Size">\{{this.size}}</div>
+     </li>
     \{{/each}}
 </script> 
 {{!-- Template BookForm --}}
@@ -78,11 +118,59 @@
             <textarea id="input-description" name="field5" class="field-style" placeholder="Mô tả"></textarea>
         </li>
         <li>
-            <input id="input-file" type="file" name="img[]" class="field-style field-split align-left" placeholder="File" multiple/>
+            <input id="input-file" type="file" name="img[]" class="field-style field-split align-left" placeholder="File" />
         </li>
         <li>
-            <input id="input-button" type="button" value="Thêm sách" />
+            <input id="input-button-up" type="button" value="Thêm sách" />
         </li>
     </ul>
 </div >
+</script>
+{{!-- Template Edit Book --}}
+<script id="form-edit-book" type="text/x-handlebars-template">
+    <div class="form-style-9" id="editBookForm" data-id="\{{_id}}">
+        <ul>
+            <li>
+                <input value="\{{name}}" id="input-name" type="text" name="field1" class="field-style field-full align-left" placeholder="Tên" />
+            </li>
+            <li>
+                <div id="input-category" class="field-style field-full align-left">\{{type.name}}</div>
+            </li>
+            <li>
+                <input value="\{{price}}" id="input-price" type="number" name="field3" class="field-style field-full align-left" placeholder="Giá" />
+            </li>
+            <li>
+                <div id="input-publisher" class="field-style field-full align-left">\{{publisher.name}}</div>
+            </li>
+            <li>
+                <div id="input-author" class="field-style field-full align-left">\{{author.name}}</div>
+            </li>
+            <li class="input-container">
+                <input value="\{{size.width}}" id="input-size-width" type="number" name="field1" class="field-style field-three align-left" placeholder="Độ rộng"
+                />
+                <input value="\{{size.height}}" id="input-size-height" type="number" name="field1" class="field-style field-three align-none" placeholder="Độ dài"
+                />
+                <input value="\{{size.weight}}" id="input-size-weight" type="number" name="field1" class="field-style field-three align-right" placeholder="Khối lượng"
+                />
+    
+            </li>
+            <li>
+                <input value="\{{typebook}}" id="input-covertype" type="text" name="field1" class="field-style field-split align-left" placeholder="Loại bìa" />
+                <input value="\{{language}}" id="input-language" type="text" name="field1" class="field-style field-split align-right" placeholder="Ngôn ngữ" />
+            </li>
+            <li>
+                <input value="\{{date}}" id="input-date" type="text" name="field1" class="field-style field-split align-left" placeholder="Ngày xuất bản" />
+                <input value="\{{pages}}" id="input-page" type="number" name="field1" class="field-style field-split align-right" placeholder="Số trang" />
+            </li>
+            <li>
+                <textarea id="input-description" name="field5" class="field-style" placeholder="Mô tả">\{{description}}</textarea>
+            </li>
+            <li>
+                <input id="input-file" type="file" name="img[]" class="field-style field-split align-left" placeholder="File"/>
+            </li>
+            <li>
+                <input id="input-button-id" type="button" value="Chỉnh sửa sách" />
+            </li>
+        </ul>
+    </div>
 </script>

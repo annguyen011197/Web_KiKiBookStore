@@ -100,7 +100,6 @@ class Database {
             book.save((err, res) => {
                 if (err) reject(err)
                 resolve(res)
-                //console.log(`Tao thanh cong Book ${res.name}`)
             })
         })
     }
@@ -209,7 +208,6 @@ class Database {
                 .exec((err, res) => {
                     if (err) reject(err)
                     if (res) {
-                        console.log(val)
                         if(val.newId ){
                             res.user.id = val.newId
                             console.log(res)
@@ -397,6 +395,7 @@ class Database {
     ReadCategoryList(offset, limit) {
         return new Promise((resolve, reject) => {
             Category.find({})
+                .lean()
                 .skip((offset - 1) * limit)
                 .limit(limit)
                 .exec((err, res) => {
@@ -479,6 +478,44 @@ class Database {
                     resolve(res)
                 })
         });
+    }
+
+    UpdateBook(val){
+        return new Promise((resolve, reject) => {
+            Book.findById(val._id)
+            .exec((err,res)=>{
+                console.log(res)
+                if(err) reject(err)
+                if(val.name){
+                    res.name = val.name 
+                }
+                if(val.price){
+                    res.price = val.price
+                }
+                if(val.date){
+                    res.date = val.date
+                }
+                if(val.image){
+                    res.image = val.image
+                }
+                if(val.description){
+                    res.description = val.description
+                }
+                if(val.size){
+                    res.side = val.size
+                }
+                if(val.typebook){
+                    res.typebook = val.typebook
+                }
+                if(val.language){
+                    res.language = val.language
+                }
+                res.save((err,val)=>{
+                    if(err) reject(err)
+                    resolve(val)
+                })
+            })
+        })
     }
 
     UpdateAccountInfo(val) {
@@ -615,7 +652,7 @@ class Database {
 
     DeleteBookByID(val) {
         return new Promise((resolve, reject) => {
-            Book.deleteOne({ _id: val.id }).exec((err, res) => {
+            Book.findByIdAndRemove(val).exec((err, res) => {
                 if (err) reject(err)
                 resolve(res)
             })

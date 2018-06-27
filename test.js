@@ -1,7 +1,6 @@
 const utils = require('./controller/Utils')
 const fs = require('fs')
 const sharp = require('sharp')
-<<<<<<< HEAD
 const mongoose  = require('mongoose')
 
 let id1 ='4edd40c86762e0fb12000003'
@@ -34,8 +33,6 @@ console.log(arr)
 // }]
 // console.log(arr)
 
-=======
 
 
 console.log(utils.validURL('https://www.fahasa.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/8/9/8932000129608.png'))
->>>>>>> ngocbao

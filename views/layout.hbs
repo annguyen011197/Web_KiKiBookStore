@@ -3,8 +3,9 @@
 
 <head>
   <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/fontawesome-all.css">
+  {{!-- <link rel="stylesheet" href="/css/fontawesome-all.css"> --}}
   <link rel="stylesheet" href="/css/alertify.core.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   {{#if css}} 
     {{#each css}} 
       <link rel="stylesheet" href="{{this}}" />
@@ -16,9 +17,6 @@
 </head>
 
 <body>
-  <div class="top-promote">
-    <img src="/images/top-promo.jpg" class="img-responsive" alt="top-promote">
-  </div>
   {{{body}}}
   <div class="modalLoading"></div>
 </body>

@@ -10,6 +10,7 @@ const cartController = require('../controller/cart')
 const Account = require('../database/models/AccountModel')
 var nodemailer = require('nodemailer');
 const utils = require('../controller/Utils')
+
 /*get*/
 router.get('/books', (req, res) => {
   let offset = req.query.offset ?
@@ -31,6 +32,50 @@ router.get('/books', (req, res) => {
   bookController.GetBook(offset, limit)
     .then(val => res.send(val))
     .catch(err => res.send({ error: err }))
+})
+
+router.get('/deletebook', (req, res) => {
+  let id = req.query.id ? req.query.id : ''
+  if (id == '') {
+    res.status(404)
+    res.end()
+  }
+  if (req.session && req.session.passport) {
+    accountController.ReadAccount(req.session.passport.user)
+      .then(user => {
+        if (user.local.accountType) {
+          bookController.Delete(id).then((val) => {
+            console.log(val)
+            res.end()
+          }).catch((err) => {
+            res.status(404)
+            res.end({ message: err + '' })
+          });
+        }
+        res.end()
+      })
+  } else {
+    res.status(403)
+    res.send({ message: 'Not auth' })
+  }
+})
+
+router.get('/details', (req, res) => {
+  let id = req.query.id
+  if (!id) {
+    res.status(404)
+    res.send({ message: 'Not have id' })
+    return
+  }
+
+  bookController.GetBookDetail(id)
+    .then(val => {
+      res.send(val)
+    })
+    .catch(err => {
+      res.status(404)
+      res.send({ message: err + '' })
+    })
 })
 
 router.get('/bookcount', (req, res) => {
@@ -250,7 +295,7 @@ router.get('/search', (req, res) => {
 
 /*post*/
 /*category*/
-router.post('/category', (req, res) => {
+router.route('/category').post((req, res) => {
   if (req.body.name) {
     let category = {
       name: req.body.name
@@ -270,25 +315,45 @@ router.post('/category', (req, res) => {
   }
 })
 /*authors */
-router.post('/author', (req, res) => {
-  if (req.body.name) {
-    let author = {
-      name: req.body.name
+router.route('/author')
+  .post((req, res) => {
+    if (req.body.name) {
+      let author = {
+        name: req.body.name
+      }
+      authorController.CheckAndCreate(author)
+        .then(() => {
+          res.status(200)
+          res.redirect('/');
+        })
+        .catch(err => {
+          res.status(404)
+          res.send({ error: err })
+        })
+    } else {
+      res.status(404)
+      res.send({ error: 'Must have name' })
     }
-    authorController.CheckAndCreate(author)
-      .then(() => {
-        res.status(200)
-        res.redirect('/');
-      })
-      .catch(err => {
-        res.status(404)
-        res.send({ error: err })
-      })
-  } else {
-    res.status(404)
-    res.send({ error: 'Must have name' })
-  }
-})
+  })
+// .get((req, res) => {
+//   let offset = req.query.offset ?
+//     parseInt(req.query.offset) : 1
+//   let limit = req.query.limit ?
+//     parseInt(req.query.limit) : 0
+//   if (offset === 0) {
+//     res.status(404)
+//     res.send({ error: 'Offset > 0' })
+//     return
+//   }
+
+//   if (offset < 0 || limit < 0) {
+//     res.status(404)
+//     res.send({ error: 'Offset > 0' })
+//     return
+//   }
+
+
+// })
 /*publisher*/
 router.post('/publisher', (req, res) => {
   if (req.body.name) {
@@ -351,6 +416,35 @@ router.post('/book', (req, res) => {
       res.send({ error: 'Must have category' })
       return
     }
+  }
+})
+
+router.post('/editbook', (req, res) => {
+  if (req.body._id) {
+    if (req.session && req.session.passport) {
+      accountController.ReadAccount(req.session.passport.user)
+        .then(user => {
+          if (user.local.accountType) {
+            bookController.Edit(req.body)
+              .then(() => {
+                res.status(200)
+                res.send({ message: 'Success' })
+              }).catch(err => {
+                res.status(404)
+                res.send({ message: err + '' })
+              })
+          }else{
+            res.status(403)
+            res.send({ message: 'Not auth' })
+          }
+        })
+    } else {
+      res.status(403)
+      res.send({ message: 'Not auth' })
+    }
+  } else {
+    res.status(404)
+    res.send({ message: 'Must have id' })
   }
 })
 /*Comments*/
@@ -591,29 +685,29 @@ router.route('/savecart').post((req, res) => {
   if (req.session.passport && req.session.passport.user) {
     data.id = req.session.passport.user
     accountController.ReadAccount(req.session.passport.user)
-    .then((value)=>{
-      if(value.accountInfo){
-        cartController.SaveCart(data).then(val => {
-          console.log(val)
-          res.send({
-            size: val
+      .then((value) => {
+        if (value.accountInfo) {
+          cartController.SaveCart(data).then(val => {
+            console.log(val)
+            res.send({
+              size: val
+            })
+          }).catch((err) => {
+            console.log(err)
+            res.end()
           })
-        }).catch((err) => {
-          console.log(err)
-          res.end()
-        })
-      }else{
-        res.status(402)
-        res.send({message:'Not Update Info'})
-      }
-    })
-    .catch(err=>{
-      res.render('index', data);
-    })
+        } else {
+          res.status(402)
+          res.send({ message: 'Not Update Info' })
+        }
+      })
+      .catch(err => {
+        res.render('index', data);
+      })
 
-  }else{
+  } else {
     res.status(403)
-    res.send({message:'Not Login'})
+    res.send({ message: 'Not Login' })
   }
 
 })
@@ -624,7 +718,7 @@ router.get('/cartsize', (req, res) => {
     req.query.id : null
   let data = {}
   if (req.session.passport && req.session.passport.user) {
-    if(id)
+    if (id)
       data.newId = req.session.passport.user
     else
       id = req.session.passport.user

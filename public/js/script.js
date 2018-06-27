@@ -6,6 +6,8 @@ console.log('Script.js')
 loadCategory()
 setCartSize()
 
+
+
 function loadCategory() {
   $.ajax({
     type: "get",

@@ -22,6 +22,7 @@ class CategoryController {
                         .then(res => {
                             res.forEach((e, i, a) => {
                                 a[i].name = utils.UpperWord(e.name)
+                                a[i].size = e.books.length
                             });
                             resolve(res)
                         })

@@ -1,3 +1,6 @@
+<div class="top-promote">
+    <img src="/images/top-promo.jpg" class="img-responsive" alt="top-promote">
+</div>
 <div class="wrapper">
     <header>
         {{> Header info=this.info user=this.user}}
@@ -14,7 +17,7 @@
                 </nav>
             </div>
             <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
-                 {{> Slider}}  </div>
+                {{> Slider}} </div>
         </div>
     </div>
     <div class="content">
@@ -71,5 +74,4 @@
         <li><a href="/category?id=\{{this._id}}">\{{ this.name }}</a></li>
     \{{/each}}
     <a href="/category" style="color:blue;">Xem thêm</a>
-</script> 
-{{> Script scripts=this.scripts}} 
+</script> {{> Script scripts=this.scripts}}
