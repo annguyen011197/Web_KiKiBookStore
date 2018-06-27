@@ -25,7 +25,7 @@ function submitUpdate() {
       alert("Mật khẩu mới và cũ không được giống nhau");
       return;
     }
-    if(passwordNew == passwordNewRe){
+    if(passwordNew != passwordNewRe){
       alert("Nhập lại mật khẩu sai!");
       return;
     }

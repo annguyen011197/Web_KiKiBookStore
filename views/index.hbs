@@ -30,6 +30,7 @@
         {{> Footer info=this.info}}
     </footer>
 </div>
+
 {{!Template }}
 <script id="content-template" type="text/x-handlebars-template">
     <div class="new-book-panel">
@@ -69,10 +70,28 @@
         </div>
 </script>
 
+<script id="model-event-script" type="text/x-handlebars-template">
+    <div class="modal-dialog" >
+        <!-- Modal content-->
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">\{{this.name}}</h4>
+            </div>
+            <div class="modal-body">
+                <pre>\{{this.detail}}</pre  >
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</script>
+
 <script id="list-event" type="text/x-handlebars-template">
     \{{#each event}}
         <div class="item \{{this.active}}">
-            <img class="img-responsive" src="\{{this.image}}" alt="\{{this.name}}">
+            <img class="img-responsive" src="\{{this.image}}" alt="\{{this.name}}" detail="\{{this.detail}}" onclick="openModal(this)">
         </div>
     \{{/each}}
 </script> 
@@ -82,4 +101,6 @@
         <li><a href="/category?id=\{{this._id}}">\{{ this.name }}</a></li>
     \{{/each}}
     <a href="/category" style="color:blue;">Xem thêm</a>
-</script> {{> Script scripts=this.scripts}}
+</script> 
+{{> Script scripts=this.scripts}} 
+

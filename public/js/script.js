@@ -45,6 +45,7 @@ function loadListCategory() {
   })
 }
 
+
 function showMenu() {
   if ($("#menuBook").hasClass('show')) {
     $("#menuBook").removeClass('show')
@@ -213,6 +214,31 @@ jQuery(document).ready(function ($) {
     $form_forgot_password.addClass('is-selected');
   }
 
+  $form_forgot_password.find('input[type="submit"]').on('click', function (event) {
+    event.preventDefault();
+    let email = $form_forgot_password.find('input[id="reset-email"]').val()
+    if(!email){
+      alert("Email không được rỗng");
+      return;
+    }
+    $.ajax({
+      type: "post",
+      url: "/api/reset",
+      data: {
+      email: email
+      },
+      dataType: "json",
+      success: function (response) {
+        alert("Mật khẩu đã được gửi tới email!");
+      },
+      error: (res) => {
+        console.log(res)
+        alert(res.responseJSON.message);
+      }
+    })
+
+  });
+
 
   $form_login.find('input[type="submit"]').on('click', function (event) {
     event.preventDefault();
@@ -251,6 +277,7 @@ jQuery(document).ready(function ($) {
     }
 
   });
+
   $form_signup.find('input[type="submit"]').on('click', function (event) {
     event.preventDefault();
     let username = $form_signup.find('input[id="signup-username"]').val();

@@ -53,7 +53,20 @@ router.get('/search', (req, res) => {
     info: info,
     scripts: ["search/script.js","script.js"]
   };
+  if(req.session.passport){
+    accountController.ReadAccount(req.session.passport.user)
+    .then((value)=>{
+      data.user = {
+        name: value.local.username
+      }
+      res.render("index",data);
+    })
+    .catch(err=>{
+      res.send("404");
+    })
+ }else{
   res.render('index', data);
+ }
 })
 
 router.get('/account', (req, res) => {
@@ -70,6 +83,9 @@ router.get('/account', (req, res) => {
         scripts: ["account/script.js"],
         account: value
       };
+      data.user = {
+        name: value.local.username
+      }
       if(value.accountInfo != undefined){
         console.log(value.accountInfo)
       }
@@ -79,11 +95,11 @@ router.get('/account', (req, res) => {
       res.send("404");
     })
  }else{
-  let data = {
-    title: "KiKi Bookstore",
-    info: info,
-    scripts: ["account/script.js"],
-  };
+  // let data = {
+  //   title: "KiKi Bookstore",
+  //   info: info,
+  //   scripts: ["account/script.js"],
+  // };
   res.redirect('/')
   //res.render("index",data);
  }

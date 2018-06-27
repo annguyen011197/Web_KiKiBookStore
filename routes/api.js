@@ -1,5 +1,6 @@
 var express = require('express');
 var db = require('../database/db')
+var bcrypt   = require('bcrypt-nodejs');
 var router = express.Router();
 const categoryController = require('../controller/category')
 const authorController = require('../controller/author')
@@ -797,7 +798,7 @@ router.get('/cartsize', (req, res) => {
   }
 })
 
-router.get('/reset', (req, res) => {
+router.post('/reset', (req, res) => {
 
   if (req.body.email) {
     var transporter = nodemailer.createTransport({
@@ -808,25 +809,45 @@ router.get('/reset', (req, res) => {
       }
     });
     accountController.ReadAccountExt({ "local.email": req.body.email }).then(val => {
-      let code = val.local.verify
-      let url = "http://" + req.headers.host + "/api/verify?email=" + req.body.email + "&code=" + code;
-
-      var mailOptions = {
-        from: 'letuananhdev@gmail.com',
-        to: req.body.email,
-        subject: 'Active account KikiBook',
-        html: '<a href=\"' + url + '\">Click me!</a> </br> or </br><p>' + url + '</p>'
-      };
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          res.send(error);
-        } else {
-          res.send('Email sent: ' + info.response);
+      if(val == undefined){
+        res.status(404)
+        res.send({ error: "Không tìm thất email" })
+      }
+      let pass = new Date().getTime();
+      let info = {
+        find: { "local.email": req.body.email },
+        update: {
+          $set:{
+            "local.password": bcrypt.hashSync(pass, bcrypt.genSaltSync(8), null)
+          }
         }
-      });
-    })
+      }
+      accountController.UpdateAccount(info).then(value =>{
+          var mailOptions = {
+            from: 'letuananhdev@gmail.com',
+            to: req.body.email,
+            subject: 'New password your account KikiBook',
+            html: '<p>'+ pass +'<p>'
+          };
+    
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              res.status(404)
+              res.send(error);
+            } else {
+              res.status(200)
+              res.send({'message': 'Email sent: ' + info.response});
+            }
+          });
+      }).catch(err => {
+        res.status(404)
+        res.send({ error: "Không tìm thất email" })
+      })
+
+     
+    }).catch(err => res.send({ error: err }))
   } else {
+    res.status(404)
     res.send({ error: 'Must have email' })
     return
   }
