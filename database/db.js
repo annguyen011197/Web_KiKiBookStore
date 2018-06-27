@@ -34,8 +34,11 @@ class Database {
         })
     }
 
-    CreateEvent(val) {
+    async CreateEvent(val) {
         console.log("Tao Event moi")
+        await this.SaveImage(val.image).then(res => {
+            val.image = res
+        }).catch(err => val.image = '')
         var event = new Event({
             name: val.name ? val.name : "",
             detail: val.detail ? val.detail : "",

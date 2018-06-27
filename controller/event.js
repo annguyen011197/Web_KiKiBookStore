@@ -6,6 +6,12 @@ class CartController {
         return new Promise((resolve, reject) => {
             db.ReadEventList(val.offset, val.limit)
                 .then(res => {
+                    res.forEach((e, i, a) => {
+
+                        a[i].image.forEach((el,il,al)=>{
+                            al[il] = utils.validURL(el) ? el : `/media/${el}`
+                        })
+                    })
                     resolve(res)
                 })
                 .catch(err => {
