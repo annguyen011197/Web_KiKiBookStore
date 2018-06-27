@@ -29,3 +29,27 @@ function getBookList(offset,limit){
         }
     });
 }
+
+getEventList();
+function getEventList(){
+    var templateContentEventSource = $("#list-event").html()
+    var templateContentEvent = Handlebars.compile(templateContentEventSource)
+    var contentEvent = $("#slide-id")
+
+    $.ajax({
+        type: "get",
+        url: "./api/getEvent",
+        data: {
+            offset: 1,
+            limit: 3
+        },
+        dataType: "json",
+        success: function (response) {
+            response[0].active = "active";
+            let data ={
+                event: response
+            }
+            contentEvent.append(templateContentEvent(data))
+        }
+    });
+}

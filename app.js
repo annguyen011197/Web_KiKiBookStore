@@ -29,14 +29,20 @@ hbs.registerHelper('section',(name,option)=>{
 })
 
 app.use(logger('dev'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+//app.use(express.json({limit: '4MB'}))
+//app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.use(bodyParser.urlencoded({
+  limit: '5mb',
+  parameterLimit: 100000,
+  extended: false 
+}));
+app.use(bodyParser.json({
+  limit: '5mb'
+}));
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
   secret: 'webdevteamABBA', // session secret
   resave: false,

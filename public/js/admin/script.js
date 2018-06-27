@@ -13,6 +13,7 @@ var avatar_big = $("#avatar-big")
 var avatar_mini = $("#avatar-mini")
 var username = $('#username')
 var templateBookForm = Handlebars.compile($("#form-add-book").html())
+var templateEventForm = Handlebars.compile($("#form-add-event").html())
 var templateBookRows = Handlebars.compile($("#form-dashboard-row").html())
 var templateEditBookForm = Handlebars.compile($("#form-edit-book").html())
 var templateCategory = Handlebars.compile($("#form-category").html())
@@ -27,6 +28,7 @@ aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
 </div>
 `
 let maxbook = false
+alertify.success('Welcome admin')
 $(document).on({
     ajaxStart: function () { 
         console.log('Start ajax')
@@ -79,6 +81,11 @@ $(window).scroll(function() {
 $("#menu_book").on('click',(event)=>{
     event.preventDefault()
     LoadAddBookForm()
+})
+
+$("#menu_event").on('click',(event)=>{
+    event.preventDefault()
+    LoadAddEventForm()
 })
 
 $("#menu_dashboard").on('click',(event)=>{
@@ -181,7 +188,9 @@ $(document).on('click','.edit',(event)=>{
     })
 })
 
-$(document).on('click','#input-button-up',(event)=>{
+
+
+$(document).on('click','#input-button',(event)=>{
     event.preventDefault()
     let files = $('#input-file').get(0).files[0]
     if(files){
@@ -264,6 +273,48 @@ $(document).on('click','#input-button-id',(event)=>{
     }
 
 })
+
+$(document).on('click','#input-button-event',(event)=>{
+    event.preventDefault()
+    getBase64($('#input-file').get(0).files[0])
+    .then(image=>{
+        let val = ValidateFormEvent()
+        val.image = image
+        content.empty()
+        content.html(progressbar)
+        ajax({
+            type: "post",
+            url: "./api/addEvent",
+            data: val,
+            dataType: "json"
+        }).then(res=>{
+            content.html('Success')
+            setTimeout(LoadAddEventForm(),3000)
+        }).catch(err=>{
+            alert(err.err)
+        })
+    })
+})
+
+function ValidateFormEvent(){
+    let name = $('#input-name').val().trim()
+    let description =$('#input-description').val().trim()
+
+    if(name === ''){
+        alert('Tên sự kiện không được để trống')
+        return false
+    }
+    if(description === ''){
+        alert('Thông tin sự kiện không được để trống')
+        return false
+    }
+
+    return {
+        name: name,
+        detail:description
+    }
+}
+
 
 function ValidateFormBook(){
     let name = $('#input-name').val().trim()
@@ -469,4 +520,10 @@ function LoadAddBookForm(){
         $( "#input-date" ).datepicker();
         alert(err+'')
     })
+}
+
+function LoadAddEventForm(){
+    content.empty()
+    type ='event'
+    content.html(templateEventForm())
 }

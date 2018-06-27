@@ -84,7 +84,13 @@ function formSubmit(){
       type: "POST",
       success: function(data){
           $("#myForm").html(data);
-          console.log(data);
+          alert("Gửi thành công nhận xét");
+          document.getElementById("summary_field").value = ""
+          document.getElementById("review_field").value = "";
+          var comment = $("#comments");
+          comment.html('');
+          comment.attr("page",1);
+          loadComment($("#idBook").text());
       },
       error: function (){}
   });

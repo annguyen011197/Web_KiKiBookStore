@@ -33,7 +33,7 @@ router.route('/')
         if (req.session.passport) {
             let user = accountController.ReadAccount(req.session.passport.user)
             .then(user=>{
-                if (user.local) {
+                if (user.local.accountType) {
                     data.login = false
                     data.user = user
                     data.scripts = [
@@ -41,11 +41,15 @@ router.route('/')
                     ]
                     data.css = ['css/style-admin.css']
                     data.admin = true
+                    res.render('admin', data)
+                }else{
+                    res.redirect('/')
                 }
-                res.render('admin', data)
             })
             .catch(err=>{
-                res.render('admin', data)
+                console.log(err)
+                res.redirect('/')
+                //res.render('', data)
             })
         return
         }
