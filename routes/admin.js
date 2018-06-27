@@ -31,26 +31,31 @@ router.route('/')
             ],
         }
         if (req.session.passport) {
-            let user = accountController.ReadAccount(req.session.passport.user)
-            .then(user=>{
-                if (user.local.accountType) {
-                    data.login = false
-                    data.user = user
-                    data.scripts = [
-                        'admin/script.js'
-                    ]
-                    data.css = ['css/style-admin.css']
-                    data.admin = true
-                    res.render('admin', data)
-                }else{
+            if(req.session.passport.user){
+                accountController.ReadAccount(req.session.passport.user)
+                .then(user=>{
+                    if (user.local.accountType) {
+                        data.login = false
+                        data.user = user
+                        data.scripts = [
+                            'admin/script.js'
+                        ]
+                        data.css = ['css/style-admin.css']
+                        data.admin = true
+                        res.render('admin', data)
+                    }else{
+                        res.redirect('/')
+                    }
+                })
+                .catch(err=>{
+                    console.log(err)
                     res.redirect('/')
-                }
-            })
-            .catch(err=>{
-                console.log(err)
-                res.redirect('/')
-                //res.render('', data)
-            })
+                    //res.render('', data)
+                })
+            }else{
+                res.render('', data)
+            }
+
         return
         }
         res.render('admin', data)
