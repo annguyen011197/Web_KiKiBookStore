@@ -7,7 +7,9 @@ const publisherController = require('../controller/publisher')
 const bookController = require('../controller/book')
 const accountController = require('../controller/account')
 const cartController = require('../controller/cart')
+const eventController = require('../controller/event')
 const Account = require('../database/models/AccountModel')
+
 var nodemailer = require('nodemailer');
 const utils = require('../controller/Utils')
 /*get*/
@@ -246,6 +248,29 @@ router.get('/search', (req, res) => {
   bookController.SearchBookList(offset, limit, option).then(data => {
     res.send(data)
   })
+})
+
+router.get('/getEvent', (req, res) => {
+  let offset = req.query.offset ?
+    parseInt(req.query.offset) : 1
+  let limit = req.query.limit ?
+    parseInt(req.query.limit) : 0
+  let id = req.query.id
+  if (offset === 0) {
+    res.status(404)
+    res.send({ error: 'Offset > 0' })
+    return
+  }
+
+  if (offset < 0 || limit < 0) {
+    res.status(404)
+    res.send({ error: 'Offset > 0' })
+    return
+  }
+
+  eventController.GetList(offset, limit, id)
+    .then(val => res.send(val))
+    .catch(err => res.send({ error: err }))
 })
 
 /*post*/
@@ -678,5 +703,35 @@ router.get('/reset', (req, res) => {
   }
 
 })
+
+router.post('/addEvent', (req, res) => {
+  if (req.body.name
+    && req.body.detail && req.body.image) {
+    let val = {
+      name: req.body.name,
+      detail: req.body.detail,
+      image: req.body.image
+    }
+    eventController.CreateEvent(val)
+      .then(val => res.send(val._id))
+      .catch(err => res.send({ error: err }))
+  }
+  else {
+    res.status(404)
+    if (!req.body.firstName) {
+      res.send({ error: 'Must have name' })
+      return
+    }
+    if (!req.body.secondName) {
+      res.send({ error: 'Must have detail' })
+      return
+    }
+    if (!req.body.image) {
+      res.send({ error: 'Must have image' })
+      return
+    }
+  }
+})
+
 
 module.exports = router;

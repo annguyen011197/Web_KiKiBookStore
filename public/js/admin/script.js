@@ -8,6 +8,7 @@ var content = $("#content")
 var avatar_big = $("#avatar-big")
 var username = $('#username')
 var templateBookForm = Handlebars.compile($("#form-add-book").html())
+var templateEventForm = Handlebars.compile($("#form-add-event").html())
 var templateBookRows = Handlebars.compile($("#form-dashboard-row").html())
 let progressbar = `
 <div class="progress">
@@ -63,12 +64,19 @@ $("#menu_book").on('click',(event)=>{
     LoadAddBookForm()
 })
 
+$("#menu_event").on('click',(event)=>{
+    event.preventDefault()
+    LoadAddEventForm()
+})
+
 $("#menu_dashboard").on('click',(event)=>{
     event.preventDefault()
     type ='dashboard'
     content.empty()
     getBookList(offset,limit)
 })
+
+
 
 $(document).on('click','#input-button',(event)=>{
     event.preventDefault()
@@ -91,6 +99,48 @@ $(document).on('click','#input-button',(event)=>{
         })
     })
 })
+
+$(document).on('click','#input-button-event',(event)=>{
+    event.preventDefault()
+    getBase64($('#input-file').get(0).files[0])
+    .then(image=>{
+        let val = ValidateFormEvent()
+        val.image = image
+        content.empty()
+        content.html(progressbar)
+        ajax({
+            type: "post",
+            url: "./api/addEvent",
+            data: val,
+            dataType: "json"
+        }).then(res=>{
+            content.html('Success')
+            setTimeout(LoadAddEventForm(),3000)
+        }).catch(err=>{
+            alert(err)
+        })
+    })
+})
+
+function ValidateFormEvent(){
+    let name = $('#input-name').val().trim()
+    let description =$('#input-description').val().trim()
+
+    if(name === ''){
+        alert('Tên sự kiện không được để trống')
+        return false
+    }
+    if(description === ''){
+        alert('Thông tin sự kiện không được để trống')
+        return false
+    }
+
+    return {
+        name: name,
+        detail:description
+    }
+}
+
 
 function ValidateFormBook(){
     let name = $('#input-name').val().trim()
@@ -218,4 +268,10 @@ function LoadAddBookForm(){
         $( "#input-date" ).datepicker();
         alert(err+'')
     })
+}
+
+function LoadAddEventForm(){
+    content.empty()
+    type ='event'
+    content.html(templateEventForm())
 }

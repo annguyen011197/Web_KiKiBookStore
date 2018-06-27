@@ -13,6 +13,7 @@ const Publisher = require("./models/PublisherModel")
 const Account = require('./models/AccountModel')
 const AccountInfoModel = require('./models/AccountInfoModel')
 const Cart = require('./models/Cart')
+const Event = require('./models/Event')
 const normalize = require('normalize-strings');
 class Database {
     constructor() {
@@ -29,6 +30,22 @@ class Database {
                 if (err) reject(err)
                 resolve(res)
                 console.log(`Tao thanh cong Author` + val.name)
+            })
+        })
+    }
+
+    CreateEvent(val) {
+        console.log("Tao Event moi")
+        var event = new Event({
+            name: val.name ? val.name : "",
+            detail: val.detail ? val.detail : "",
+            image: val.image ? val.image : ""
+        })
+        return new Promise((resolve, reject) => {
+            event.save((err, res) => {
+                if (err) reject(err)
+                resolve(res)
+                console.log(`Tao thanh cong event` + val.name)
             })
         })
     }
@@ -352,6 +369,19 @@ class Database {
                 .skip((offset - 1) * limit)
                 .limit(limit)
                 .select('name author price image type')
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
+        });
+    }
+
+    ReadEventList(offset, limit) {
+        return new Promise((resolve, reject) => {
+            Event.find({})
+                .skip((offset - 1) * limit)
+                .limit(limit)
                 .lean()
                 .exec((err, res) => {
                     if (err) reject(err)
