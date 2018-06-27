@@ -433,7 +433,7 @@ router.post('/editbook', (req, res) => {
                 res.status(404)
                 res.send({ message: err + '' })
               })
-          }else{
+          } else {
             res.status(403)
             res.send({ message: 'Not auth' })
           }
@@ -524,6 +524,7 @@ router.post('/updateAccount', (req, res) => {
       birthday: req.body.birthday,
       contactNumber: req.body.contactNumber
     }
+    console.log(update)
     accountController.ReadAccount(req.session.passport.user).then(account => {
       let passwordNew = req.body.passwordNew;
       if (req.body.passwordNow && req.body.passwordNew) {
@@ -537,13 +538,19 @@ router.post('/updateAccount', (req, res) => {
         passwordNew = account.local.password;
       }
       if (!account.local.accountInfo) {
+        console.log(account)
         accountController.CreateAccountInfo(update)
           .then(data => {
+            console.log('API')
+            console.log(data);
             accountController.UpdateAccount({ find: { _id: req.session.passport.user }, update: { "local.accountInfo": data._id, "local.password": passwordNew } }).then(result => {
               res.send({ message: 'Update Complete!' })
             }).catch(err => res.send({ error: err }))
           })
-          .catch(err => res.send({ error: err }))
+          .catch(err => {
+            console.log(err)
+            res.send({ error: err })
+          })
       } else {
         accountController.UpdateAccount({ find: { _id: req.session.passport.user }, update: { "local.password": passwordNew } }).then(result => {
           accountController.UpdateAccountInfo({
@@ -628,15 +635,17 @@ router.route('/cart').post((req, res) => {
     tempid = tempid ? tempid : utils.createID()
     data.id = tempid
   }
+  console.log(data)
   cartController.Set(data).then(val => {
-    console.log(val)
     if (tempid) {
       res.send({
         id: tempid,
         size: val
       })
     } else {
-      res.end()
+      res.send({
+        size: val
+      })
     }
   }).catch((err) => {
     console.log(err)
@@ -656,6 +665,21 @@ router.route('/cart').post((req, res) => {
         res.end()
       })
   })
+
+router.get('/cartlist', (req, res) => {
+  let offset = req.query.offset ?
+    parseInt(req.query.offset) : 1
+  let limit = req.query.limit ?
+    parseInt(req.query.limit) : 15
+  cartController.GetCartList(offset,limit).then((result) => {
+    // let userid = result.
+    res.send(result)
+  }).catch((err) => {
+    console.log(err)
+    res.status(404)
+    res.end()
+  });
+})
 
 router.route('/cartremoveitem').post((req, res) => {
   let data = {
@@ -677,18 +701,19 @@ router.route('/cartremoveitem').post((req, res) => {
   })
 })
 
-router.route('/savecart').post((req, res) => {
+
+router.post('/savecart',(req, res) => {
+  console.log(req.body)
   let data = {
-    id: req.body.id,
-    list: req.body.list
+    id: req.body.Data.id,
+    list: req.body.Data.list
   }
   if (req.session.passport && req.session.passport.user) {
     data.id = req.session.passport.user
     accountController.ReadAccount(req.session.passport.user)
       .then((value) => {
-        if (value.accountInfo) {
+        if (value.local.accountInfo) {
           cartController.SaveCart(data).then(val => {
-            console.log(val)
             res.send({
               size: val
             })
@@ -727,7 +752,17 @@ router.get('/cartsize', (req, res) => {
   if (data) {
     cartController.GetSize(data)
       .then((result) => {
-        res.send(result)
+        if (req.session.passport && req.session.passport.user) {
+          res.send({
+            size: result,
+            id: req.session.passport.user
+          })
+        } else {
+          res.send({
+            size: result
+          })
+        }
+
       }).catch((err) => {
         res.status(404)
         res.end()

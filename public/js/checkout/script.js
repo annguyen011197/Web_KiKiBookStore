@@ -82,25 +82,26 @@ $(document).on('click','#back-btn',event=>{
 $(document).on('click','#order-btn',event=>{
     let t = $(event.target)
     let cart_list = $('.cart-detail')
-    let data = {
-        id: getCookie('tempID'),
-        list: {}
-    }
+    let id = getCookie('tempID')
+    let temp = {}
     cart_list.each(index=>{
         let e = cart_list.eq(index)
         let id = e.find('.deletebutton').attr('data-id')
         let size = e.find(`input[type='number']`).val()
-        data.list[id] = size
+        temp[`${id}`]=size
     })
-
+    let data = {
+        id: id ? id : '',
+        list: temp
+    }
     ajax({
         type:'post',
         url:'/api/savecart',
-        data: data,
-        dataType:'json'
+        data: JSON.stringify({ Data: data }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
     }).then(res=>{
-        console.log(res)
-        //location.href = '/'
+        location.href = '/  '
     }).catch(err=>{
         console.log(err)
         switch(err.status){

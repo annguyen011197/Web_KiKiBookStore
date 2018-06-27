@@ -31,11 +31,13 @@ $('.oder-button').on('click',(event)=>{
     data:data,
     dataType:'json'
   }).then(res=>{
-    console.log(res)
     tempid = res.id
     document.cookie = 'tempID='+res.id
     $('#cart-size').html(res.size)
     alertify.success("Đã thêm một sản phẩm vào giỏ hàng")
+  }).catch(err=>{
+    console.log(err)
+    alertify.alert("Xảy ra lỗi")
   })
 })
 

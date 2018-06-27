@@ -60,6 +60,33 @@ class CartController {
                 });
         });
     }
+
+    GetCartList(offset,limit){
+        return new Promise((resolve, reject) => {
+            db.GetCartList(offset,limit).then((result) => {
+                console.log(result.length)
+                for(let j =0;j<result.length;++j){
+                    let total = 0
+                    console.log(result[j])
+                    result[j].books.forEach((e,i,a)=>{
+                        a[i].size = result[j].value[e._id]
+                        total+=a[i].price*a[i].size
+                        a[i].name = utils.UpperWord(e.name)
+                        a[i].author.name = utils.UpperWord(e.author.name)
+                        a[i].price = (e.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                        a[i].image.forEach((el,il,al)=>{
+                            al[il] = utils.validURL(el) ? el : `/media/${el}`
+                        })
+                    })
+                    result[j].total = total
+                }
+                console.log(result)
+                resolve(result)
+            }).catch((err) => {
+                reject(err)
+            });
+        });
+    }
 }
 
 module.exports = new CartController()

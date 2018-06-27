@@ -4,6 +4,8 @@ let limit = 10
 let type ='dashboard'
 let categoryoffset = 1
 let categorylimit = 10
+let orderoffset =1
+let orderlimit = 10
 
 var templateMain = Handlebars.compile($("#form-dashboard").html())
 var content = $("#content")
@@ -15,6 +17,8 @@ var templateBookRows = Handlebars.compile($("#form-dashboard-row").html())
 var templateEditBookForm = Handlebars.compile($("#form-edit-book").html())
 var templateCategory = Handlebars.compile($("#form-category").html())
 var templateCategoryRows = Handlebars.compile($("#form-category-row").html())
+var templateOrder = Handlebars.compile($("#form-order").html())
+var templateOrderRows = Handlebars.compile($("#form-order-row").html())
 let progressbar = `
 <div class="progress">
 <div class="progress-bar progress-bar-striped active" role="progressbar"
@@ -94,6 +98,15 @@ $(document).on('click',`a[href='#category']`,event=>{
     let tempLimit = categoryoffset*categorylimit
     categoryoffset=1
     getCategoryList(offset,tempLimit)
+})
+
+$(document).on('click',`a[href='#oder']`,event=>{
+    event.preventDefault()
+    type ='category'
+    content.empty()
+    let tempLimit = orderoffset*categorylimit
+    orderoffset=1
+    getOrderList(offset,tempLimit)
 })
 
 //search
@@ -417,6 +430,24 @@ function getCategoryList(offset,limit){
         console.log($("#form-category-row").html())
         content.append(templateCategory())
         $(".responsive-table").append(templateCategoryRows(data))
+    })
+}
+
+function getOrderList(offset,limit){
+    ajax({
+        type:'get',
+        url:"./api/cartlist",
+        data:{
+            offset:offset,
+            limit:limit
+        },
+        dataType:'json'
+    }).then(res=>{
+        let data = {
+            order : res
+        }
+        content.append(templateOrder())
+        $(".responsive-table").append(templateOrderRows(data))
     })
 }
 

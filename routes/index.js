@@ -51,7 +51,7 @@ router.get('/search', (req, res) => {
   let data = {
     title: "KiKi Bookstore",
     info: info,
-    scripts: ["search/script.js"]
+    scripts: ["search/script.js","script.js"]
   };
   res.render('index', data);
 })
@@ -60,7 +60,7 @@ router.get('/account', (req, res) => {
   if(req.session.passport){
     accountController.ReadAccount(req.session.passport.user)
     .then((value)=>{
-      if(value.local.verify=='Active'){
+      if(value.local.verify!='Active'){
         res.redirect('/')
       }
       value.local.password = ''

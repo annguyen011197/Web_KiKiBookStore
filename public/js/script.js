@@ -362,14 +362,17 @@ function setCartSize(){
     type:'get',
     url:url,
   }).then(res=>{
-    $('#cart-size').html(res)
+    $('#cart-size').html(res.size)
+    if(res.id){
+      delete_cookie('tempID')
+    }
   })
 }
 
 buttonShoppingCart.on('click',event=>{
   console.log('Click')
   let tempid = getCookie('tempID')
-  let url = 'checkout/cart'
+  let url = '/checkout/cart'
   if(tempid.length > 0){
     url = `${url}?id=${tempid}`
   }

@@ -71,6 +71,31 @@
      </li>
     \{{/each}}
 </script> 
+
+<script id="form-order" type="text/x-handlebars-template">
+  <ul class="responsive-table">
+    <li class="table-header">
+      <div class="col col-1">Name</div>
+      <div class="col col-5">Size</div>
+      <div class="col col-3">Total</div>
+      <div class="col col-5"></div>
+    </li>
+  </ul>
+</script>
+<script id="form-order-row" type="text/x-handlebars-template">
+    \{{#each order}}
+    <li class="table-row">
+      <div class="col col-1" data-label="Name">\{{this.user.id}}</div>
+      <div class="col col-5" data-label="Size">\{{this.size}}</div>
+        <div class="col col-3" data-label="Total">\{{this.total}}</div>
+      <div class="col col-5" >
+        <a href="#" data-id=\{{this._id}} class="accept">
+            <i class="fa fa-trash" style="font-size:24px"></i>
+        </a>
+      </div>
+     </li>
+    \{{/each}}
+</script> 
 {{!-- Template BookForm --}}
 <script id="form-add-book" type="text/x-handlebars-template">
     <div class="form-style-9" id="addBookForm">

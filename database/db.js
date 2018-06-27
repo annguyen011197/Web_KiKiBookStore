@@ -62,7 +62,6 @@ class Database {
     }
 
     CreateAccountInfo(val) {
-        console.log("Tao Account Info moi")
         var accountInfoModel = new AccountInfoModel({
             firstName: val.firstName ? val.firstName : "",
             secondName: val.secondName ? val.secondName : "",
@@ -70,12 +69,11 @@ class Database {
             birthday: val.birthday ? val.birthday : null,
             contactNumber: val.contactNumber ? val.contactNumber : null
         })
-        console.log(accountInfoModel);
         return new Promise((resolve, reject) => {
-            accountInfoModel.save((err, res) => {
-                if (err) reject(err)
+            accountInfoModel.save((err,res)=>{
+                if(err) reject(err)
+                console.log('Tao account info thanh cong')
                 resolve(res)
-                console.log(`Tao thanh cong AccountInfoModel ${res._id}`)
             })
         })
     }
@@ -230,7 +228,9 @@ class Database {
                         res.total = 0
                         res.value.clear()
                         res.books = []
+                        console.log(val.list)
                         for(let key in val.list){
+                           
                             res.value.set(key,parseInt(val.list[key]))
                             res.total += parseInt(val.list[key])
                             res.books.addToSet(new mongoose.Types.ObjectId(key))
@@ -246,6 +246,25 @@ class Database {
     GetCartInfo(val) {
         return new Promise((resolve, reject) => {
             Cart.findOne({ 'user.id': val, status: 'new' })
+                .populate({
+                    path: 'books',
+                    select: 'name price image author',
+                    model: 'Book'
+                })
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
+        })
+    }
+
+    GetCartList(offset,limit){
+        return new Promise((resolve, reject) => {
+            Cart.find({ status: 'accept' })
+                .skip((offset - 1) * limit)
+                .limit(limit)
+                .sort('-createdAt')
                 .populate({
                     path: 'books',
                     select: 'name price image author',
@@ -530,6 +549,7 @@ class Database {
     }
 
     UpdateAccount(val) {
+        console.log('Update Account')
         return new Promise((resolve, reject) => {
             Account.update(val.find, val.update)
                 .exec((err, res) => {

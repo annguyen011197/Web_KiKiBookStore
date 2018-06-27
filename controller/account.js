@@ -30,6 +30,7 @@ class AccountController{
         return new Promise((resolve, reject) => {
             db.CreateAccountInfo(val)
             .then(res=>{
+                console.log(res)
                 resolve(res)
             })
             .catch(err=>{
