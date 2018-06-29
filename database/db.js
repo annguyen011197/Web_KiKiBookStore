@@ -380,6 +380,22 @@ class Database {
         });
     }
 
+    ReadBookListRelated(id) {
+        return new Promise((resolve, reject) => {
+            Category.findById(id)
+                .populate({
+                    path: 'books',
+                    select: 'name author price image',
+                    model: 'Book'
+                })
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res.books)
+                })
+        })
+    }
+
     ReadEventList(offset, limit) {
         return new Promise((resolve, reject) => {
             Event.find({})

@@ -36,6 +36,30 @@ router.get('/books', (req, res) => {
     .catch(err => res.send({ error: err }))
 })
 
+router.get('/relatedBooks', (req, res) => {
+  let offset = req.query.offset ?
+    parseInt(req.query.offset) : 1
+  let limit = req.query.limit ?
+    parseInt(req.query.limit) : 0
+  let id = req.query.id;
+  let type = req.query.type;
+  if (offset === 0) {
+    res.status(404)
+    res.send({ error: 'Offset > 0' })
+    return
+  }
+
+  if (offset < 0 || limit < 0) {
+    res.status(404)
+    res.send({ error: 'Offset > 0' })
+    return
+  }
+
+  bookController.GetBookRelated(offset, limit, id, type)
+    .then(val => res.send(val))
+    .catch(err => res.send({ error: err }))
+})
+
 router.get('/bookcount', (req, res) => {
   bookController.GetBookCount()
     .then(val => res.send(val + ''))

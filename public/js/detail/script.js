@@ -44,7 +44,7 @@ function loadComment(id) {
   var commentContent = Handlebars.compile(commentContentSource)
   var comment = $("#comments");
   var btn = $("#btn-load-more");
-  var loader = $(".loader");
+  var loader = $("#loader-comment");
   var page = comment.attr("page");
   btn.hide();
   loader.show();
@@ -93,4 +93,33 @@ function formSubmit(){
       error: function (){}
   });
 return true;
+}
+
+var templateContentSource = $("#content-template-detail").html()
+var templateContent = Handlebars.compile(templateContentSource)
+var content = $("#relate-content")
+
+getBookRelateList(1,4)
+function getBookRelateList(offset,limit){
+    let id = $("#idBook").text();
+    let type = $("#typeBook").text();
+    $.ajax({
+        type: "get",
+        url: "./api/relatedBooks",
+        data: {
+            offset: offset,
+            limit: limit,
+            id: id,
+            type: type
+        },
+        dataType: "json",
+        success: function (response) {
+            let data ={
+                name:"Sản phẩm liên quan",
+                items:response
+            }
+            $("#loader-relate").hide();
+            content.append(templateContent(data))
+        }
+    });
 }
