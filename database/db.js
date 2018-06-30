@@ -279,6 +279,17 @@ class Database {
         })
     }
 
+    AcceptCart(id){
+        return new Promise((resolve, reject) => {
+          Cart.findByIdAndUpdate(id,{status:'Delivered'})
+          .exec((err,res)=>{
+              if(err)reject(err)
+              resolve(res)
+          })
+        })
+        
+    }
+
     GetCartList(offset,limit){
         return new Promise((resolve, reject) => {
             Cart.find({ status: 'accept' })
@@ -289,6 +300,14 @@ class Database {
                     path: 'books',
                     select: 'name price image author',
                     model: 'Book'
+                })
+                .populate({
+                    path: 'user.id',
+                    model:'Account',
+                    populate:{
+                        path:'local.accountInfo',
+                        model:'AccountInfo'
+                    }
                 })
                 .lean()
                 .exec((err, res) => {
@@ -417,7 +436,14 @@ class Database {
                 resolve(count)
             })
         })
-
+    }
+    ReadCategoryCount(){
+        return new Promise((resolve, reject) => {
+            Category.count({}).exec((err, count) => {
+                if (err) reject(err)
+                resolve(count)
+            })
+        });
     }
 
     ReadAuthorList(offset, limit) {

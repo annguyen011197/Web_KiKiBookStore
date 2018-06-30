@@ -1,6 +1,6 @@
 var express = require('express');
 var db = require('../database/db')
-var bcrypt   = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 var router = express.Router();
 const categoryController = require('../controller/category')
 const authorController = require('../controller/author')
@@ -16,6 +16,7 @@ const utils = require('../controller/Utils')
 
 /*get*/
 router.get('/books', (req, res) => {
+  console.log(req.session)
   let offset = req.query.offset ?
     parseInt(req.query.offset) : 1
   let limit = req.query.limit ?
@@ -43,6 +44,7 @@ router.get('/deletebook', (req, res) => {
     res.status(404)
     res.end()
   }
+  console.log(req.session)
   if (req.session && req.session.passport) {
     accountController.ReadAccount(req.session.passport.user)
       .then(user => {
@@ -89,6 +91,16 @@ router.get('/bookcount', (req, res) => {
       res.send({ error: err })
     })
 })
+
+router.get('/categorycount', (req, res) => {
+  categoryController.GetCount()
+    .then(val => res.send(val + ''))
+    .catch(err => {
+      res.status(404)
+      res.send({ error: err })
+    })
+})
+
 
 router.get('/category', (req, res, next) => {
   let offset = req.query.offset ?
@@ -691,13 +703,41 @@ router.route('/cart').post((req, res) => {
         res.end()
       })
   })
+router.get('/cartaccept', (req, res) => {
+  let tempid = req.query.id
+  if (tempid) {
+    if (req.session && req.session.passport) {
+      accountController.ReadAccount(req.session.passport.user)
+        .then(user => {
+          console.log(user.local.accountType)
+          if (user.local.accountType) {
+            cartController.Accept(tempid).then(value => res.send(value))
+              .catch(err => {
+                res.status(404)
+                res.end()
+              })
+          } else {
+            res.status(403)
+            res.send({ message: 'Not auth' })
+          }
+        })
+    } else {
+      res.status(403)
+      res.end()
+    }
+
+  } else {
+    res.status(404)
+    res.end()
+  }
+})
 
 router.get('/cartlist', (req, res) => {
   let offset = req.query.offset ?
     parseInt(req.query.offset) : 1
   let limit = req.query.limit ?
     parseInt(req.query.limit) : 15
-  cartController.GetCartList(offset,limit).then((result) => {
+  cartController.GetCartList(offset, limit).then((result) => {
     // let userid = result.
     res.send(result)
   }).catch((err) => {
@@ -728,7 +768,7 @@ router.route('/cartremoveitem').post((req, res) => {
 })
 
 
-router.post('/savecart',(req, res) => {
+router.post('/savecart', (req, res) => {
   console.log(req.body)
   let data = {
     id: req.body.Data.id,
@@ -809,7 +849,7 @@ router.post('/reset', (req, res) => {
       }
     });
     accountController.ReadAccountExt({ "local.email": req.body.email }).then(val => {
-      if(val == undefined){
+      if (val == undefined) {
         res.status(404)
         res.send({ error: "Không tìm thất email" })
       }
@@ -817,34 +857,34 @@ router.post('/reset', (req, res) => {
       let info = {
         find: { "local.email": req.body.email },
         update: {
-          $set:{
+          $set: {
             "local.password": bcrypt.hashSync(pass, bcrypt.genSaltSync(8), null)
           }
         }
       }
-      accountController.UpdateAccount(info).then(value =>{
-          var mailOptions = {
-            from: 'letuananhdev@gmail.com',
-            to: req.body.email,
-            subject: 'New password your account KikiBook',
-            html: '<p>'+ pass +'<p>'
-          };
-    
-          transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-              res.status(404)
-              res.send(error);
-            } else {
-              res.status(200)
-              res.send({'message': 'Email sent: ' + info.response});
-            }
-          });
+      accountController.UpdateAccount(info).then(value => {
+        var mailOptions = {
+          from: 'letuananhdev@gmail.com',
+          to: req.body.email,
+          subject: 'New password your account KikiBook',
+          html: '<p>' + pass + '<p>'
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            res.status(404)
+            res.send(error);
+          } else {
+            res.status(200)
+            res.send({ 'message': 'Email sent: ' + info.response });
+          }
+        });
       }).catch(err => {
         res.status(404)
         res.send({ error: "Không tìm thất email" })
       })
 
-     
+
     }).catch(err => res.send({ error: err }))
   } else {
     res.status(404)

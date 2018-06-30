@@ -61,6 +61,12 @@ class CartController {
         });
     }
 
+    Accept(id){
+        return new Promise((resolve, reject) => {
+            db.AcceptCart(id).then(resolve).catch(reject)
+        });
+    }
+
     GetCartList(offset,limit){
         return new Promise((resolve, reject) => {
             db.GetCartList(offset,limit).then((result) => {

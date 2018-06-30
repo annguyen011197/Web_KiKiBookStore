@@ -4,6 +4,7 @@ var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 var hbs = require('hbs')
+var cors = require('cors')
 //for auth
 var passport = require("passport")
 var flash = require("connect-flash")
@@ -43,6 +44,8 @@ app.use(bodyParser.json({
   limit: '5mb'
 }));
 
+
+
 app.use(session({
   secret: 'webdevteamABBA', // session secret
   resave: false,
@@ -52,7 +55,7 @@ app.use(passport.initialize())
 app.use(passport.session()) 
 app.use(flash())
 require('./config/passport')(passport)
-
+app.use(cors({credentials: true, origin: 'https://annguyen011197.github.io'}))
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/api',apiRouter)
@@ -61,6 +64,7 @@ app.use('/checkout',checkoutRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+
   next(createError(404))
 })
 

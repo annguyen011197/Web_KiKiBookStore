@@ -14,6 +14,14 @@ class CategoryController {
         });
     }
 
+    GetCount(){
+        return new Promise((resolve, reject) => {
+            db.ReadCategoryCount()
+            .then(res=>resolve(res))
+            .catch(err=>reject(err))
+        })
+    }
+
     GetList(offset, limit, type) {
         return new Promise((resolve, reject) => {
             switch (type) {
