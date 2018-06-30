@@ -73,7 +73,33 @@ module.exports = function (passport) {
                 }
               });
             } else {
-              return done(null, req.user);
+              if (req.body.type == "admin") {
+                User.findOne({
+                  $or: [
+                    { "local.email": email },
+                    { "local.username": username }
+                  ]
+                }, function (err, user) {
+                  if (err) return done(err);
+
+                  if (user) {
+                    return done(null, false, req.flash('signupMessage', 'That email or username is already taken.'));
+                  } else {
+                    var newUser = new User();
+                    newUser.local.username = username
+                    newUser.local.email = email;
+                    newUser.local.password = newUser.generateHash(password);
+                    newUser.local.verify = new Date().getTime();
+                    newUser.local.accountType = true
+                    newUser.save(function (err) {
+                      if (err) return done(err);
+                      return done(null, newUser, req.flash('signupMessage', 'Successful'));
+                    });
+                  }
+                });
+              }else{
+                return done(null, req.user);
+              }
             }
           }
         });
@@ -89,8 +115,8 @@ module.exports = function (passport) {
     },
     (req, email, password, done) => {
       process.nextTick(() => {
-        if(req.body.type=='admin'){
-          User.findOne({ 
+        if (req.body.type == 'admin') {
+          User.findOne({
             'local.username': email
           })
             .exec((err, user) => {
@@ -100,12 +126,12 @@ module.exports = function (passport) {
                 return done(null, false, { message: 'No user found' })
               if (!user.validPassword(password))
                 return done(null, false, { message: 'Wrong password' })
-              if( user.local.verify != "Active")
-                return done(null,false,{message:'Must active email'})
+              if (user.local.verify != "Active")
+                return done(null, false, { message: 'Must active email' })
               return done(null, user, { message: 'Succesful' })
             })
-        }else{
-          User.findOne({ 
+        } else {
+          User.findOne({
             'local.email': email,
           })
             .exec((err, user) => {
@@ -115,8 +141,8 @@ module.exports = function (passport) {
                 return done(null, false, { message: 'No user found' })
               if (!user.validPassword(password))
                 return done(null, false, { message: 'Wrong password' })
-              if(user.local.verify != "Active")
-                return done(null,false,{message:'Must active email'})
+              if (user.local.verify != "Active")
+                return done(null, false, { message: 'Must active email' })
               return done(null, user, { message: 'Succesful' })
             })
         }

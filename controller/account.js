@@ -74,6 +74,15 @@ class AccountController{
         console.log(user)
         return user
     }
+
+    ReadAccountList(offset,limit,type){
+        return new Promise((resolve, reject) => {
+            db.ReadAuthorList(offset,limit,type=="admin" ? true : false)
+            .then(resolve).catch(reject);
+        })
+        
+
+    }
 }
 
 module.exports = new AccountController()

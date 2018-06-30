@@ -38,6 +38,49 @@ router.get('/books', (req, res) => {
     .catch(err => res.send({ error: err }))
 })
 
+router.get('/accounts', async (req, res) => {
+  let offset = req.query.offset ?
+    parseInt(req.query.offset) : 1
+  let limit = req.query.limit ?
+    parseInt(req.query.limit) : 0
+  let type = req.query.type
+  if (offset === 0) {
+    res.status(404)
+    res.send({ error: 'Offset > 0' })
+    return
+  }
+
+  if (offset < 0 || limit < 0) {
+    res.status(404)
+    res.send({ error: 'Offset > 0' })
+    return
+  }
+
+  if (req.session && req.session.passport) {
+    let accounttype = false
+    console.log('async start')
+    await accountController.ReadAccount(req.session.passport.user)
+      .then(user => {
+        accounttype = user.local.accountType
+      })
+      .catch(err => {
+        res.status(404)
+        res.end()
+      })
+
+
+    if (!accounttype) {
+      res.status(403)
+      res.end()
+      return
+    }else{
+      accountController.ReadAccountList(offset,limit,type)
+      .then(val => res.send(val))
+      .catch(err => res.send({ error: err }));
+    }
+  }
+})
+
 router.get('/deletebook', (req, res) => {
   let id = req.query.id ? req.query.id : ''
   if (id == '') {
@@ -81,6 +124,29 @@ router.get('/details', (req, res) => {
       res.status(404)
       res.send({ message: err + '' })
     })
+})
+router.get('/relatedBooks', (req, res) => {
+  let offset = req.query.offset ?
+    parseInt(req.query.offset) : 1
+  let limit = req.query.limit ?
+    parseInt(req.query.limit) : 0
+  let id = req.query.id;
+  let type = req.query.type;
+  if (offset === 0) {
+    res.status(404)
+    res.send({ error: 'Offset > 0' })
+    return
+  }
+
+  if (offset < 0 || limit < 0) {
+    res.status(404)
+    res.send({ error: 'Offset > 0' })
+    return
+  }
+
+  bookController.GetBookRelated(offset, limit, id, type)
+    .then(val => res.send(val))
+    .catch(err => res.send({ error: err }))
 })
 
 router.get('/bookcount', (req, res) => {
@@ -733,11 +799,13 @@ router.get('/cartaccept', (req, res) => {
 })
 
 router.get('/cartlist', (req, res) => {
+  console.log(req.query)
   let offset = req.query.offset ?
     parseInt(req.query.offset) : 1
   let limit = req.query.limit ?
     parseInt(req.query.limit) : 15
-  cartController.GetCartList(offset, limit).then((result) => {
+  let type = req.query.type ? req.query.type : "accept"
+  cartController.GetCartList(offset, limit,type).then((result) => {
     // let userid = result.
     res.send(result)
   }).catch((err) => {

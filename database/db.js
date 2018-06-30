@@ -290,9 +290,10 @@ class Database {
         
     }
 
-    GetCartList(offset,limit){
+    GetCartList(offset,limit,type){
+        console.log(type)
         return new Promise((resolve, reject) => {
-            Cart.find({ status: 'accept' })
+            Cart.find({ status: type })
                 .skip((offset - 1) * limit)
                 .limit(limit)
                 .sort('-createdAt')
@@ -328,6 +329,23 @@ class Database {
                 })
         })
 
+    }
+
+    ReadAccountList(offset,limit,type){
+        return new Promise((resolve, reject) => {
+            Account.find({accountType:type})
+                .skip((offset - 1) * limit)
+                .limit(limit)
+                .populate({
+                    path: 'accountInfo',
+                    model: 'AccountInfo'
+                })
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res)
+                })
+        });
     }
 
     ReadBookById(id) {
@@ -414,6 +432,22 @@ class Database {
                     resolve(res)
                 })
         });
+    }
+
+    ReadBookListRelated(id) {
+        return new Promise((resolve, reject) => {
+            Category.findById(id)
+                .populate({
+                    path: 'books',
+                    select: 'name author price image',
+                    model: 'Book'
+                })
+                .lean()
+                .exec((err, res) => {
+                    if (err) reject(err)
+                    resolve(res.books)
+                })
+        })
     }
 
     ReadEventList(offset, limit) {

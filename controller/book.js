@@ -56,6 +56,43 @@ class BookController {
         });
     }
 
+    GetBookRelated(offset, limit,id, type){
+        function getRandom(arr, n) {
+            var result = new Array(n),
+                len = arr.length,
+                taken = new Array(len);
+            if (n > len)
+                throw new RangeError("getRandom: more elements taken than available");
+            while (n--) {
+                var x = Math.floor(Math.random() * len);
+                result[n] = arr[x in taken ? taken[x] : x];
+                taken[x] = --len in taken ? taken[len] : len;
+            }
+            return result;
+        }
+        return new Promise((resolve, reject) => {
+            db.ReadBookListRelated(type)
+                .then(res => {
+                    let result = [];
+                    res.forEach((a) => {
+                        a.name = utils.UpperWord(a.name)
+                        a.author.name = utils.UpperWord(a.author.name)
+                        a.price = (a.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                        a.image.forEach((el,il,al)=>{
+                            al[il] = utils.validURL(el) ? el : `/media/${el}`
+                        })
+                        if(a._id.toString() != id)
+                            result.push(a);
+                    })
+                    result = getRandom(result, limit);
+                    resolve(result)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
+    }
+
     GetBookCount(){
         return new Promise((resolve, reject) => {
             db.ReadBookCount()

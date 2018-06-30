@@ -61,6 +61,7 @@ router.route('/')
         res.render('admin', data)
     })
 router.get('/islogedin',(req,res)=>{
+    console.log(req.session)
     if(req.session && req.session.passport){
         if(req.session.passport.user){
             accountController.ReadAccount(req.session.passport.user)
@@ -73,6 +74,10 @@ router.get('/islogedin',(req,res)=>{
                     code: 1,
                     message: err+''
                 })
+            })
+        }else{
+            res.send({
+                code: 1
             })
         }
     }else{

@@ -67,9 +67,9 @@ class CartController {
         });
     }
 
-    GetCartList(offset,limit){
+    GetCartList(offset,limit,type){
         return new Promise((resolve, reject) => {
-            db.GetCartList(offset,limit).then((result) => {
+            db.GetCartList(offset,limit,type).then((result) => {
                 console.log(result.length)
                 for(let j =0;j<result.length;++j){
                     let total = 0
