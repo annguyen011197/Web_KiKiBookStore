@@ -65,10 +65,19 @@ router.get('/islogedin',(req,res)=>{
     if(req.session && req.session.passport){
         if(req.session.passport.user){
             accountController.ReadAccount(req.session.passport.user)
-            .then(val=>res.send({
-                code: 0,
-                username: val.local.usrename
-            })
+            .then(val=>{
+                if (val.local.accountType) {
+                    res.send({
+                        code: 0,
+                        username: val.local.usrename
+                    })
+                }else{
+                    res.send({
+                        code: 1,
+                        message: err+''
+                    })
+                }
+            }
             ).catch(err=>{
                 res.send({
                     code: 1,
