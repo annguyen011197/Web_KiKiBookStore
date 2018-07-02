@@ -11,27 +11,31 @@ let info = {
 
 router.route("/signup").post(async (req, res, next) => {
   console.log(req.body)
-  if (req.body.type == "admin") {
-    if (req.session && req.session.passport) {
-      let accounttype = false
-      console.log('async start')
-      await accountController.ReadAccount(req.session.passport.user)
-        .then(user => {
-          accounttype = user.local.accountType
-        })
-        .catch(err => {
-          res.status(404)
+  if(req.body.type){
+    console.log('go heree')
+    if (req.body.type == "admin") {
+      if (req.session && req.session.passport) {
+        let accounttype = false
+        console.log('async start')
+        await accountController.ReadAccount(req.session.passport.user)
+          .then(user => {
+            accounttype = user.local.accountType
+          })
+          .catch(err => {
+            res.status(404)
+            res.end()
+          })
+  
+  
+        if (!accounttype) {
+          res.status(403)
           res.end()
-        })
-
-
-      if (!accounttype) {
-        res.status(403)
-        res.end()
-        return
+          return
+        }
       }
     }
   }
+
   passport.authenticate("local-signup", (err, user, info) => {
     if (err) {
       res.status(404);
