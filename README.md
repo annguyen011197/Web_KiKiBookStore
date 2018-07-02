@@ -17,8 +17,8 @@ Web Development 's Final project
  - Data Crawler (from [Fahasa.com](www.fahasa.com)) : [https://github.com/ABA-Team/crawler-selenium-nodejs](https://github.com/ABA-Team/crawler-selenium-nodejs)
  - Admin Page ( with ReactJs ) : [https://github.com/annguyen011197/kikiwebstore-admin](https://github.com/annguyen011197/kikiwebstore-admin)
 # Install:
-> npm install <br/>>
-> npm start </br/>
+> npm install <br/>
+> npm start <br/>
 > Open broswer with link : localhost:3000
 ___
 ## Team info:
@@ -26,7 +26,7 @@ ___
  - Members:
  
 |Student Code|Full Name | Link|
-|-----|:-----:|-----:|
+|-----|:-----:|----:|
 | 1512020 | Nguyễn Trần Minh Ân |[Facebook](https://www.facebook.com/an.nguyen.11197) [Github](https://github.com/annguyen011197)|
 | 1512003 | Lê Tuấn Anh |[Facebook](https://www.facebook.com/letuananh.it) [Github](https://github.com/letuananh035)
 | 1512023 | Diệu Ngọc Bảo |[Facebook](https://www.facebook.com/dieungocbao) [Github](https://github.com/dieungocbao)
