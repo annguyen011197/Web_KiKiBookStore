@@ -17,9 +17,9 @@ Web Development 's Final project
  - Data Crawler (from [Fahasa.com](www.fahasa.com)) : [https://github.com/ABA-Team/crawler-selenium-nodejs](https://github.com/ABA-Team/crawler-selenium-nodejs)
  - Admin Page ( with ReactJs ) : [https://github.com/annguyen011197/kikiwebstore-admin](https://github.com/annguyen011197/kikiwebstore-admin)
 # Install:
->npm install
->npm start
->Open broswer with link : localhost:3000
+> npm install </br>
+> npm start </br>
+> Open broswer with link : localhost:3000
 ___
 ## Team info:
  - Team name: ABA
